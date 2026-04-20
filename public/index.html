@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hiraeth</title>
+
+
+
+  <script src="./js/sessao.js"></script>
+
+  <link rel="stylesheet" href="./css/estilo.css">
+  <link rel="icon" href="./assets/icon/favicon(Hiraeth).png">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+</head>
+
+<body>
+<div class="header">
+  <div class="container">
+    <a href="index.html" class="logo_link">
+      <h1 class="titulo">Hiraeth</h1>
+    </a>
+
+    <ul class="navbar">
+      <li>
+        <a href="login.html">Login</a>
+      </li>
+      <li>|</li>
+      <li>
+        <a href="cadastro.html">Cadastro</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+  <div class="hero">
+    <div class="container">
+      <p>"As bibliotecas estavam cheias de ideias, talvez a mais perigosa e poderosa de todas as armas."</p>
+    </div>
+  </div>
+
+  <div class="phrase">
+    <div class="phrase-detail"></div>
+    <div class="container">
+      <div class="phrase-line"></div>
+      <h3>Entre frases nascem reinos</h3>
+      <div class="phrase-line"></div>
+    </div>
+  </div>
+
+  <div class="about">
+    <div class="container about-content">
+      <div class="about-image">
+        <img src="./assets/imgs/biblioteca 1.jpg">
+      </div>
+
+      <div class="about-text">
+        <span class="about-tag">sobre a plataforma</span>
+        <h2>Um espaço para leitores e histórias</h2>
+        <p>
+          Hiraeth é uma rede social literária criada para quem encontra abrigo nos livros.
+        </p>
+        <p>
+          Aqui, leitores podem registrar leituras, explorar gêneros, descobrir recomendações
+          e acompanhar sua própria jornada por meio de recursos visuais e interativos.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="social">
+    <div class="container">
+      <div class="social_header">
+        <h2>O que você encontrará no Hiraeth</h2>
+      </div>
+      <div class="boxes">
+        <div class="box">
+          <div class="dashboard_img"></div>
+          <h4>Dashboard literária</h4>
+          <p>Acompanhe sua jornada de leitura com visualizações sobre livros lidos,
+            gêneros favoritos e evolução na plataforma</p>
+        </div>
+        <div class="box">
+          <div class="genero_img"></div>
+          <h4>Explorar gêneros literários</h4>
+          <p>Descubra novos universos, navegue entre estilos diferentes e encontre
+            histórias que combinam com você</p>
+        </div>
+        <div class="box">
+          <div class="register_img"></div>
+          <h4>Registrar leituras</h4>
+          <p>Monte sua trajetória literária registrando livros lidos, favoritos e
+            aqueles que ainda deseja conhecer</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="recommended">
+    <div class="container">
+      <div class="recommended_header">
+        <h2>Leituras recomendadas</h2>
+        <p>Sagas e mundos que esperam por você</p>
+      </div>
+
+      <div class="carousel">
+        <button class="carousel_btn" onclick="voltar()">&#10094;</button>
+
+        <div class="recommended_card">
+          <img id="book_image" src="./assets/imgs/trono de vidro 1.jpg" alt="Saga recomendada">
+          <h3 id="book_title">Trono de Vidro</h3>
+          <p id="book_description">
+            Não se trata apenas de sobreviver, mas de sacudir as estrelas e forjar o próprio destino através do amor, da
+            magia e da vingança.
+          </p>
+        </div>
+
+        <button class="carousel_btn" onclick="avancar()">&#10095;</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="impact_phrase">
+    <div class="container impact_layout">
+      <div class="impact_image">
+        <img src="./assets/imgs/img2.jpeg" alt="Biblioteca com atmosfera mágica">
+      </div>
+
+      <div class="impact_text">
+        <h2>“Livros são feitiços que só funcionam para quem ousa abrir a capa”</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <p class="footer-brand">Hiraeth</p>
+      <p class="footer-phrase">Entre histórias, memórias e pertencimento</p>
+    </div>
+  </div>
+</body>
+
+<script src="./js/carousel.js"></script>
+
+</html>
