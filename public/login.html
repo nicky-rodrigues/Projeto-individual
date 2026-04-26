@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AquaTech | Login</title>
+    <title>Hiraeth | Login</title>
 
     <script src="./js/sessao.js"></script>
 
     <link rel="stylesheet" href="./css/estilo.css">
-    <link rel="icon" href="./assets/icon/favicon2.ico">
+    <link rel="icon" href="./assets/icon/favicon(Hiraeth).png">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
@@ -37,31 +37,32 @@
         </div>
     </div>
 
-
     <div class="login">
         <div class="alerta_erro">
             <div class="card_erro" id="cardErro">
                 <span id="mensagem_erro"></span>
             </div>
         </div>
+
         <div class="container">
-            <div class="card card-login">
+            <div class="card-login">
                 <h2>Olá de volta!</h2>
+                <p class="login-subtitle">Retorne ao seu universo literário.</p>
+
                 <div class="formulario">
                     <div class="campo">
-                        <span>E-mail:</span>
-                        <input id="email_input" type="text" placeholder="Login">
+                        <span>E-mail</span>
+                        <input id="email_input" type="text" placeholder="Digite seu e-mail">
                     </div>
+
                     <div class="campo">
-                        <span>Senha:</span>
-                        <input id="senha_input" type="password" placeholder="******">
+                        <span>Senha</span>
+                        <input id="senha_input" type="password" placeholder="Digite sua senha">
                     </div>
+
                     <button class="botao" onclick="entrar()">Entrar</button>
                 </div>
-
-                <div id="div_aguardar" class="loading-div">
-                    <img src="./assets/circle-loading.gif" id="loading-gif">
-                </div>
+                <div id="div_message_results"></div>
 
                 <div id="div_erros_login"></div>
             </div>
@@ -71,8 +72,8 @@
     <!--footer inicio-->
     <div class="footer">
         <div class="container">
-            <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
-            <span class="version">v1.0.0</span>
+            <p class="footer-brand">Hiraeth</p>
+            <p class="footer-phrase">Entre histórias, memórias e pertencimento</p>
         </div>
     </div>
     <!--footer fim-->
@@ -83,74 +84,107 @@
 
 <script>
 
+    let listaUsuariosCadastrados = [];
+
+    function UsuariosCadastrados() {
+
+        fetch("/usuarios/", {
+            method: "GET",
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(obj => {
+                    listaUsuariosCadastrados = obj;
+                    console.log(listaUsuariosCadastrados);
+
+                }
+                )
+            }
+        })
+    };
 
     function entrar() {
-        aguardar();
 
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
 
         if (emailVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            finalizarAguardar();
+            mensagem_erro.innerHTML = "Necessário o preenchimento de todos os campos";
             return false;
         }
         else {
             setInterval(sumirMensagem, 5000)
         }
 
-        console.log("FORM LOGIN: ", emailVar);
-        console.log("FORM SENHA: ", senhaVar);
-
-        fetch("/usuarios/autenticar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                emailServer: emailVar,
-                senhaServer: senhaVar
-            })
-        }).then(function (resposta) {
-            console.log("ESTOU NO THEN DO entrar()!")
-
-            if (resposta.ok) {
-                console.log(resposta);
-
-                resposta.json().then(json => {
-                    console.log(json);
-                    console.log(JSON.stringify(json));
-                    sessionStorage.EMAIL_USUARIO = json.email;
-                    sessionStorage.NOME_USUARIO = json.nome;
-                    sessionStorage.ID_USUARIO = json.id;
-                    sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
-
-                    setTimeout(function () {
-                        window.location = "./dashboard/cards.html";
-                    }, 1000); // apenas para exibir o loading
-
-                });
-
-            } else {
-
-                console.log("Houve um erro ao tentar realizar o login!");
-
-                resposta.text().then(texto => {
-                    console.error(texto);
-                    finalizarAguardar(texto);
-                });
+        let encontrou = false;
+        
+        for (let i = 0; i < listaUsuariosCadastrados.length; i++) {
+            if (listaUsuariosCadastrados[i].email == emailVar && listaUsuariosCadastrados[i].senha == senhaVar) {
+                encontrou = true;
+                break
             }
+        }
 
-        }).catch(function (erro) {
-            console.log(erro);
-        })
+        if (encontrou) {
+            
+            console.log("FORM LOGIN: ", emailVar);
+            console.log("FORM SENHA: ", senhaVar);
 
-        return false;
+            fetch("/usuarios/autenticar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    emailServer: emailVar,
+                    senhaServer: senhaVar
+                })
+            }).then(function (resposta) {
+                console.log("ESTOU NO THEN DO entrar()!")
+
+                if (resposta.ok) {
+                    console.log(resposta);
+
+                    resposta.json().then(json => {
+                        console.log(json);
+                        console.log(JSON.stringify(json));
+                        sessionStorage.EMAIL_USUARIO = json.email;
+                        sessionStorage.NOME_USUARIO = json.nome;
+                        sessionStorage.ID_USUARIO = json.id;
+
+                        setTimeout(function () {
+                            console.log('entrou');
+
+                            window.location = "./index.html";
+                        });
+
+                    });
+
+                } else {
+
+                    console.log("Houve um erro ao tentar realizar o login!");
+
+                    resposta.text().then(texto => {
+                        console.error(texto);
+                    });
+                }
+
+            }).catch(function (erro) {
+                console.log(erro);
+            })
+
+            return false;
+        }
+        else {
+            div_message_results.innerHTML = '<br><span style = "color: #3B2A24">Login não encontrado</span>'
+        }
     }
 
     function sumirMensagem() {
         cardErro.style.display = "none"
     }
+    UsuariosCadastrados()
 
 </script>
