@@ -16,7 +16,6 @@
 </head>
 
 <body>
-  <!--header inicio-->
   <div class="header">
     <div class="container">
       <a href="index.html" class="logo_link">
@@ -34,7 +33,8 @@
       </ul>
     </div>
   </div>
-  <!--header fim-->
+
+
 
   <div class="login">
 
@@ -76,31 +76,29 @@
     </div>
   </div>
 
-  <!--footer inicio-->
+
+
   <div class="footer">
     <div class="container">
       <p class="footer-brand">Hiraeth</p>
       <p class="footer-phrase">Entre histórias, memórias e pertencimento</p>
     </div>
   </div>
-  <!--footer fim-->
 </body>
 
 </html>
 
 <script>
 
+
   function cadastrar() {
 
 
-    //Recupere o valor da nova input pelo nome do id
-    // Agora vá para o método fetch logo abaixo
     var nomeVar = nome_input.value;
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
-    // Verificando cadastro
     if (
       nomeVar == "" ||
       emailVar == "" ||
@@ -118,15 +116,12 @@
       cardErro.style.display = "none";
     }
 
-    // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // crie um atributo que recebe o valor recuperado aqui
-        // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
         emailServer: emailVar,
         senhaServer: senhaVar

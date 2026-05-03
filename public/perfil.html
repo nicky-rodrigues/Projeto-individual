@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hiraeth | Perfil</title>
+
+    <script src="./js/sessao.js"></script>
+
+    <link rel="stylesheet" href="./css/perfil.css">
+    <link rel="icon" href="./assets/icon/favicon(Hiraeth).png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="container">
+            <a href="index.html" class="logo_link">
+                <h1 class="titulo">Hiraeth</h1>
+            </a>
+
+            <ul class="navbar">
+                <li><a href="inicio.html">Feed</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+                <li><a href="index.html">Sair</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="layout-social">
+
+
+        <aside class="menu-lateral">
+            <div class="secao-menu">
+                <div class="titulo-menu">Menu</div>
+
+                <nav class="navegacao-menu">
+                    <a href="inicio.html">Início</a>
+                    <a href="explorar.html">Explorar gêneros</a>
+                    <a href="registrar.html">Registrar leituras</a>
+                    <a href="./dashboard/dashboard.html">Dashboard</a>
+                    <a href="perfil.html" class="ativo">Perfil</a>
+                    <a href="index.html">Sair</a>
+                </nav>
+            </div>
+
+            <div class="caixa-lateral">
+                <h3>Meu perfil</h3>
+                <p>Personalize sua jornada literária e defina sua meta mensal de leitura.</p>
+            </div>
+        </aside>
+
+
+        <main class="area-principal">
+
+            <section class="caixa-social cabecalho-pagina">
+                <h2>Perfil</h2>
+                <p>Configure suas informações pessoais e preferências de leitura no Hiraeth.</p>
+            </section>
+
+            <section class="conteudo-perfil">
+
+
+                <div class="caixa-social cartao-perfil">
+                    <div class="topo-perfil">
+                        <div class="avatar-grande" id="avatar_perfil">N</div>
+
+                        <div>
+                            <h3 id="nome_exibido">Nome do usuário</h3>
+                            <p id="bio_exibida">Carregando bio literária...</p>
+                        </div>
+                    </div>
+
+                    <div class="informacoes-perfil">
+                        <div class="item-perfil">
+                            <span>Gênero favorito</span>
+                            <strong id="genero_exibido">-</strong>
+                        </div>
+
+                        <div class="item-perfil">
+                            <span>Livro favorito</span>
+                            <strong id="livro_exibido">-</strong>
+                        </div>
+
+                        <div class="item-perfil">
+                            <span>Meta do mês</span>
+                            <strong id="meta_exibida">-</strong>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="caixa-social formulario-perfil">
+                    <h3>Editar perfil</h3>
+
+                    <div class="campo-formulario">
+                        <label>Nome</label>
+                        <input id="input_nome" type="text" placeholder="Digite seu nome" disabled>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Gênero favorito</label>
+                        <select id="select_genero">
+                            <option value="">Selecione</option>
+                            <option value="Fantasia">Fantasia</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Mistério">Mistério</option>
+                            <option value="Ficção científica">Ficção científica</option>
+                            <option value="Poesia">Poesia</option>
+                            <option value="Terror">Terror</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Livro favorito</label>
+                        <input id="input_livro" type="text" placeholder="Digite seu livro favorito">
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Meta do mês</label>
+                        <input id="input_meta" type="number" min="1" placeholder="Ex: 6">
+                    </div>
+
+                    <div class="campo-formulario campo-completo">
+                        <label>Bio literária</label>
+                        <textarea id="input_bio"
+                            placeholder="Escreva um pouco sobre você e suas leituras..."></textarea>
+                    </div>
+
+                    <button class="botao-salvar" onclick="salvarPerfil()">Salvar perfil</button>
+
+                    <p id="mensagem_sucesso" class="mensagem-sucesso"></p>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+
+    <div class="footer">
+        <div class="container">
+            <p class="footer-brand">Hiraeth</p>
+            <p class="footer-phrase">Entre histórias, memórias e pertencimento</p>
+        </div>
+    </div>
+
+    <script src="./js/perfil.js"></script>
+</body>
+
+</html>

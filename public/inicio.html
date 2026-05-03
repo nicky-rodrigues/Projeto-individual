@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hiraeth | Início</title>
+
+    <script src="./js/sessao.js"></script>
+
+    <link rel="stylesheet" href="./css/inicio.css">
+    <link rel="icon" href="./assets/icon/favicon(Hiraeth).png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <a href="index.html" class="logo_link">
+                <h1 class="titulo">Hiraeth</h1>
+            </a>
+
+            <ul class="navbar">
+                <li><a href="inicio.html">Feed</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+                <li><a href="index.html">Sair</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="layout-social">
+
+
+        <aside class="menu-lateral">
+            <div class="secao-menu">
+                <div class="titulo-menu">Menu</div>
+
+                <nav class="navegacao-menu">
+                    <a href="inicio.html" class="ativo">Início</a>
+                    <a href="explorar.html">Explorar gêneros</a>
+                    <a href="registrar.html">Registrar leituras</a>
+                    <a href="./dashboard/dashboard.html">Dashboard</a>
+                    <a href="perfil.html">Perfil</a>
+                    <a href="index.html">Sair</a>
+                </nav>
+            </div>
+
+        </aside>
+
+
+        <main class="area-principal">
+
+
+            <div class="busca-social">
+                <input type="text" placeholder="Buscar livros, autores, leitores ou gêneros...">
+            </div>
+
+            <div class="layout-feed">
+
+
+                <section class="feed-principal">
+
+
+                    <div class="caixa-social caixa-boas-vindas">
+                        <h2 id="titulo_boas_vindas">Olá</h2>
+
+                        <p>
+                            Compartilhe suas leituras, descubra novas histórias e acompanhe
+                            o que outros leitores estão lendo.
+                        </p>
+
+                        <div class="estatisticas-boas-vindas">
+                            <div class="mini-estatistica">
+                                <span id="span_livros_lidos">0</span>
+                                <small>livros lidos</small>
+                            </div>
+
+                            <div class="mini-estatistica">
+                                <span id="span_meta_mes">0/0</span>
+                                <small>meta do mês</small>
+                            </div>
+
+                            <div class="mini-estatistica">
+                                <span id="span_genero_favorito">-</span>
+                                <small>gênero favorito</small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="caixa-social caixa-criar-publicacao">
+                        <div class="topo-criar-publicacao">
+                            <div id="avatar_criar_publicacao" class="avatar-pequeno">U</div>
+
+                            <textarea 
+                                id="input_post" 
+                                class="campo-criar-publicacao"
+                                placeholder="O que você está lendo hoje?"></textarea>
+                        </div>
+
+                        <div class="acoes-criar-publicacao">
+                            <button id="botao_resenha" type="button" onclick="selecionarTipoPublicacao('resenha')">
+                                📖 Resenha
+                            </button>
+
+                            <button id="botao_avaliacao" type="button" onclick="selecionarTipoPublicacao('avaliacao')">
+                                ⭐ Avaliação
+                            </button>
+
+                            <button id="botao_citacao" type="button" onclick="selecionarTipoPublicacao('citacao')">
+                                💬 Citação
+                            </button>
+
+                            <button id="botao_meta" type="button" onclick="selecionarTipoPublicacao('meta')">
+                                📚 Meta de leitura
+                            </button>
+                        </div>
+
+                        <div class="extra-criar-publicacao">
+                            <input 
+                                id="input_livro" 
+                                type="text">
+
+                            <button type="button" class="botao-publicar" onclick="publicar()">
+                                Publicar
+                            </button>
+                        </div>
+
+                        <p id="mensagem_publicacao" class="mensagem-publicacao"></p>
+                    </div>
+
+
+                    <div id="feed_posts" class="publicacoes-feed">
+                        <div class="caixa-social cartao-publicacao">
+                            <p>Carregando publicações...</p>
+                        </div>
+                    </div>
+
+                </section>
+
+
+                <aside class="lateral-feed">
+
+                    <div class="caixa-social caixa-perfil">
+                        <div class="topo-perfil-resumido">
+                            <div class="avatar-grande" id="avatar_usuario">U</div>
+
+                            <div>
+                                <h3 id="nome_usuario_lateral">Usuário</h3>
+                                <p id="bio_usuario_lateral">Carregando perfil...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="caixa-social caixa-dashboard">
+                        <h3>Resumo da jornada</h3>
+                        <p>Livros lidos: <strong id="resumo_livros_lidos">0</strong></p>
+                        <p>Meta do mês: <strong id="resumo_meta_mes">0/0</strong></p>
+                        <p>Gênero favorito: <strong id="resumo_genero_favorito">-</strong></p>
+                    </div>
+
+                    <div class="caixa-social caixa-em-alta">
+                        <h3>Livros em alta</h3>
+
+                        <div class="item-em-alta">
+                            <span>1</span>
+                            <div>
+                                <strong>Quarta Asa</strong>
+                                <p>128 leitores falando sobre</p>
+                            </div>
+                        </div>
+
+                        <div class="item-em-alta">
+                            <span>2</span>
+                            <div>
+                                <strong>Trono de Vidro</strong>
+                                <p>94 leitores falando sobre</p>
+                            </div>
+                        </div>
+
+                        <div class="item-em-alta">
+                            <span>3</span>
+                            <div>
+                                <strong>Percy Jackson</strong>
+                                <p>76 leitores falando sobre</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </aside>
+            </div>
+        </main>
+    </div>
+
+
+    <div class="footer">
+        <div class="container">
+            <p class="footer-brand">Hiraeth</p>
+            <p class="footer-phrase">Entre histórias, memórias e pertencimento</p>
+        </div>
+    </div>
+
+    <script src="./js/inicio.js"></script>
+</body>
+
+</html>

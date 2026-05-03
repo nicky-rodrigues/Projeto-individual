@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hiraeth | Registrar leitura</title>
+
+    <script src="./js/sessao.js"></script>
+
+    <link rel="stylesheet" href="./css/registrar.css">
+    <link rel="icon" href="./assets/icon/favicon(Hiraeth).png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <a href="index.html" class="logo_link">
+                <h1 class="titulo">Hiraeth</h1>
+            </a>
+
+            <ul class="navbar">
+                <li><a href="inicio.html">Feed</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+                <li><a href="index.html">Sair</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layout-social">
+
+        <aside class="menu-lateral">
+            <div class="secao-menu">
+                <div class="titulo-menu">Menu</div>
+
+                <nav class="navegacao-menu">
+                    <a href="inicio.html">Início</a>
+                    <a href="explorar.html">Explorar gêneros</a>
+                    <a href="registrar.html" class="ativo">Registrar leituras</a>
+                    <a href="./dashboard/dashboard.html">Dashboard</a>
+                    <a href="perfil.html">Perfil</a>
+                    <a href="index.html">Sair</a>
+                </nav>
+            </div>
+
+            <div class="caixa-lateral">
+                <h3>Minha jornada</h3>
+                <p>
+                    Registre suas leituras, acompanhe status e edite quando avançar na leitura.
+                </p>
+            </div>
+        </aside>
+
+        <main class="area-principal">
+
+            <section class="caixa-social cabecalho-pagina">
+                <h2>Registrar leitura</h2>
+                <p>
+                    Adicione livros à sua estante e atualize o status quando sua leitura evoluir.
+                </p>
+            </section>
+
+            <section class="conteudo-registro">
+
+                <div class="caixa-social formulario-registro">
+                    <h3 id="titulo_formulario">Nova leitura</h3>
+
+                    <div class="campo-formulario campo-completo">
+                        <label>Nome do livro</label>
+                        <input id="input_livro" type="text" placeholder="Ex: Trono de Vidro">
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Autor</label>
+                        <input id="input_autor" type="text" placeholder="Ex: Sarah J. Maas">
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Gênero</label>
+                        <select id="select_genero">
+                            <option value="">Selecione</option>
+                            <option value="Fantasia">Fantasia</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Mistério">Mistério</option>
+                            <option value="Ficção científica">Ficção científica</option>
+                            <option value="Poesia">Poesia</option>
+                            <option value="Terror">Terror</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Status</label>
+                        <select id="select_status">
+                            <option value="">Selecione</option>
+                            <option value="Lendo">Lendo</option>
+                            <option value="Concluído">Concluído</option>
+                            <option value="Quero ler">Quero ler</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label>Nota</label>
+                        <input id="input_nota" type="number" min="1" max="5" placeholder="1 a 5">
+                    </div>
+
+                    <div class="campo-formulario campo-completo">
+                        <label>Comentário</label>
+                        <textarea id="input_comentario" placeholder="Escreva sua opinião sobre essa leitura..."></textarea>
+                    </div>
+
+                    <div class="botoes-formulario">
+                        <button id="botao_salvar_leitura" class="botao-salvar" onclick="salvarOuAtualizarLeitura()">
+                            Salvar leitura
+                        </button>
+
+                        <button id="botao_cancelar_edicao" class="botao-cancelar" onclick="cancelarEdicao()">
+                            Cancelar edição
+                        </button>
+                    </div>
+
+                    <p id="mensagem_sucesso" class="mensagem-sucesso"></p>
+                </div>
+
+                <div class="caixa-social leituras-registradas">
+                    <h3>Leituras registradas</h3>
+
+                    <div id="mensagem_vazia" class="mensagem-vazia">
+                        Carregando leituras...
+                    </div>
+
+                    <div id="lista_leituras" class="lista-leituras"></div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p class="footer-brand">Hiraeth</p>
+            <p class="footer-phrase">Entre histórias, memórias e pertencimento</p>
+        </div>
+    </div>
+
+    <script src="./js/registrar.js"></script>
+</body>
+
+</html>

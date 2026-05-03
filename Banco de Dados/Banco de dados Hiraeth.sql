@@ -94,8 +94,7 @@ CREATE TABLE Comentario (
     CONSTRAINT fk_comentario_publicacao
         FOREIGN KEY (fkPublicacao) REFERENCES Publicacao(idPublicacao)
 );
-
-select * from ;
+select * from Publicacao;
 
 
 UPDATE Leitura

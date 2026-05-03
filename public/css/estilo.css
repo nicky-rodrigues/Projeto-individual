@@ -15,6 +15,16 @@
   --tamanho-header: 80px;
   --tamanho-hero: calc(100vh - var(--tamanho-header));
   --tamanho-footer: 100px;
+
+  --bg-color: var(--soft-black);
+  --border-color: var(--brown-dark);
+  --title-font: "Cormorant Garamond", serif;
+  --body-font: "Inter", sans-serif;
+  --side-title: var(--aged-gold);
+  --button: var(--wine);
+  --main-text: var(--parchment-light);
+  --secondary-text: var(--text-muted);
+  --card-bg: rgba(243, 235, 221, 0.05);
 }
 
 * {
@@ -48,7 +58,8 @@ a {
   margin: auto;
 }
 
-/* HEADER */
+
+
 
 .header {
   height: var(--tamanho-header);
@@ -103,7 +114,9 @@ a {
   font-family: 'Cinzel', serif;
 }
 
-/* HERO */
+
+
+
 
 .hero {
   min-height: var(--tamanho-hero);
@@ -130,7 +143,8 @@ a {
   color: var(--parchment-light);
 }
 
-/* PHRASE */
+
+
 
 .phrase {
   background: linear-gradient(to right, #f3ebdd, #e8dcc8, #f3ebdd);
@@ -192,7 +206,9 @@ a {
   display: none;
 }
 
-/* ABOUT */
+
+
+
 
 .about {
   background:
@@ -254,7 +270,8 @@ a {
   margin-top: 14px;
 }
 
-/* SOCIAL / FUNCIONALIDADES */
+
+
 
 .social {
   background-color: var(--parchment);
@@ -310,7 +327,8 @@ a {
   font-size: 1rem;
 }
 
-/* IMAGEM DOS CARDS */
+
+
 
 .dashboard_img,
 .genero_img,
@@ -337,7 +355,9 @@ a {
   background-image: url('../assets/icon/registro.png');
 }
 
-/* RECOMMENDED */
+
+
+
 
 .recommended {
   background-color: var(--brown-dark);
@@ -430,7 +450,9 @@ a {
   color: var(--parchment);
 }
 
-/* IMPACT PHRASE */
+
+
+
 
 .impact_phrase {
   background-color: var(--soft-black);
@@ -477,7 +499,9 @@ a {
   color: var(--parchment-light);
 }
 
-/* FOOTER */
+
+
+
 
 .footer {
   background-color: #161311;
@@ -504,7 +528,9 @@ a {
   color: var(--text-muted);
 }
 
-/* RESPONSIVIDADE */
+
+
+
 
 @media (max-width: 1024px) {
 
@@ -581,7 +607,9 @@ a {
   }
 }
 
-/* LOGIN E CADASTRO */
+
+
+
 
 .login {
   min-height: calc(100vh - var(--tamanho-header) - var(--tamanho-footer));
@@ -708,33 +736,8 @@ a {
   display: none;
 }
 
-/* ALERTA DE ERRO */
 
-.alerta_erro {
-  display: flex;
-  justify-content: flex-end;
-}
 
-.card_erro {
-  display: none;
-  width: 100%;
-  max-width: 320px;
-  margin: 16px auto 0 auto;
-  padding: 0;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  text-align: center;
-}
-
-.card_erro #mensagem_erro {
-  display: block;
-  font-weight: 500;
-  font-size: 1rem;
-  color: var(--brown-dark);
-}
-
-/* FOOTER */
 
 .footer {
   background-color: #161311;
@@ -761,9 +764,11 @@ a {
   color: var(--text-muted);
 }
 
-/* RESPONSIVIDADE */
+
+
 
 @media (max-width: 768px) {
+
   .card-login,
   .card-cadastro {
     padding: 30px 22px;

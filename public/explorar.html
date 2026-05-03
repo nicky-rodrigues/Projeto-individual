@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hiraeth | Explorar gêneros</title>
+
+    <script src="./js/sessao.js"></script>
+
+    <link rel="stylesheet" href="./css/explorar.css">
+    <link rel="icon" href="./assets/icon/favicon(Hiraeth).png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <a href="index.html" class="logo_link">
+                <h1 class="titulo">Hiraeth</h1>
+            </a>
+
+            <ul class="navbar">
+                <li><a href="inicio.html">Feed</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+                <li><a href="index.html">Sair</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="layout-social">
+
+
+        <aside class="menu-lateral">
+            <div class="secao-menu">
+                <div class="titulo-menu">Menu</div>
+
+                <nav class="navegacao-menu">
+                    <a href="inicio.html">Início</a>
+                    <a href="explorar.html" class="ativo">Explorar gêneros</a>
+                    <a href="registrar.html">Registrar leituras</a>
+                    <a href="./dashboard/dashboard.html">Dashboard</a>
+                    <a href="perfil.html">Perfil</a>
+                    <a href="index.html">Sair</a>
+                </nav>
+            </div>
+
+            <div class="caixa-lateral">
+                <h3>Explorar</h3>
+                <p>
+                    Navegue por gêneros literários e descubra livros cadastrados por outros leitores.
+                </p>
+            </div>
+        </aside>
+
+
+        <main class="area-principal">
+
+
+            <div class="busca-social">
+                <input id="input_busca" type="text" placeholder="Buscar gênero, livro ou autor..." onkeyup="buscarLivro()">
+            </div>
+
+            <div class="explore-page">
+
+
+                <div class="caixa-social explore-hero">
+                    <h2>Explorar gêneros</h2>
+                    <p>
+                        Descubra histórias, atmosferas e mundos que combinam com seu momento de leitura.
+                    </p>
+                </div>
+
+
+                <div class="genre-grid">
+
+                    <div class="genre-card fantasy-card" onclick="mostrarGenero('Fantasia')">
+                        <div class="genre-overlay">
+                            <h3>Fantasia</h3>
+                            <p>Reinos, magia, criaturas e jornadas épicas.</p>
+                        </div>
+                    </div>
+
+                    <div class="genre-card romance-card" onclick="mostrarGenero('Romance')">
+                        <div class="genre-overlay">
+                            <h3>Romance</h3>
+                            <p>Laços, encontros e sentimentos que atravessam páginas.</p>
+                        </div>
+                    </div>
+
+                    <div class="genre-card mystery-card" onclick="mostrarGenero('Mistério')">
+                        <div class="genre-overlay">
+                            <h3>Mistério</h3>
+                            <p>Segredos, pistas e histórias que prendem até o fim.</p>
+                        </div>
+                    </div>
+
+                    <div class="genre-card scifi-card" onclick="mostrarGenero('Ficção científica')">
+                        <div class="genre-overlay">
+                            <h3>Ficção científica</h3>
+                            <p>Tecnologia, futuros imaginados e perguntas sobre o impossível.</p>
+                        </div>
+                    </div>
+
+                    <div class="genre-card poetry-card" onclick="mostrarGenero('Poesia')">
+                        <div class="genre-overlay">
+                            <h3>Poesia</h3>
+                            <p>Palavras que respiram sentimento, imagem e memória.</p>
+                        </div>
+                    </div>
+
+                    <div class="genre-card horror-card" onclick="mostrarGenero('Terror')">
+                        <div class="genre-overlay">
+                            <h3>Terror</h3>
+                            <p>Sombras, tensão e histórias que arrepiam o silêncio.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="caixa-social livros-genero-box">
+                    <div id="area_resultado">
+                        <h3>Carregando livros...</h3>
+                        <p>Aguarde enquanto buscamos os livros cadastrados no Hiraeth.</p>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+
+        <aside class="coluna-direita">
+
+            <div class="caixa-social dashboard-box">
+                <h3>Gêneros em destaque</h3>
+                <p><strong>Fantasia</strong></p>
+                <p><strong>Mistério</strong></p>
+                <p><strong>Romance</strong></p>
+            </div>
+
+            <div class="caixa-social dashboard-box">
+                <h3>Dica</h3>
+                <p>
+                    Os livros exibidos aqui vêm das leituras registradas pelos usuários.
+                </p>
+            </div>
+
+        </aside>
+    </div>
+
+
+    <div class="footer">
+        <div class="container">
+            <p class="footer-brand">Hiraeth</p>
+            <p class="footer-phrase">Entre histórias, memórias e pertencimento</p>
+        </div>
+    </div>
+
+    <script src="./js/explorar.js"></script>
+</body>
+
+</html>

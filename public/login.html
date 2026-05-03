@@ -17,8 +17,6 @@
 
 <body>
 
-    <!--Header-->
-
     <div class="header">
         <div class="container">
             <a href="index.html" class="logo_link">
@@ -69,14 +67,12 @@
         </div>
     </div>
 
-    <!--footer inicio-->
     <div class="footer">
         <div class="container">
             <p class="footer-brand">Hiraeth</p>
             <p class="footer-phrase">Entre histórias, memórias e pertencimento</p>
         </div>
     </div>
-    <!--footer fim-->
 
 </body>
 
@@ -119,7 +115,7 @@
         }
 
         let encontrou = false;
-        
+
         for (let i = 0; i < listaUsuariosCadastrados.length; i++) {
             if (listaUsuariosCadastrados[i].email == emailVar && listaUsuariosCadastrados[i].senha == senhaVar) {
                 encontrou = true;
@@ -128,7 +124,7 @@
         }
 
         if (encontrou) {
-            
+
             console.log("FORM LOGIN: ", emailVar);
             console.log("FORM SENHA: ", senhaVar);
 
@@ -157,7 +153,7 @@
                         setTimeout(function () {
                             console.log('entrou');
 
-                            window.location = "./index.html";
+                            window.location = "./inicio.html";
                         });
 
                     });
