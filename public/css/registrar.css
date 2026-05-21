@@ -116,12 +116,15 @@ a {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    top: 24px;
 }
 
 .secao-menu {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: sticky;
+    top: 24px;
 }
 
 .titulo-menu {
@@ -411,6 +414,11 @@ a {
     background-color: var(--parchment-light);
 }
 
+.acoes-leitura {
+    display: flex;
+    justify-content: flex-end;
+}
+
 
 
 
@@ -437,59 +445,4 @@ a {
 .footer-phrase {
     font-size: 0.95rem;
     color: var(--text-muted);
-}
-
-
-
-
-@media (max-width: 1000px) {
-    .conteudo-registro {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 900px) {
-    .layout-social {
-        flex-direction: column;
-    }
-
-    .menu-lateral {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid rgba(176, 138, 87, 0.18);
-    }
-}
-
-@media (max-width: 768px) {
-    .header {
-        height: auto;
-        padding: 15px 0;
-    }
-
-    .header .container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .navbar {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .container {
-        width: 90%;
-    }
-
-    .area-principal {
-        padding: 18px;
-    }
-
-    .formulario-registro {
-        grid-template-columns: 1fr;
-    }
-
-    .botao-salvar,
-    .botao-cancelar {
-        width: 100%;
-    }
 }

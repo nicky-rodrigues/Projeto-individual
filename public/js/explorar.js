@@ -34,7 +34,8 @@ function carregarLivros() {
                 <h3>Selecione um gênero</h3>
                 <p>
                     Encontramos ${livrosCadastrados.length} livro(s) cadastrado(s) no Hiraeth.
-                    Escolha um dos cards acima para ver os livros desse gênero.
+                    Escolha um dos cards acima para ver os livros desse gênero ou use a busca para encontrar
+                    títulos, autores e gêneros.
                 </p>
             `;
         })
@@ -89,19 +90,7 @@ function mostrarGenero(genero) {
             </div>
         `;
     } else {
-        let cardsLivros = "";
-
-        for (let i = 0; i < livrosFiltrados.length; i++) {
-            let livro = livrosFiltrados[i];
-
-            cardsLivros += `
-                <div class="cartao-livro">
-                    <h4>${livro.titulo}</h4>
-                    <p><strong>Autor:</strong> ${livro.autor}</p>
-                    <span class="etiqueta-genero">${livro.genero}</span>
-                </div>
-            `;
-        }
+        let cardsLivros = montarCardsLivros(livrosFiltrados);
 
         area_resultado.innerHTML = `
             <div class="genero-detalhe">
@@ -151,19 +140,7 @@ function buscarLivro() {
             </div>
         `;
     } else {
-        let cardsLivros = "";
-
-        for (let i = 0; i < livrosEncontrados.length; i++) {
-            let livro = livrosEncontrados[i];
-
-            cardsLivros += `
-                <div class="cartao-livro">
-                    <h4>${livro.titulo}</h4>
-                    <p><strong>Autor:</strong> ${livro.autor}</p>
-                    <span class="etiqueta-genero">${livro.genero}</span>
-                </div>
-            `;
-        }
+        let cardsLivros = montarCardsLivros(livrosEncontrados);
 
         area_resultado.innerHTML = `
             <div class="genero-detalhe">
@@ -176,6 +153,39 @@ function buscarLivro() {
             </div>
         `;
     }
+}
+
+function montarCardsLivros(listaLivros) {
+    let cardsLivros = "";
+
+    for (let i = 0; i < listaLivros.length; i++) {
+        let livro = listaLivros[i];
+
+        let notaMedia = livro.notaMedia;
+
+        if (notaMedia == null) {
+            notaMedia = "Sem nota";
+        }
+
+        let totalLeitores = livro.totalLeitores || 0;
+        let totalConcluidos = livro.totalConcluidos || 0;
+
+        cardsLivros += `
+            <div class="cartao-livro">
+                <h4>${livro.titulo}</h4>
+                <p><strong>Autor:</strong> ${livro.autor}</p>
+
+                <div class="info-livro-explorar">
+                    <span class="etiqueta-genero">${livro.genero}</span>
+                    <span>⭐ Nota média: ${notaMedia}</span>
+                    <span>👥 ${totalLeitores} leitor(es)</span>
+                    <span>📚 ${totalConcluidos} concluído(s)</span>
+                </div>
+            </div>
+        `;
+    }
+
+    return cardsLivros;
 }
 
 carregarLivros();

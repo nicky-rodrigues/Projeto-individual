@@ -15,4 +15,8 @@ router.get("/publicacao/:fkPublicacao", function (req, res) {
     curtidaController.contarCurtidas(req, res);
 });
 
+router.get("/verificar/:fkPublicacao/:fkUsuario", function (req, res) {
+    curtidaController.verificarCurtida(req, res);
+});
+
 module.exports = router;

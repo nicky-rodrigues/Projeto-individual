@@ -55,9 +55,7 @@
         <main class="area-principal">
 
 
-            <div class="busca-social">
-                <input type="text" placeholder="Buscar livros, autores, leitores ou gêneros...">
-            </div>
+
 
             <div class="layout-feed">
 
@@ -88,6 +86,11 @@
                                 <span id="span_genero_favorito">-</span>
                                 <small>gênero favorito</small>
                             </div>
+
+                            <div class="mini-estatistica mini-medalha">
+                                <span id="span_medalha_mes">🔒</span>
+                                <small id="span_titulo_medalha_mes">medalha bloqueada</small>
+                            </div>
                         </div>
                     </div>
 
@@ -96,9 +99,7 @@
                         <div class="topo-criar-publicacao">
                             <div id="avatar_criar_publicacao" class="avatar-pequeno">U</div>
 
-                            <textarea 
-                                id="input_post" 
-                                class="campo-criar-publicacao"
+                            <textarea id="input_post" class="campo-criar-publicacao"
                                 placeholder="O que você está lendo hoje?"></textarea>
                         </div>
 
@@ -121,9 +122,7 @@
                         </div>
 
                         <div class="extra-criar-publicacao">
-                            <input 
-                                id="input_livro" 
-                                type="text">
+                            <input id="input_livro" type="text">
 
                             <button type="button" class="botao-publicar" onclick="publicar()">
                                 Publicar
@@ -163,31 +162,51 @@
                         <p>Gênero favorito: <strong id="resumo_genero_favorito">-</strong></p>
                     </div>
 
-                    <div class="caixa-social caixa-em-alta">
-                        <h3>Livros em alta</h3>
+                    <div class="caixa-social caixa-medalhas">
+                        <h3>Conquistas literárias</h3>
 
-                        <div class="item-em-alta">
-                            <span>1</span>
-                            <div>
-                                <strong>Quarta Asa</strong>
-                                <p>128 leitores falando sobre</p>
-                            </div>
+                        <p class="texto-medalha">
+                            As medalhas são desbloqueadas conforme seu progresso na meta mensal.
+                        </p>
+
+                        <div class="formula-medalha">
+                            Progresso da meta
                         </div>
 
-                        <div class="item-em-alta">
-                            <span>2</span>
-                            <div>
-                                <strong>Trono de Vidro</strong>
-                                <p>94 leitores falando sobre</p>
-                            </div>
-                        </div>
+                        <div class="lista-medalhas">
 
-                        <div class="item-em-alta">
-                            <span>3</span>
-                            <div>
-                                <strong>Percy Jackson</strong>
-                                <p>76 leitores falando sobre</p>
+                            <div class="item-medalha">
+                                <span>🥇</span>
+                                <div>
+                                    <strong>Guardiã</strong>
+                                    <p>150% ou mais da meta</p>
+                                </div>
                             </div>
+
+                            <div class="item-medalha">
+                                <span>🥈</span>
+                                <div>
+                                    <strong>Meta Concluída</strong>
+                                    <p>100% da meta</p>
+                                </div>
+                            </div>
+
+                            <div class="item-medalha">
+                                <span>🥉</span>
+                                <div>
+                                    <strong>Leitor em Jornada</strong>
+                                    <p>50% da meta</p>
+                                </div>
+                            </div>
+
+                            <div class="item-medalha">
+                                <span>🔒</span>
+                                <div>
+                                    <strong>Medalha bloqueada</strong>
+                                    <p>Abaixo de 50% da meta</p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 

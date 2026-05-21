@@ -33,7 +33,7 @@ function mostrar_livro() {
 function avancar() {
     posicao_atual++;
 
-    if (posicao_atual > 4) {
+    if (posicao_atual > titulos.length - 1) {
         posicao_atual = 0;
     }
     mostrar_livro()
@@ -43,8 +43,10 @@ function voltar() {
     posicao_atual--;
 
     if (posicao_atual < 0) {
-        posicao_atual = 4
+        posicao_atual = titulos.length - 1
     }
     mostrar_livro()
 }
+
+// Inicialização
 mostrar_livro();

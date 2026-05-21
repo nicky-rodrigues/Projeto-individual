@@ -32,9 +32,7 @@
         </div>
     </div>
 
-
     <div class="layout-social">
-
 
         <aside class="menu-lateral">
             <div class="secao-menu">
@@ -52,22 +50,25 @@
 
             <div class="caixa-lateral">
                 <h3>Meu perfil</h3>
-                <p>Personalize sua jornada literária e defina sua meta mensal de leitura.</p>
+                <p>
+                    Personalize sua jornada literária, acompanhe sua conquista atual
+                    e veja sua evolução pessoal ao longo dos meses.
+                </p>
             </div>
         </aside>
-
 
         <main class="area-principal">
 
             <section class="caixa-social cabecalho-pagina">
                 <h2>Perfil</h2>
-                <p>Configure suas informações pessoais e preferências de leitura no Hiraeth.</p>
+                <p>
+                    Configure suas informações pessoais, preferências de leitura
+                    e acompanhe sua evolução literária no Hiraeth.
+                </p>
             </section>
 
-            <section class="conteudo-perfil">
-
-
-                <div class="caixa-social cartao-perfil">
+            <section class="perfil-destaque">
+                <div class="caixa-social cartao-perfil cartao-perfil-principal">
                     <div class="topo-perfil">
                         <div class="avatar-grande" id="avatar_perfil">N</div>
 
@@ -94,7 +95,28 @@
                         </div>
                     </div>
                 </div>
+            </section>
 
+            <section class="perfil-grid-principal">
+
+                <div class="caixa-social cartao-conquista">
+                    <h3>Conquista atual</h3>
+
+                    <div class="medalha-perfil" id="medalha_perfil">
+                        🔒
+                    </div>
+
+                    <h4 id="titulo_medalha_perfil">Medalha bloqueada</h4>
+
+                    <p id="descricao_medalha_perfil">
+                        Continue registrando leituras concluídas para desbloquear sua conquista.
+                    </p>
+
+                    <div class="progresso-conquista">
+                        <span>Progresso da meta</span>
+                        <strong id="progresso_medalha_perfil">0%</strong>
+                    </div>
+                </div>
 
                 <div class="caixa-social formulario-perfil">
                     <h3>Editar perfil</h3>
@@ -140,9 +162,53 @@
 
             </section>
 
+            <section class="conteudo-conquistas">
+
+                <div class="caixa-social ranking-pessoal">
+                    <h3>Minha evolução literária</h3>
+                    <p>
+                        Sua pontuação pessoal considera suas medalhas conquistadas ao longo dos meses.
+                    </p>
+
+                    <div class="cards-medalhas-acumuladas">
+                        <div class="card-medalha-acumulada">
+                            <span>🥇</span>
+                            <strong id="total_ouro">0</strong>
+                            <small>Ouro</small>
+                        </div>
+
+                        <div class="card-medalha-acumulada">
+                            <span>🥈</span>
+                            <strong id="total_prata">0</strong>
+                            <small>Prata</small>
+                        </div>
+
+                        <div class="card-medalha-acumulada">
+                            <span>🥉</span>
+                            <strong id="total_bronze">0</strong>
+                            <small>Bronze</small>
+                        </div>
+
+                        <div class="card-medalha-acumulada pontuacao">
+                            <span>⭐</span>
+                            <strong id="pontuacao_pessoal">0</strong>
+                            <small>Pontos</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="caixa-social historico-conquistas">
+                    <h3>Histórico mensal</h3>
+
+                    <div id="lista_historico_conquistas" class="lista-historico-conquistas">
+                        <p>Carregando histórico...</p>
+                    </div>
+                </div>
+
+            </section>
+
         </main>
     </div>
-
 
     <div class="footer">
         <div class="container">

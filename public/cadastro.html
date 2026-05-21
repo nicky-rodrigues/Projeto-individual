@@ -39,6 +39,8 @@
   <div class="login">
 
     <div class="container">
+
+      <!-- Formulário de cadastro -->
       <div class="card-cadastro">
         <h2>Crie sua conta</h2>
         <p class="login-subtitle">Comece sua jornada literária em Hiraeth.</p>
@@ -93,12 +95,13 @@
 
   function cadastrar() {
 
-
+    // Valores recebidos dos campos do formulário
     var nomeVar = nome_input.value;
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
+    // Valida se todos os campos foram preenchidos
     if (
       nomeVar == "" ||
       emailVar == "" ||
@@ -108,19 +111,27 @@
       cardErro.style.display = "block";
       mensagem_erro.innerHTML = 'Necessário o preenchimento de todos os campos';
       return false;
-    } if (senhaVar != confirmacaoSenhaVar) {
+    }
+
+    // Valida se a senha e a confirmação de senha são iguais
+    if (senhaVar != confirmacaoSenhaVar) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML = "As senhas não coincidem";
       return false;
     } else {
+
+      // Esconde o card de erro caso as validações estejam corretas
       cardErro.style.display = "none";
     }
 
+    // Envia os dados do cadastro para o back-end
     fetch("/usuarios/cadastrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+
+      // Converte os dados do formulário para json
       body: JSON.stringify({
         nomeServer: nomeVar,
         emailServer: emailVar,
@@ -136,16 +147,22 @@
           mensagem_erro.innerHTML =
             "Cadastro realizado com sucesso!";
 
+          // Redireciona o usuário para a tela de login após o cadastro
           setTimeout(() => {
             window.location = "./login.html";
-          }, "2000");
+          });
 
+          // Limpa os campos do formulário
           limparFormulario();
         } else {
+
+          // Se a resposta não seja ok, é lançada uma mensagem de erro
           throw "Houve um erro ao tentar realizar o cadastro!";
         }
       })
       .catch(function (resposta) {
+        
+        // Captura e exibe erros da requisição
         console.log(`#ERRO: ${resposta}`);
       });
 

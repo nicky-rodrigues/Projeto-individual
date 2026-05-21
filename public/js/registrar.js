@@ -1,26 +1,153 @@
-let leituraEmEdicao = 0;
+let idLeituraEdicao = null;
 
 function verificarUsuarioLogado() {
     let idUsuario = sessionStorage.ID_USUARIO;
 
     if (idUsuario == undefined) {
-        mensagem_vazia.innerHTML = "Usuário não identificado. Faça login novamente.";
+        alert("Usuário não identificado. Faça login novamente.");
+        window.location = "login.html";
         return false;
     }
 
     return true;
 }
 
-function carregarLeituras() {
+function obterIdLivro(retornoLivro) {
+    if (retornoLivro == undefined || retornoLivro == null) {
+        return undefined;
+    }
+
+    if (retornoLivro.idLivro != undefined) {
+        return retornoLivro.idLivro;
+    }
+
+    if (retornoLivro.insertId != undefined) {
+        return retornoLivro.insertId;
+    }
+
+    if (retornoLivro[0] != undefined && retornoLivro[0].idLivro != undefined) {
+        return retornoLivro[0].idLivro;
+    }
+
+    if (retornoLivro[0] != undefined && retornoLivro[0].insertId != undefined) {
+        return retornoLivro[0].insertId;
+    }
+
+    return undefined;
+}
+
+function salvarOuAtualizarLeitura() {
+    if (!verificarUsuarioLogado()) {
+        return;
+    }
+
+    if (idLeituraEdicao == null) {
+        salvarLeitura();
+    } else {
+        atualizarLeitura();
+    }
+}
+
+function salvarLeitura() {
+    let idUsuario = sessionStorage.ID_USUARIO;
+
+    let tituloLivro = input_livro.value;
+    let autor = input_autor.value;
+    let genero = select_genero.value;
+    let statusLeitura = select_status.value;
+    let nota = input_nota.value;
+    let comentario = input_comentario.value;
+
+    if (tituloLivro == "") {
+        alert("Digite o nome do livro.");
+        return;
+    }
+
+    if (autor == "") {
+        alert("Digite o autor do livro.");
+        return;
+    }
+
+    if (genero == "") {
+        alert("Selecione o gênero do livro.");
+        return;
+    }
+
+    if (statusLeitura == "") {
+        alert("Selecione o status da leitura.");
+        return;
+    }
+
+    if (nota != "" && (nota < 1 || nota > 5)) {
+        alert("A nota precisa ser entre 1 e 5.");
+        return;
+    }
+
+    fetch("/livros/cadastrar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            tituloServer: tituloLivro,
+            autorServer: autor,
+            generoServer: genero
+        })
+    })
+        .then(function (resposta) {
+            if (resposta.ok) {
+                return resposta.json();
+            } else {
+                throw "Erro ao cadastrar ou buscar livro.";
+            }
+        })
+        .then(function (livroCadastrado) {
+            let idLivro = obterIdLivro(livroCadastrado);
+
+            if (idLivro == undefined) {
+                alert("O livro foi cadastrado, mas o id do livro não foi retornado.");
+                return;
+            }
+
+            return fetch("/leituras/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    fkUsuarioServer: idUsuario,
+                    fkLivroServer: idLivro,
+                    statusLeituraServer: statusLeitura,
+                    notaServer: nota,
+                    comentarioServer: comentario
+                })
+            });
+        })
+        .then(function (respostaLeitura) {
+            if (respostaLeitura == undefined) {
+                return;
+            }
+
+            if (respostaLeitura.ok) {
+                mensagem_sucesso.innerHTML = "Leitura registrada com sucesso!";
+                limparFormularioLeitura();
+                listarLeituras();
+            } else {
+                alert("Erro ao registrar leitura.");
+            }
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            alert("Houve um erro ao salvar a leitura.");
+        });
+}
+
+function listarLeituras() {
     if (!verificarUsuarioLogado()) {
         return;
     }
 
     let idUsuario = sessionStorage.ID_USUARIO;
-
-    mensagem_vazia.style.display = "block";
-    mensagem_vazia.innerHTML = "Carregando leituras...";
-    lista_leituras.innerHTML = "";
 
     fetch(`/leituras/usuario/${idUsuario}`, {
         method: "GET"
@@ -37,174 +164,73 @@ function carregarLeituras() {
 
             if (leituras.length == 0) {
                 mensagem_vazia.style.display = "block";
-                mensagem_vazia.innerHTML = "Nenhuma leitura registrada ainda.";
-            } else {
-                mensagem_vazia.style.display = "none";
-
-                for (let i = 0; i < leituras.length; i++) {
-                    let leitura = leituras[i];
-
-                    let comentarioTratado = leitura.comentario;
-
-                    if (comentarioTratado == null || comentarioTratado == "") {
-                        comentarioTratado = "Sem comentário.";
-                    }
-
-                    lista_leituras.innerHTML += `
-                        <div class="cartao-leitura">
-                            <h4>${leitura.titulo}</h4>
-                            <p><strong>Autor:</strong> ${leitura.autor}</p>
-
-                            <div class="etiquetas-leitura">
-                                <span>${leitura.genero}</span>
-                                <span>${leitura.statusLeitura}</span>
-                                <span>⭐ ${leitura.nota}/5</span>
-                            </div>
-
-                            <p><strong>Comentário:</strong> ${comentarioTratado}</p>
-
-                            <button class="botao-editar" onclick="prepararEdicao(${leitura.idLeitura}, '${leitura.titulo}', '${leitura.autor}', '${leitura.genero}', '${leitura.statusLeitura}', ${leitura.nota}, '${comentarioTratado}')">
-                                Editar leitura
-                            </button>
-                        </div>
-                    `;
-                }
-            }
-        })
-        .catch(function (erro) {
-            console.log("Erro no carregarLeituras:", erro);
-
-            mensagem_vazia.style.display = "block";
-            mensagem_vazia.innerHTML = "Erro ao carregar leituras. Verifique o terminal do Node.";
-        });
-}
-
-function salvarOuAtualizarLeitura() {
-    if (leituraEmEdicao == 0) {
-        salvarLeitura();
-    } else {
-        atualizarLeitura();
-    }
-}
-
-function salvarLeitura() {
-    if (!verificarUsuarioLogado()) {
-        return;
-    }
-
-    let idUsuario = sessionStorage.ID_USUARIO;
-
-    let titulo = input_livro.value;
-    let autor = input_autor.value;
-    let genero = select_genero.value;
-    let statusLeitura = select_status.value;
-    let nota = input_nota.value;
-    let comentario = input_comentario.value;
-
-    if (titulo == "") {
-        alert("Digite o nome do livro.");
-        return;
-    }
-
-    if (autor == "") {
-        alert("Digite o nome do autor.");
-        return;
-    }
-
-    if (genero == "") {
-        alert("Selecione o gênero.");
-        return;
-    }
-
-    if (statusLeitura == "") {
-        alert("Selecione o status da leitura.");
-        return;
-    }
-
-    if (nota == "") {
-        alert("Digite uma nota de 1 a 5.");
-        return;
-    }
-
-    if (nota < 1 || nota > 5) {
-        alert("A nota precisa ser entre 1 e 5.");
-        return;
-    }
-
-    if (comentario == "") {
-        comentario = "Sem comentário.";
-    }
-
-    mensagem_sucesso.innerHTML = "Salvando livro...";
-
-    fetch("/livros/cadastrar", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            tituloServer: titulo,
-            autorServer: autor,
-            generoServer: genero
-        })
-    })
-        .then(function (resposta) {
-            if (resposta.ok) {
-                return resposta.json();
-            } else {
-                throw "Erro ao cadastrar livro.";
-            }
-        })
-        .then(function (resultadoLivro) {
-            let fkLivro = resultadoLivro.insertId;
-
-            if (fkLivro == undefined) {
-                alert("O livro foi cadastrado, mas o id do livro não foi retornado.");
-                mensagem_sucesso.innerHTML = "";
-                console.log(resultadoLivro);
+                mensagem_vazia.innerHTML = "Você ainda não registrou nenhuma leitura.";
                 return;
             }
 
-            mensagem_sucesso.innerHTML = "Salvando leitura...";
+            mensagem_vazia.style.display = "none";
 
-            fetch("/leituras/cadastrar", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    fkUsuarioServer: idUsuario,
-                    fkLivroServer: fkLivro,
-                    statusLeituraServer: statusLeitura,
-                    notaServer: nota,
-                    comentarioServer: comentario
-                })
-            })
-                .then(function (resposta) {
-                    if (resposta.ok) {
-                        mensagem_sucesso.innerHTML = "Leitura registrada com sucesso!";
+            for (let i = 0; i < leituras.length; i++) {
+                let leitura = leituras[i];
 
-                        limparFormulario();
-                        carregarLeituras();
-                    } else {
-                        throw "Erro ao registrar leitura.";
-                    }
-                })
-                .catch(function (erro) {
-                    console.log("Erro no cadastro da leitura:", erro);
-                    alert("Houve um erro ao registrar a leitura. Veja o terminal.");
-                    mensagem_sucesso.innerHTML = "";
-                });
+                let notaTexto = "Sem nota";
+
+                if (leitura.nota != null && leitura.nota != "") {
+                    notaTexto = leitura.nota + "/5";
+                }
+
+                let comentarioTexto = "Sem comentário.";
+
+                if (leitura.comentario != null && leitura.comentario != "") {
+                    comentarioTexto = leitura.comentario;
+                }
+
+                lista_leituras.innerHTML += `
+                    <div class="cartao-leitura">
+                        <div class="topo-leitura">
+                            <div>
+                                <h4>${leitura.titulo}</h4>
+                                <p>${leitura.autor}</p>
+                            </div>
+
+                            <span class="status-leitura">${leitura.statusLeitura}</span>
+                        </div>
+
+                        <div class="detalhes-leitura">
+                            <span>Gênero: <strong>${leitura.genero}</strong></span>
+                            <span>Nota: <strong>${notaTexto}</strong></span>
+                        </div>
+
+                        <p class="comentario-leitura">${comentarioTexto}</p>
+
+<div class="acoes-leitura">
+    <button class="botao-editar" onclick="prepararEdicaoLeitura(
+        ${leitura.idLeitura},
+        '${leitura.titulo}',
+        '${leitura.autor}',
+        '${leitura.genero}',
+        '${leitura.statusLeitura}',
+        '${leitura.nota == null ? "" : leitura.nota}',
+        '${leitura.comentario == null ? "" : leitura.comentario}'
+    )">
+        Editar
+    </button>
+</div>
+                    </div>
+                `;
+            }
         })
         .catch(function (erro) {
-            console.log("Erro no cadastro do livro:", erro);
-            alert("Houve um erro ao cadastrar o livro. Veja o terminal.");
-            mensagem_sucesso.innerHTML = "";
+            console.log(erro);
+            mensagem_vazia.style.display = "block";
+            mensagem_vazia.innerHTML = "Erro ao carregar leituras.";
         });
 }
 
-function prepararEdicao(idLeitura, titulo, autor, genero, statusLeitura, nota, comentario) {
-    leituraEmEdicao = idLeitura;
+function prepararEdicaoLeitura(idLeitura, titulo, autor, genero, statusLeitura, nota, comentario) {
+    idLeituraEdicao = idLeitura;
+
+    titulo_formulario.innerHTML = "Editar leitura";
 
     input_livro.value = titulo;
     input_autor.value = autor;
@@ -217,20 +243,13 @@ function prepararEdicao(idLeitura, titulo, autor, genero, statusLeitura, nota, c
     input_autor.disabled = true;
     select_genero.disabled = true;
 
-    titulo_formulario.innerHTML = "Editar leitura";
     botao_salvar_leitura.innerHTML = "Atualizar leitura";
     botao_cancelar_edicao.style.display = "inline-block";
 
-    mensagem_sucesso.innerHTML = "Editando leitura selecionada. Altere status, nota ou comentário.";
+    mensagem_sucesso.innerHTML = "";
 }
 
 function atualizarLeitura() {
-    if (!verificarUsuarioLogado()) {
-        return;
-    }
-
-    let idUsuario = sessionStorage.ID_USUARIO;
-
     let statusLeitura = select_status.value;
     let nota = input_nota.value;
     let comentario = input_comentario.value;
@@ -240,21 +259,10 @@ function atualizarLeitura() {
         return;
     }
 
-    if (nota == "") {
-        alert("Digite uma nota de 1 a 5.");
-        return;
-    }
-
-    if (nota < 1 || nota > 5) {
+    if (nota != "" && (nota < 1 || nota > 5)) {
         alert("A nota precisa ser entre 1 e 5.");
         return;
     }
-
-    if (comentario == "") {
-        comentario = "Sem comentário.";
-    }
-
-    mensagem_sucesso.innerHTML = "Atualizando leitura...";
 
     fetch("/leituras/atualizar", {
         method: "PUT",
@@ -262,8 +270,7 @@ function atualizarLeitura() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            idLeituraServer: leituraEmEdicao,
-            fkUsuarioServer: idUsuario,
+            idLeituraServer: idLeituraEdicao,
             statusLeituraServer: statusLeitura,
             notaServer: nota,
             comentarioServer: comentario
@@ -272,37 +279,34 @@ function atualizarLeitura() {
         .then(function (resposta) {
             if (resposta.ok) {
                 mensagem_sucesso.innerHTML = "Leitura atualizada com sucesso!";
-
                 cancelarEdicao();
-                carregarLeituras();
+                listarLeituras();
             } else {
-                throw "Erro ao atualizar leitura.";
+                alert("Erro ao atualizar leitura.");
             }
         })
         .catch(function (erro) {
-            console.log("Erro ao atualizar leitura:", erro);
+            console.log(erro);
             alert("Houve um erro ao atualizar a leitura.");
-            mensagem_sucesso.innerHTML = "";
         });
 }
 
 function cancelarEdicao() {
-    leituraEmEdicao = 0;
+    idLeituraEdicao = null;
 
-    limparFormulario();
+    titulo_formulario.innerHTML = "Nova leitura";
+
+    limparFormularioLeitura();
 
     input_livro.disabled = false;
     input_autor.disabled = false;
     select_genero.disabled = false;
 
-    titulo_formulario.innerHTML = "Nova leitura";
     botao_salvar_leitura.innerHTML = "Salvar leitura";
     botao_cancelar_edicao.style.display = "none";
-
-    mensagem_sucesso.innerHTML = "";
 }
 
-function limparFormulario() {
+function limparFormularioLeitura() {
     input_livro.value = "";
     input_autor.value = "";
     select_genero.value = "";
@@ -311,4 +315,6 @@ function limparFormulario() {
     input_comentario.value = "";
 }
 
-carregarLeituras();
+botao_cancelar_edicao.style.display = "none";
+
+listarLeituras();

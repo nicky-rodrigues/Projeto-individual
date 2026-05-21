@@ -116,12 +116,15 @@ a {
     display: flex;
     flex-direction: column;
     gap: 24px;
+
 }
 
 .secao-menu {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: sticky;
+    top: 24px;
 }
 
 .titulo-menu {
@@ -143,6 +146,7 @@ a {
     color: var(--text-muted);
     transition: 0.3s;
     font-size: 0.98rem;
+
 }
 
 .navegacao-menu a:hover,
@@ -156,20 +160,23 @@ a {
     border: 1px solid rgba(176, 138, 87, 0.16);
     border-radius: 18px;
     padding: 16px;
+    position: sticky;
+    top: 24px;
 }
 
 .caixa-lateral h3 {
     color: var(--aged-gold);
     font-size: 1.4rem;
     margin-bottom: 8px;
+
 }
 
 .caixa-lateral p {
     color: var(--text-muted);
     line-height: 1.6;
     font-size: 0.92rem;
-}
 
+}
 
 
 
@@ -181,28 +188,6 @@ a {
     gap: 22px;
     min-width: 0;
 }
-
-.busca-social input {
-    width: 100%;
-    height: 48px;
-    border: 1px solid rgba(176, 138, 87, 0.22);
-    border-radius: 16px;
-    background-color: rgba(243, 235, 221, 0.045);
-    color: var(--parchment-light);
-    padding: 0 18px;
-    outline: none;
-    transition: 0.3s;
-}
-
-.busca-social input:focus {
-    border-color: var(--aged-gold);
-    box-shadow: 0 0 0 3px rgba(176, 138, 87, 0.10);
-}
-
-.busca-social input::placeholder {
-    color: var(--text-muted);
-}
-
 
 
 
@@ -261,7 +246,6 @@ a {
 
 
 
-
 .genre-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(180px, 1fr));
@@ -316,7 +300,6 @@ a {
 
 
 
-
 .fantasy-card {
     background-image: url("../assets/imgs/fantasia.jpg");
 }
@@ -330,7 +313,7 @@ a {
 }
 
 .scifi-card {
-    background-image: url("../assets/imgs/ficcao.jpg");
+    background-image: url("../assets/imgs/FC.jpg");
 }
 
 .poetry-card {
@@ -393,9 +376,30 @@ a {
     font-size: 0.95rem;
 }
 
-.etiqueta-genero {
+
+
+
+.info-livro-explorar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.info-livro-explorar span {
+    background-color: rgba(243, 235, 221, 0.045);
+    border: 1px solid rgba(176, 138, 87, 0.14);
+    color: var(--parchment);
+    padding: 7px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    width: fit-content;
+}
+
+.etiqueta-genero,
+.info-livro-explorar .etiqueta-genero {
     display: inline-block;
-    margin-top: 12px;
+    margin-top: 0;
     background-color: rgba(176, 138, 87, 0.18);
     color: var(--parchment-light);
     border: 1px solid rgba(176, 138, 87, 0.22);
@@ -408,7 +412,6 @@ a {
     color: var(--text-muted);
     margin-top: 16px;
 }
-
 
 
 
@@ -440,7 +443,6 @@ a {
 
 
 
-
 .footer {
     background-color: #161311;
     padding: 22px 0;
@@ -464,75 +466,4 @@ a {
 .footer-phrase {
     font-size: 0.95rem;
     color: var(--text-muted);
-}
-
-
-
-
-
-@media (max-width: 1200px) {
-    .layout-social {
-        grid-template-columns: 250px minmax(0, 1fr);
-    }
-
-    .coluna-direita {
-        display: none;
-    }
-
-    .genre-grid,
-    .lista-livros {
-        grid-template-columns: repeat(2, minmax(180px, 1fr));
-    }
-}
-
-@media (max-width: 900px) {
-    .layout-social {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .menu-lateral {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid rgba(176, 138, 87, 0.18);
-    }
-}
-
-@media (max-width: 768px) {
-    .header {
-        height: auto;
-        padding: 15px 0;
-    }
-
-    .header .container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .navbar {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .container {
-        width: 90%;
-    }
-
-    .area-principal {
-        padding: 18px;
-    }
-
-    .genre-grid,
-    .lista-livros {
-        grid-template-columns: 1fr;
-    }
-
-    .genre-card,
-    .genre-overlay {
-        min-height: 190px;
-    }
-
-    .explore-hero h2 {
-        font-size: 2.2rem;
-    }
 }

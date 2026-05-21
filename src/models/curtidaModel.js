@@ -6,7 +6,6 @@ function curtir(fkUsuario, fkPublicacao) {
         VALUES (${fkUsuario}, ${fkPublicacao});
     `;
 
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
@@ -17,7 +16,6 @@ function descurtir(fkUsuario, fkPublicacao) {
         AND fkPublicacao = ${fkPublicacao};
     `;
 
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
@@ -28,12 +26,23 @@ function contarCurtidas(fkPublicacao) {
         WHERE fkPublicacao = ${fkPublicacao};
     `;
 
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function verificarCurtida(fkPublicacao, fkUsuario) {
+    var instrucaoSql = `
+        SELECT idCurtida
+        FROM Curtida
+        WHERE fkPublicacao = ${fkPublicacao}
+        AND fkUsuario = ${fkUsuario};
+    `;
+
     return database.executar(instrucaoSql);
 }
 
 module.exports = {
     curtir,
     descurtir,
-    contarCurtidas
+    contarCurtidas,
+    verificarCurtida
 };

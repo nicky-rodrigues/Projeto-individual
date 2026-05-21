@@ -31,9 +31,7 @@
         </div>
     </div>
 
-
     <div class="layout-social">
-
 
         <aside class="menu-lateral">
             <div class="secao-menu">
@@ -52,21 +50,21 @@
             <div class="caixa-lateral">
                 <h3>Resumo literário</h3>
                 <p>
-                    Acompanhe seus hábitos de leitura por gênero, meta mensal e status dos livros.
+                    Acompanhe seus hábitos de leitura por gênero, meta mensal,
+                    status dos livros e conquistas desbloqueadas.
                 </p>
             </div>
         </aside>
 
-
         <main class="area-principal">
 
             <section class="caixa-social cabecalho-pagina">
-                <h2>Dashboard literária</h2>
+                <h2>Dashboard literário</h2>
                 <p>
-                    Visualize sua evolução de leitura e acompanhe sua meta mensal no Hiraeth.
+                    Visualize sua evolução de leitura, acompanhe sua meta mensal
+                    e desbloqueie conquistas literárias no Hiraeth.
                 </p>
             </section>
-
 
             <section class="cards-resumo">
                 <div class="caixa-social card-indicador">
@@ -88,17 +86,18 @@
                     <span>Total na estante</span>
                     <strong id="total_estante">0</strong>
                 </div>
+
+                <div class="caixa-social card-indicador card-medalha">
+                    <span>Medalha do mês</span>
+                    <strong id="medalha_mes">🔒</strong>
+                    <small id="descricao_medalha">Continue lendo para desbloquear.</small>
+                </div>
             </section>
 
             <section class="conteudo-dashboard">
 
-
                 <div class="caixa-social resumo-dashboard">
                     <h3>Dados analisados</h3>
-
-                    <p>
-                        Os gráficos abaixo são gerados com base nas leituras registradas pelo usuário.
-                    </p>
 
                     <div class="item-resumo">
                         <span>Usuário</span>
@@ -121,11 +120,10 @@
                     </div>
                 </div>
 
-
                 <div class="graficos-dashboard">
 
                     <div class="caixa-social grafico">
-                        <h3>Livros por gênero</h3>
+                        <h3>Livros finalizados por gênero</h3>
 
                         <div class="area-canvas">
                             <canvas id="grafico_generos"></canvas>
@@ -145,6 +143,10 @@
                         </div>
 
                         <h4 id="porcentagem_meta">0% da meta concluída</h4>
+
+                        <p id="texto_proxima_medalha" class="texto-proxima-medalha">
+                            Continue lendo para desbloquear sua próxima medalha.
+                        </p>
                     </div>
 
                     <div class="caixa-social grafico">
@@ -161,14 +163,12 @@
         </main>
     </div>
 
-
     <div class="footer">
         <div class="container">
             <p class="footer-brand">Hiraeth</p>
             <p class="footer-phrase">Entre histórias, memórias e pertencimento</p>
         </div>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./dashboard.js"></script>

@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
-
 :root {
     --brown-dark: #3B2A24;
     --brown-medium: #5A4034;
@@ -50,7 +49,6 @@ a {
 
 
 
-
 .header {
     height: var(--tamanho-header);
     background-color: rgba(30, 26, 23, 0.96);
@@ -96,13 +94,13 @@ a {
 
 
 
-
 .layout-social {
     display: flex;
     min-height: calc(100vh - var(--tamanho-header));
-    background: linear-gradient(to bottom, #211c18, #1e1a17);
+    background:
+        radial-gradient(circle at top left, rgba(176, 138, 87, 0.08), transparent 30%),
+        linear-gradient(to bottom, #211c18, #1e1a17);
 }
-
 
 
 
@@ -171,22 +169,21 @@ a {
 
 
 
-
 .area-principal {
     flex: 1;
     padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 24px;
     min-width: 0;
 }
 
 .caixa-social {
     background-color: rgba(243, 235, 221, 0.05);
     border: 1px solid rgba(176, 138, 87, 0.18);
-    border-radius: 18px;
-    padding: 22px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    border-radius: 22px;
+    padding: 24px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.20);
 }
 
 .caixa-social h2,
@@ -201,29 +198,36 @@ a {
 }
 
 .cabecalho-pagina {
-    background: linear-gradient(to right, #f3ebdd, #e8dcc8);
+    background:
+        linear-gradient(135deg, rgba(243, 235, 221, 0.96), rgba(232, 220, 200, 0.92)),
+        radial-gradient(circle at right, rgba(176, 138, 87, 0.30), transparent 35%);
+    border: 1px solid rgba(176, 138, 87, 0.32);
 }
 
-.cabecalho-pagina h2,
-.cabecalho-pagina p {
+.cabecalho-pagina h2 {
     color: var(--brown-dark);
+    font-size: 2.5rem;
+}
+
+.cabecalho-pagina p {
+    color: var(--brown-medium);
 }
 
 
 
-
-.conteudo-perfil {
+.perfil-destaque {
     display: grid;
-    grid-template-columns: 0.9fr 1.2fr;
-    gap: 24px;
-    align-items: flex-start;
+    grid-template-columns: 1fr;
 }
-
-
-
 
 .cartao-perfil {
-    background: linear-gradient(to right, #3B2A24, #4a342b);
+    background:
+        radial-gradient(circle at top right, rgba(176, 138, 87, 0.18), transparent 38%),
+        linear-gradient(to right, #3B2A24, #4a342b);
+}
+
+.cartao-perfil-principal {
+    min-height: auto;
 }
 
 .topo-perfil {
@@ -235,8 +239,8 @@ a {
 }
 
 .avatar-grande {
-    width: 78px;
-    height: 78px;
+    width: 86px;
+    height: 86px;
     border-radius: 50%;
     background: linear-gradient(to bottom, var(--aged-gold), var(--wine));
     display: flex;
@@ -244,44 +248,120 @@ a {
     justify-content: center;
     color: var(--parchment-light);
     font-family: var(--title-font);
-    font-size: 2rem;
+    font-size: 2.2rem;
     flex-shrink: 0;
 }
 
 .topo-perfil h3 {
-    font-size: 2rem;
+    font-size: 2.1rem;
     margin-bottom: 6px;
 }
 
-.informacoes-perfil {
-    display: flex;
-    flex-direction: column;
-    margin-top: 18px;
+.cartao-perfil-principal .informacoes-perfil {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 22px;
 }
 
 .item-perfil {
+    background-color: rgba(243, 235, 221, 0.05);
+    border: 1px solid rgba(176, 138, 87, 0.14);
+    border-radius: 16px;
+    padding: 16px;
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(176, 138, 87, 0.12);
-}
-
-.item-perfil:last-child {
-    border-bottom: none;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .item-perfil span {
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .item-perfil strong {
     color: var(--parchment-light);
-    font-size: 0.95rem;
-    text-align: right;
+    font-size: 1rem;
 }
 
+
+
+.perfil-grid-principal {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 24px;
+    align-items: stretch;
+}
+
+.perfil-grid-principal .cartao-conquista,
+.perfil-grid-principal .formulario-perfil {
+    height: 100%;
+}
+
+
+
+.cartao-conquista {
+    background:
+        radial-gradient(circle at top right, rgba(176, 138, 87, 0.25), transparent 42%),
+        linear-gradient(to bottom right, #3B2A24, #4a342b);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cartao-conquista h3 {
+    color: var(--aged-gold);
+    font-size: 1.8rem;
+}
+
+.medalha-perfil {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    margin: 18px auto 14px;
+    background-color: rgba(243, 235, 221, 0.08);
+    border: 1px solid rgba(176, 138, 87, 0.24);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8rem;
+}
+
+.cartao-conquista h4 {
+    color: var(--parchment-light);
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.cartao-conquista p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.progresso-conquista {
+    margin-top: 20px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background-color: rgba(243, 235, 221, 0.06);
+    border: 1px solid rgba(176, 138, 87, 0.16);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+}
+
+.progresso-conquista span {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.progresso-conquista strong {
+    color: var(--aged-gold);
+    font-family: var(--title-font);
+    font-size: 1.3rem;
+}
 
 
 
@@ -289,11 +369,14 @@ a {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 18px;
-    background: linear-gradient(to right, #6B2D3A, #5d2536);
+    background:
+        radial-gradient(circle at top right, rgba(243, 235, 221, 0.08), transparent 35%),
+        linear-gradient(to right, #6B2D3A, #5d2536);
 }
 
 .formulario-perfil h3 {
     grid-column: 1 / -1;
+    font-size: 1.8rem;
 }
 
 .campo-formulario {
@@ -386,6 +469,105 @@ a {
 
 
 
+.conteudo-conquistas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: stretch;
+}
+
+.ranking-pessoal {
+    background:
+        radial-gradient(circle at top right, rgba(176, 138, 87, 0.22), transparent 42%),
+        linear-gradient(to right, #3B2A24, #4a342b);
+}
+
+.ranking-pessoal h3,
+.historico-conquistas h3 {
+    color: var(--aged-gold);
+    font-size: 1.8rem;
+}
+
+.cards-medalhas-acumuladas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.card-medalha-acumulada {
+    background-color: rgba(243, 235, 221, 0.06);
+    border: 1px solid rgba(176, 138, 87, 0.16);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+}
+
+.card-medalha-acumulada span {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.card-medalha-acumulada strong {
+    display: block;
+    color: var(--aged-gold);
+    font-family: var(--title-font);
+    font-size: 2rem;
+    margin-bottom: 4px;
+}
+
+.card-medalha-acumulada small {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.card-medalha-acumulada.pontuacao {
+    background-color: rgba(47, 74, 60, 0.35);
+}
+
+
+
+.historico-conquistas {
+    background-color: rgba(243, 235, 221, 0.05);
+}
+
+.lista-historico-conquistas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.item-historico-conquista {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    background-color: rgba(243, 235, 221, 0.045);
+    border: 1px solid rgba(176, 138, 87, 0.14);
+    border-radius: 14px;
+    padding: 14px;
+}
+
+.item-historico-conquista strong {
+    color: var(--parchment-light);
+    font-size: 1rem;
+}
+
+.item-historico-conquista p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin-top: 3px;
+}
+
+.item-historico-conquista span {
+    color: var(--aged-gold);
+    font-family: var(--title-font);
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
 
 
 .footer {
@@ -414,60 +596,3 @@ a {
 }
 
 
-
-
-
-@media (max-width: 1000px) {
-    .conteudo-perfil {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 900px) {
-    .layout-social {
-        flex-direction: column;
-    }
-
-    .menu-lateral {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid rgba(176, 138, 87, 0.18);
-    }
-}
-
-@media (max-width: 768px) {
-    .header {
-        height: auto;
-        padding: 15px 0;
-    }
-
-    .header .container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .navbar {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .container {
-        width: 90%;
-    }
-
-    .area-principal {
-        padding: 18px;
-    }
-
-    .formulario-perfil {
-        grid-template-columns: 1fr;
-    }
-
-    .botao-salvar {
-        width: 100%;
-    }
-
-    .topo-perfil {
-        align-items: flex-start;
-    }
-}

@@ -1,3 +1,5 @@
+/* Importação de fonte e criação de variáveis */
+
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
@@ -27,6 +29,9 @@
   --card-bg: rgba(243, 235, 221, 0.05);
 }
 
+
+/* Define configuração global, remove margens e espaçamentos padrões do navegador */
+
 * {
   margin: 0;
   padding: 0;
@@ -52,6 +57,8 @@ a {
   color: inherit;
 }
 
+
+/* centraliza o conteúdo e limita a largura para 80% da tela. */
 .container {
   display: flex;
   width: 80%;
@@ -59,8 +66,7 @@ a {
 }
 
 
-
-
+/* Estilização do header */
 .header {
   height: var(--tamanho-header);
   background-color: rgba(30, 26, 23, 0.96);
@@ -110,13 +116,11 @@ a {
   color: var(--aged-gold);
 }
 
+
+/* Estlização da primeira seção (hero) */
 .hero .container p {
   font-family: 'Cinzel', serif;
 }
-
-
-
-
 
 .hero {
   min-height: var(--tamanho-hero);
@@ -144,8 +148,7 @@ a {
 }
 
 
-
-
+/* Estilização da frase que separa a hero da seção "sobre" */
 .phrase {
   background: linear-gradient(to right, #f3ebdd, #e8dcc8, #f3ebdd);
   color: var(--brown-dark);
@@ -207,9 +210,7 @@ a {
 }
 
 
-
-
-
+/* Seção "sobre" */
 .about {
   background:
     linear-gradient(rgba(59, 42, 36, 0.9), rgba(59, 42, 36, 0.94)),
@@ -271,8 +272,7 @@ a {
 }
 
 
-
-
+/* Seção que mostra as funcionaldiades da plataforma */
 .social {
   background-color: var(--parchment);
   padding: 70px 0;
@@ -328,8 +328,6 @@ a {
 }
 
 
-
-
 .dashboard_img,
 .genero_img,
 .register_img {
@@ -344,21 +342,19 @@ a {
 }
 
 .dashboard_img {
-  background-image: url('../assets/icon/icone\ \ dash.png');
+  background-image: url('../assets/icon/dashboardicon.jpg');
 }
 
 .genero_img {
-  background-image: url('../assets/icon/lupa.png');
+  background-image: url('../assets/icon/exploreicon.jpg');
 }
 
 .register_img {
-  background-image: url('../assets/icon/registro.png');
+  background-image: url('../assets/icon/registrericon.jpg');
 }
 
 
-
-
-
+/* Seção de recomendação */
 .recommended {
   background-color: var(--brown-dark);
   padding: 90px 0;
@@ -451,9 +447,7 @@ a {
 }
 
 
-
-
-
+/* Frase de impacti que antecede o footer */
 .impact_phrase {
   background-color: var(--soft-black);
   padding: 90px 0;
@@ -500,9 +494,7 @@ a {
 }
 
 
-
-
-
+/* Seção final */
 .footer {
   background-color: #161311;
   padding: 22px 0;
@@ -528,89 +520,7 @@ a {
   color: var(--text-muted);
 }
 
-
-
-
-
-@media (max-width: 1024px) {
-
-  .hero .container p,
-  .about-text,
-  .impact_phrase h2 {
-    width: 85%;
-  }
-
-  .carousel .box {
-    width: 75%;
-  }
-}
-
-@media (max-width: 768px) {
-  .header {
-    height: auto;
-    padding: 15px 0;
-  }
-
-  .header .container {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .navbar {
-    width: 100%;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .hero {
-    min-height: 70vh;
-  }
-
-  .hero .container {
-    min-height: 70vh;
-    padding: 50px 0;
-  }
-
-  .hero .container p {
-    width: 100%;
-    font-size: 2.2rem;
-  }
-
-  .phrase h3,
-  .about-text h2,
-  .social_header h2,
-  .recommended_header h2,
-  .impact_phrase h2,
-  .footer h2 {
-    font-size: 2.2rem;
-  }
-
-  .about-text {
-    width: 100%;
-  }
-
-  .boxes {
-    flex-direction: column;
-  }
-
-  .carousel {
-    flex-direction: column;
-  }
-
-  .carousel .box {
-    width: 100%;
-  }
-
-  .impact_phrase h2 {
-    width: 100%;
-  }
-}
-
-
-
-
-
+/* Estilização do login e cadastro */
 .login {
   min-height: calc(100vh - var(--tamanho-header) - var(--tamanho-footer));
   background-image:
@@ -735,53 +645,3 @@ a {
 #div_erros_login {
   display: none;
 }
-
-
-
-
-.footer {
-  background-color: #161311;
-  padding: 22px 0;
-  border-top: 1px solid rgba(176, 138, 87, 0.18);
-}
-
-.footer .container {
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  gap: 6px;
-}
-
-.footer-brand {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.6rem;
-  color: var(--parchment-light);
-}
-
-.footer-phrase {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-}
-
-
-
-
-@media (max-width: 768px) {
-
-  .card-login,
-  .card-cadastro {
-    padding: 30px 22px;
-    max-width: 90%;
-  }
-
-  .card-login h2,
-  .card-cadastro h2 {
-    font-size: 2.2rem;
-  }
-
-  .login-subtitle {
-    font-size: 0.95rem;
-  }
-}
-

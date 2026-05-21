@@ -49,8 +49,6 @@ a {
 }
 
 
-
-
 .header {
     height: var(--tamanho-header);
     background-color: rgba(30, 26, 23, 0.96);
@@ -99,7 +97,6 @@ a {
 
 
 
-
 .layout-social {
     display: flex;
     width: 100%;
@@ -107,8 +104,6 @@ a {
     background: linear-gradient(to bottom, #211c18, #1e1a17);
     color: var(--parchment-light);
 }
-
-
 
 
 
@@ -127,6 +122,8 @@ a {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: sticky;
+    top: 24px;
 }
 
 .titulo-menu {
@@ -155,7 +152,6 @@ a {
     background-color: rgba(243, 235, 221, 0.06);
     color: var(--parchment-light);
 }
-
 
 
 
@@ -194,7 +190,6 @@ a {
 
 
 
-
 .caixa-social {
     background-color: rgba(243, 235, 221, 0.05);
     border: 1px solid rgba(176, 138, 87, 0.18);
@@ -216,9 +211,6 @@ a {
     line-height: 1.6;
     font-size: 1rem;
 }
-
-
-
 
 .avatar-pequeno {
     width: 44px;
@@ -250,7 +242,6 @@ a {
 
 
 
-
 .layout-feed {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 320px;
@@ -273,7 +264,6 @@ a {
     position: sticky;
     top: 24px;
 }
-
 
 
 
@@ -318,6 +308,21 @@ a {
     font-size: 0.85rem;
 }
 
+.mini-medalha {
+    background:
+        radial-gradient(circle at top right, rgba(176, 138, 87, 0.22), transparent 45%),
+        rgba(59, 42, 36, 0.08);
+}
+
+.mini-medalha span {
+    font-size: 1.8rem;
+}
+
+.mini-medalha small {
+    text-transform: lowercase;
+    max-width: 120px;
+    display: block;
+}
 
 
 
@@ -423,7 +428,6 @@ a {
 
 
 
-
 .publicacoes-feed {
     display: flex;
     flex-direction: column;
@@ -515,7 +519,6 @@ a {
 
 
 
-
 .area-comentario {
     display: none;
     gap: 10px;
@@ -568,6 +571,67 @@ a {
 
 
 
+.resultado-busca-feed h3 {
+    color: var(--aged-gold);
+    font-size: 1.8rem;
+}
+
+.lista-livros-busca {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.cartao-livro-busca {
+    background-color: rgba(243, 235, 221, 0.045);
+    border: 1px solid rgba(176, 138, 87, 0.16);
+    border-radius: 18px;
+    padding: 18px;
+    transition: 0.3s;
+}
+
+.cartao-livro-busca:hover {
+    transform: translateY(-4px);
+    border-color: var(--aged-gold);
+    background-color: rgba(243, 235, 221, 0.075);
+}
+
+.cartao-livro-busca h4 {
+    color: var(--parchment-light);
+    font-size: 1.45rem;
+    margin-bottom: 8px;
+}
+
+.cartao-livro-busca p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.info-livro-busca {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.info-livro-busca span {
+    background-color: rgba(243, 235, 221, 0.045);
+    border: 1px solid rgba(176, 138, 87, 0.14);
+    color: var(--parchment);
+    padding: 7px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    width: fit-content;
+}
+
+.info-livro-busca .etiqueta-livro-busca {
+    background-color: rgba(176, 138, 87, 0.18);
+    color: var(--parchment-light);
+    border: 1px solid rgba(176, 138, 87, 0.22);
+}
+
+
 
 .caixa-perfil {
     background: linear-gradient(to right, #3b2a24, #4b342a);
@@ -593,46 +657,73 @@ a {
     font-size: 1.7rem;
 }
 
-.caixa-em-alta {
-    background-color: rgba(243, 235, 221, 0.05);
+
+
+.caixa-medalhas {
+    background:
+        radial-gradient(circle at top right, rgba(176, 138, 87, 0.22), transparent 42%),
+        linear-gradient(to right, #3B2A24, #4a342b);
 }
 
-.item-em-alta {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(176, 138, 87, 0.12);
+.caixa-medalhas h3 {
+    color: var(--aged-gold);
+    font-size: 1.45rem;
 }
 
-.item-em-alta:last-child {
-    border-bottom: none;
-}
-
-.item-em-alta span {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--aged-gold);
-    color: var(--soft-black);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-
-.item-em-alta strong {
-    color: var(--parchment-light);
+.texto-medalha {
+    margin-bottom: 14px;
     font-size: 0.95rem;
 }
 
-.item-em-alta p {
-    font-size: 0.85rem;
-    margin-top: 2px;
+.formula-medalha {
+    background-color: rgba(243, 235, 221, 0.07);
+    border: 1px solid rgba(176, 138, 87, 0.18);
+    border-radius: 14px;
+    padding: 12px;
+    color: var(--parchment-light);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
 }
 
+.lista-medalhas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
+.item-medalha {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(176, 138, 87, 0.12);
+}
+
+.item-medalha:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.item-medalha span {
+    font-size: 1.4rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.item-medalha strong {
+    display: block;
+    color: var(--parchment-light);
+    font-size: 0.95rem;
+    margin-bottom: 3px;
+}
+
+.item-medalha p {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    margin: 0;
+}
 
 
 .footer {
@@ -658,71 +749,4 @@ a {
 .footer-phrase {
     font-size: 0.95rem;
     color: var(--text-muted);
-}
-
-
-
-
-
-@media (max-width: 1200px) {
-    .layout-feed {
-        grid-template-columns: 1fr;
-    }
-
-    .lateral-feed {
-        display: none;
-    }
-}
-
-@media (max-width: 900px) {
-    .layout-social {
-        flex-direction: column;
-    }
-
-    .menu-lateral {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid rgba(176, 138, 87, 0.18);
-    }
-}
-
-@media (max-width: 768px) {
-    .header {
-        height: auto;
-        padding: 15px 0;
-    }
-
-    .header .container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .navbar {
-        width: 100%;
-        justify-content: center;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    .layout-feed {
-        padding: 18px;
-    }
-
-    .extra-criar-publicacao {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .botao-publicar {
-        width: 100%;
-    }
-
-    .rodape-publicacao {
-        flex-direction: column;
-    }
-
-    .area-comentario {
-        flex-direction: column;
-        align-items: stretch;
-    }
 }

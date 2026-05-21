@@ -43,6 +43,8 @@
         </div>
 
         <div class="container">
+
+            <!-- formulário de login -->
             <div class="card-login">
                 <h2>Olá de volta!</h2>
                 <p class="login-subtitle">Retorne ao seu universo literário.</p>
@@ -80,16 +82,22 @@
 
 <script>
 
+    // Array que armazena os usuários cadastrados retornados do banco
     let listaUsuariosCadastrados = [];
 
+    // Função que busca os usuários cadastrados no BD
     function UsuariosCadastrados() {
 
+        // Faz uma requisição GET para a rota /usuarios/ (retorna a lista de usuários cadastrados)
         fetch("/usuarios/", {
             method: "GET",
         }).then(function (resposta) {
+
+            // Verifica se a resposta da requisição foi bem-sucedida
             if (resposta.ok) {
                 console.log(resposta);
 
+                // Converte a resposta para json e armazena em listaUsuariosCadastrados
                 resposta.json().then(obj => {
                     listaUsuariosCadastrados = obj;
                     console.log(listaUsuariosCadastrados);
@@ -102,20 +110,25 @@
 
     function entrar() {
 
+        // Valores digitados nos campos de e-mail e senha
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
 
+        // Valida se os campos obrigatórios foram preenchidos
         if (emailVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "Necessário o preenchimento de todos os campos";
             return false;
         }
         else {
+            // Esconde a mensagem de erro após 5 segundos
             setInterval(sumirMensagem, 5000)
         }
 
+        // Controla se o usuário foi encontrado na lista
         let encontrou = false;
 
+        // Percorre a lista de usuários cadastrados para verificar se o e-mail e senha existem
         for (let i = 0; i < listaUsuariosCadastrados.length; i++) {
             if (listaUsuariosCadastrados[i].email == emailVar && listaUsuariosCadastrados[i].senha == senhaVar) {
                 encontrou = true;
@@ -123,11 +136,13 @@
             }
         }
 
+        // Se o usuário foi encontrado, realiza a autenticação no back-end
         if (encontrou) {
 
             console.log("FORM LOGIN: ", emailVar);
             console.log("FORM SENHA: ", senhaVar);
 
+            // Envia os dados de login para a rota de autenticação
             fetch("/usuarios/autenticar", {
                 method: "POST",
                 headers: {
@@ -140,16 +155,21 @@
             }).then(function (resposta) {
                 console.log("ESTOU NO THEN DO entrar()!")
 
+                // Se a autenticação deu certo, armazena os dados do usuário na sessão
                 if (resposta.ok) {
                     console.log(resposta);
 
                     resposta.json().then(json => {
                         console.log(json);
                         console.log(JSON.stringify(json));
+
+                         // Salva informações do usuário no sessionStorage para usar em outras páginas (é um recurso de armazenamento no navegador que permite guardar 
+                         // dados temporariamente durante a sessão atual) 
                         sessionStorage.EMAIL_USUARIO = json.email;
                         sessionStorage.NOME_USUARIO = json.nome;
                         sessionStorage.ID_USUARIO = json.id;
 
+                        // Redireciona o usuário para a página inicial da plataforma
                         setTimeout(function () {
                             console.log('entrou');
 
@@ -160,6 +180,7 @@
 
                 } else {
 
+                     // Se a autenticação falhar, exibe o erro no console
                     console.log("Houve um erro ao tentar realizar o login!");
 
                     resposta.text().then(texto => {
@@ -174,13 +195,17 @@
             return false;
         }
         else {
+            // Se o usuário não existir na lista carregada, irá exibir a mensagem de usuário não encontrado
             div_message_results.innerHTML = '<br><span style = "color: #3B2A24">Login não encontrado</span>'
         }
     }
 
+    // Função que esconde o card de erro
     function sumirMensagem() {
         cardErro.style.display = "none"
     }
+
+    // Chama a função assim que a página carrega para buscar os usuários cadastrados
     UsuariosCadastrados()
 
 </script>
