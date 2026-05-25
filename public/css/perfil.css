@@ -119,6 +119,8 @@ a {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: sticky;
+    top: 24px;
 }
 
 .titulo-menu {
@@ -594,5 +596,3 @@ a {
     font-size: 0.95rem;
     color: var(--text-muted);
 }
-
-

@@ -123,6 +123,8 @@ a {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: sticky;
+    top: 24px;
 }
 
 .titulo-menu {

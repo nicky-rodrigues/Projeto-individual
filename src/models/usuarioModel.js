@@ -23,7 +23,7 @@ function cadastrar(nome, email, senha) {
 
  // Comando que faz a inserção dos dados do novo usuário na tabela Usuario
     var instrucaoSql = `
-        INSERT INTO usuario (nome, email, senha) VALUES ('${nome}', '${email}', '${senha}');
+        INSERT INTO Usuario (nome, email, senha) VALUES ('${nome}', '${email}', '${senha}');
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
 
