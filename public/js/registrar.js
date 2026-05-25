@@ -1,4 +1,5 @@
 let idLeituraEdicao = null;
+let leiturasUsuario = [];
 
 function verificarUsuarioLogado() {
     let idUsuario = sessionStorage.ID_USUARIO;
@@ -160,6 +161,8 @@ function listarLeituras() {
             }
         })
         .then(function (leituras) {
+            leiturasUsuario = leituras;
+
             lista_leituras.innerHTML = "";
 
             if (leituras.length == 0) {
@@ -227,17 +230,40 @@ function listarLeituras() {
         });
 }
 
-function prepararEdicaoLeitura(idLeitura, titulo, autor, genero, statusLeitura, nota, comentario) {
-    idLeituraEdicao = idLeitura;
+function prepararEdicaoLeitura(idLeitura) {
+    let leituraEncontrada = null;
+
+    for (let i = 0; i < leiturasUsuario.length; i++) {
+        if (leiturasUsuario[i].idLeitura == idLeitura) {
+            leituraEncontrada = leiturasUsuario[i];
+        }
+    }
+
+    if (leituraEncontrada == null) {
+        alert("Leitura não encontrada.");
+        return;
+    }
+
+    idLeituraEdicao = leituraEncontrada.idLeitura;
 
     titulo_formulario.innerHTML = "Editar leitura";
 
-    input_livro.value = titulo;
-    input_autor.value = autor;
-    select_genero.value = genero;
-    select_status.value = statusLeitura;
-    input_nota.value = nota;
-    input_comentario.value = comentario;
+    input_livro.value = leituraEncontrada.titulo;
+    input_autor.value = leituraEncontrada.autor;
+    select_genero.value = leituraEncontrada.genero;
+    select_status.value = leituraEncontrada.statusLeitura;
+
+    if (leituraEncontrada.nota == null) {
+        input_nota.value = "";
+    } else {
+        input_nota.value = leituraEncontrada.nota;
+    }
+
+    if (leituraEncontrada.comentario == null) {
+        input_comentario.value = "";
+    } else {
+        input_comentario.value = leituraEncontrada.comentario;
+    }
 
     input_livro.disabled = true;
     input_autor.disabled = true;
@@ -250,9 +276,17 @@ function prepararEdicaoLeitura(idLeitura, titulo, autor, genero, statusLeitura, 
 }
 
 function atualizarLeitura() {
+    let idUsuario = sessionStorage.ID_USUARIO;
+
     let statusLeitura = select_status.value;
     let nota = input_nota.value;
     let comentario = input_comentario.value;
+
+    if (idUsuario == undefined) {
+        alert("Usuário não identificado. Faça login novamente.");
+        window.location = "login.html";
+        return;
+    }
 
     if (statusLeitura == "") {
         alert("Selecione o status da leitura.");
@@ -271,6 +305,7 @@ function atualizarLeitura() {
         },
         body: JSON.stringify({
             idLeituraServer: idLeituraEdicao,
+            fkUsuarioServer: sessionStorage.ID_USUARIO,
             statusLeituraServer: statusLeitura,
             notaServer: nota,
             comentarioServer: comentario

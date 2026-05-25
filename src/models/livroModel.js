@@ -1,11 +1,10 @@
 var database = require("../database/config");
 
-function buscarPorTituloAutor(titulo, autor) {
+function buscarPorTitulo(titulo) {
     var instrucaoSql = `
         SELECT *
         FROM Livro
-        WHERE LOWER(TRIM(titulo)) = LOWER(TRIM('${titulo}'))
-        AND LOWER(TRIM(autor)) = LOWER(TRIM('${autor}'));
+        WHERE LOWER(TRIM(titulo)) = LOWER(TRIM('${titulo}'));
     `;
 
     return database.executar(instrucaoSql);
@@ -47,7 +46,7 @@ function listar() {
 }
 
 module.exports = {
-    buscarPorTituloAutor,
+    buscarPorTitulo,
     cadastrar,
     listar
 };

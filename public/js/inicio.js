@@ -1,9 +1,9 @@
 let tipoPublicacaoSelecionado = "";
 let livrosInicio = [];
 let metaMensalInicio = 0;
+let idUsuario = sessionStorage.ID_USUARIO;
 
 function verificarUsuarioLogado() {
-    let idUsuario = sessionStorage.ID_USUARIO;
 
     if (idUsuario == undefined) {
         alert("Usuário não identificado. Faça login novamente.");
@@ -19,8 +19,7 @@ function carregarDadosUsuario() {
         return;
     }
 
-    let idUsuario = sessionStorage.ID_USUARIO;
-    let nomeUsuario = sessionStorage.NOME_USUARIO;
+        let nomeUsuario = sessionStorage.NOME_USUARIO;
 
     titulo_boas_vindas.innerHTML = "Olá, " + nomeUsuario;
     nome_usuario_lateral.innerHTML = nomeUsuario;
@@ -68,8 +67,7 @@ function carregarDadosUsuario() {
 }
 
 function carregarResumoLeituras() {
-    let idUsuario = sessionStorage.ID_USUARIO;
-
+    
     fetch(`/leituras/usuario/${idUsuario}`, {
         method: "GET"
     })
@@ -282,8 +280,7 @@ function publicar() {
         return;
     }
 
-    let idUsuario = sessionStorage.ID_USUARIO;
-    let textoPublicacao = input_post.value;
+        let textoPublicacao = input_post.value;
     let livroRelacionado = input_livro.value;
 
     if (textoPublicacao == "") {
@@ -490,8 +487,7 @@ function carregarCurtidasPublicacao(idPublicacao) {
 }
 
 function verificarCurtidaUsuario(idPublicacao) {
-    let idUsuario = sessionStorage.ID_USUARIO;
-
+    
     if (idUsuario == undefined) {
         return;
     }
@@ -539,8 +535,7 @@ function curtirOuDescurtirPublicacao(idPublicacao, botao) {
 }
 
 function curtirPublicacao(idPublicacao, botao) {
-    let idUsuario = sessionStorage.ID_USUARIO;
-
+    
     fetch("/curtidas/curtir", {
         method: "POST",
         headers: {
@@ -566,8 +561,7 @@ function curtirPublicacao(idPublicacao, botao) {
 }
 
 function descurtirPublicacao(idPublicacao, botao) {
-    let idUsuario = sessionStorage.ID_USUARIO;
-
+    
     fetch("/curtidas/descurtir", {
         method: "DELETE",
         headers: {
@@ -607,7 +601,6 @@ function comentarPublicacao(idPublicacao) {
         return;
     }
 
-    let idUsuario = sessionStorage.ID_USUARIO;
     let inputComentario = document.getElementById("comentario_input_" + idPublicacao);
     let textoComentario = inputComentario.value;
 

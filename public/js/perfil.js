@@ -174,7 +174,7 @@ function carregarConquistaPerfil() {
     }
 
     if (meta == 0 || input_meta.value == "") {
-        atualizarConquistaPerfil(0, 0);
+        atualizarConquistaPerfil(0, 0, 0);
         return;
     }
 
@@ -203,15 +203,14 @@ function carregarConquistaPerfil() {
                 porcentagemMeta = (totalConcluidos * 100) / meta;
             }
 
-            atualizarConquistaPerfil(porcentagemMeta, meta);
-            salvarConquistaDoMesPerfil(porcentagemMeta, totalConcluidos, meta);
+            atualizarConquistaPerfil(porcentagemMeta, meta, totalConcluidos);
         })
         .catch(function (erro) {
             console.log("Erro ao carregar conquista do perfil:", erro);
         });
 }
 
-function atualizarConquistaPerfil(porcentagemMeta, meta) {
+function atualizarConquistaPerfil(porcentagemMeta, meta, totalConcluidos) {
     if (meta == 0) {
         medalha_perfil.innerHTML = "🔒";
         titulo_medalha_perfil.innerHTML = "Sem meta cadastrada";
@@ -220,80 +219,24 @@ function atualizarConquistaPerfil(porcentagemMeta, meta) {
     } else if (porcentagemMeta >= 150) {
         medalha_perfil.innerHTML = "🥇";
         titulo_medalha_perfil.innerHTML = "Guardiã das Histórias";
-        descricao_medalha_perfil.innerHTML = "Você ultrapassou sua meta mensal de leitura.";
+        descricao_medalha_perfil.innerHTML = "Você concluiu " + totalConcluidos + " de " + meta + " leituras e ultrapassou sua meta mensal.";
         progresso_medalha_perfil.innerHTML = porcentagemMeta.toFixed(0) + "%";
     } else if (porcentagemMeta >= 100) {
         medalha_perfil.innerHTML = "🥈";
         titulo_medalha_perfil.innerHTML = "Meta Concluída";
-        descricao_medalha_perfil.innerHTML = "Você concluiu sua meta mensal de leitura.";
+        descricao_medalha_perfil.innerHTML = "Você concluiu " + totalConcluidos + " de " + meta + " leituras e alcançou sua meta mensal.";
         progresso_medalha_perfil.innerHTML = porcentagemMeta.toFixed(0) + "%";
     } else if (porcentagemMeta >= 50) {
         medalha_perfil.innerHTML = "🥉";
         titulo_medalha_perfil.innerHTML = "Leitora em Jornada";
-        descricao_medalha_perfil.innerHTML = "Você já passou da metade da sua meta mensal.";
+        descricao_medalha_perfil.innerHTML = "Você concluiu " + totalConcluidos + " de " + meta + " leituras e já passou da metade da sua meta.";
         progresso_medalha_perfil.innerHTML = porcentagemMeta.toFixed(0) + "%";
     } else {
         medalha_perfil.innerHTML = "🔒";
         titulo_medalha_perfil.innerHTML = "Medalha bloqueada";
-        descricao_medalha_perfil.innerHTML = "Continue registrando leituras concluídas para desbloquear sua conquista.";
+        descricao_medalha_perfil.innerHTML = "Você concluiu " + totalConcluidos + " de " + meta + " leituras. Continue lendo para desbloquear sua conquista.";
         progresso_medalha_perfil.innerHTML = porcentagemMeta.toFixed(0) + "%";
     }
-}
-
-function obterTipoMedalha(porcentagemMeta) {
-    if (porcentagemMeta >= 150) {
-        return "ouro";
-    } else if (porcentagemMeta >= 100) {
-        return "prata";
-    } else if (porcentagemMeta >= 50) {
-        return "bronze";
-    } else {
-        return "";
-    }
-}
-
-function salvarConquistaDoMesPerfil(porcentagemMeta, livrosConcluidos, meta) {
-    let idUsuario = sessionStorage.ID_USUARIO;
-
-    if (idUsuario == undefined) {
-        return;
-    }
-
-    if (meta == 0) {
-        return;
-    }
-
-    let tipoMedalha = obterTipoMedalha(porcentagemMeta);
-
-    if (tipoMedalha == "") {
-        return;
-    }
-
-    let dataAtual = new Date();
-    let mesReferencia = dataAtual.getMonth() + 1;
-    let anoReferencia = dataAtual.getFullYear();
-
-    fetch("/conquistas/salvar-ou-atualizar", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            fkUsuarioServer: idUsuario,
-            mesReferenciaServer: mesReferencia,
-            anoReferenciaServer: anoReferencia,
-            tipoMedalhaServer: tipoMedalha,
-            percentualMetaServer: Number(porcentagemMeta.toFixed(2)),
-            livrosConcluidosServer: livrosConcluidos,
-            metaMensalServer: meta
-        })
-    })
-        .then(function (resposta) {
-            if (resposta.ok) {
-                carregarResumoConquistas();
-                carregarHistoricoConquistas();
-            }
-        });
 }
 
 function carregarResumoConquistas() {

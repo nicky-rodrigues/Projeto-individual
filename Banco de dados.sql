@@ -115,12 +115,6 @@ CREATE TABLE Conquista (
         UNIQUE (fkUsuario, mesReferencia, anoReferencia)
 );
 
-select * from leitura;
-SELECT * FROM Conquista;
-
-select * from usuario;
-
-
 UPDATE Leitura
 SET 
     statusLeitura = 'Concluído',
@@ -128,3 +122,6 @@ SET
     comentario = 'Finalizei e gostei muito.'
 WHERE idLeitura = 1
 AND fkUsuario = 1;
+use Hiraeth;
+
+ 

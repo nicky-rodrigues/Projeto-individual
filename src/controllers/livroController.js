@@ -37,7 +37,7 @@ function cadastrar(req, res) {
         titulo = formatarTexto(titulo);
         autor = formatarTexto(autor);
 
-        livroModel.buscarPorTituloAutor(titulo, autor)
+        livroModel.buscarPorTitulo(titulo)
             .then(function (livroEncontrado) {
                 if (livroEncontrado.length > 0) {
                     res.json({
@@ -50,7 +50,7 @@ function cadastrar(req, res) {
                 } else {
                     livroModel.cadastrar(titulo, autor, genero)
                         .then(function () {
-                            livroModel.buscarPorTituloAutor(titulo, autor)
+                            livroModel.buscarPorTitulo(titulo)
                                 .then(function (livroCriado) {
                                     if (livroCriado.length > 0) {
                                         res.json({
@@ -61,19 +61,22 @@ function cadastrar(req, res) {
                                             livroJaExistia: false
                                         });
                                     } else {
-                                        res.status(500).send("O livro foi cadastrado, mas o id do livro não foi retornado.");
+                                        res.status(500).send("O livro foi cadastrado, mas o id do livro não foi encontrado.");
                                     }
                                 })
                                 .catch(function (erro) {
+                                    console.log(erro);
                                     res.status(500).json(erro.sqlMessage);
                                 });
                         })
                         .catch(function (erro) {
+                            console.log(erro);
                             res.status(500).json(erro.sqlMessage);
                         });
                 }
             })
             .catch(function (erro) {
+                console.log(erro);
                 res.status(500).json(erro.sqlMessage);
             });
     }
@@ -85,6 +88,7 @@ function listar(req, res) {
             res.json(resultado);
         })
         .catch(function (erro) {
+            console.log(erro);
             res.status(500).json(erro.sqlMessage);
         });
 }

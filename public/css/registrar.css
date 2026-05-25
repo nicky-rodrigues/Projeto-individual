@@ -446,3 +446,10 @@ a {
     font-size: 0.95rem;
     color: var(--text-muted);
 }
+
+.texto-explicativo-historico {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+}
