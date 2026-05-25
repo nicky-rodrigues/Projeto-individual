@@ -645,3 +645,8 @@ a {
 #div_erros_login {
   display: none;
 }
+
+#mensagem_erro {
+  text-align: center;
+  color: var(--brown-dark)
+}

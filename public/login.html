@@ -36,12 +36,6 @@
     </div>
 
     <div class="login">
-        <div class="alerta_erro">
-            <div class="card_erro" id="cardErro">
-                <span id="mensagem_erro"></span>
-            </div>
-        </div>
-
         <div class="container">
 
             <!-- formulário de login -->
@@ -61,6 +55,12 @@
                     </div>
 
                     <button class="botao" onclick="entrar()">Entrar</button>
+
+                    <div class="alerta_erro">
+                        <div class="card_erro" id="cardErro">
+                            <span id="mensagem_erro"></span>
+                        </div>
+                    </div>
                 </div>
                 <div id="div_message_results"></div>
 
@@ -163,8 +163,8 @@
                         console.log(json);
                         console.log(JSON.stringify(json));
 
-                         // Salva informações do usuário no sessionStorage para usar em outras páginas (é um recurso de armazenamento no navegador que permite guardar 
-                         // dados temporariamente durante a sessão atual) 
+                        // Salva informações do usuário no sessionStorage para usar em outras páginas (é um recurso de armazenamento no navegador que permite guardar 
+                        // dados temporariamente durante a sessão atual) 
                         sessionStorage.EMAIL_USUARIO = json.email;
                         sessionStorage.NOME_USUARIO = json.nome;
                         sessionStorage.ID_USUARIO = json.id;
@@ -180,7 +180,7 @@
 
                 } else {
 
-                     // Se a autenticação falhar, exibe o erro no console
+                    // Se a autenticação falhar, exibe o erro no console
                     console.log("Houve um erro ao tentar realizar o login!");
 
                     resposta.text().then(texto => {
