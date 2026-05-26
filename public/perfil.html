@@ -20,10 +20,12 @@
 
     <div class="header">
         <div class="container">
+
             <a href="index.html" class="logo_link">
                 <h1 class="titulo">Hiraeth</h1>
             </a>
 
+            <!-- Navegação superior com atalhos principais -->
             <ul class="navbar">
                 <li><a href="inicio.html">Feed</a></li>
                 <li><a href="perfil.html">Perfil</a></li>
@@ -34,6 +36,7 @@
 
     <div class="layout-social">
 
+        <!-- Menu lateral com as principais páginas da plataforma -->
         <aside class="menu-lateral">
             <div class="secao-menu">
                 <div class="titulo-menu">Menu</div>
@@ -47,7 +50,6 @@
                     <a href="index.html">Sair</a>
                 </nav>
             </div>
-
         </aside>
 
         <main class="area-principal">
@@ -60,8 +62,10 @@
                 </p>
             </section>
 
+            <!-- Card principal com os dados do perfil -->
             <section class="perfil-destaque">
                 <div class="caixa-social cartao-perfil cartao-perfil-principal">
+
                     <div class="topo-perfil">
                         <div class="avatar-grande" id="avatar_perfil">N</div>
 
@@ -71,6 +75,7 @@
                         </div>
                     </div>
 
+                    <!-- Informações principais do perfil do leitor -->
                     <div class="informacoes-perfil">
                         <div class="item-perfil">
                             <span>Gênero favorito</span>
@@ -92,6 +97,7 @@
 
             <section class="perfil-grid-principal">
 
+                <!-- Card calculado com base nas leituras concluídas e na meta mensal -->
                 <div class="caixa-social cartao-conquista">
                     <h3>Progresso atual da meta</h3>
 
@@ -111,6 +117,7 @@
                     </div>
                 </div>
 
+                <!-- Formulário para cadastrar ou atualizar informações do perfi -->
                 <div class="caixa-social formulario-perfil">
                     <h3>Editar perfil</h3>
 
@@ -150,13 +157,16 @@
 
                     <button class="botao-salvar" onclick="salvarPerfil()">Salvar perfil</button>
 
+                    <!-- Mensagem exibida após cadastrar ou atualizar o perfil -->
                     <p id="mensagem_sucesso" class="mensagem-sucesso"></p>
                 </div>
 
             </section>
 
+            <!-- Área de conquistas acumuladas e histórico mensal -->
             <section class="conteudo-conquistas">
 
+                <!-- Resumo das medalhas salvas no banco (ouro = 3 pontos, prata = 2, bronze = 1.) -->
                 <div class="caixa-social ranking-pessoal">
                     <h3>Minha evolução literária</h3>
                     <p>
@@ -190,6 +200,7 @@
                     </div>
                 </div>
 
+                <!-- Histórico mensal de conquistas esse histórico vai vir da tabela Conquista e é atualizado quando o usuário acessar a dashboard-->
                 <div class="caixa-social historico-conquistas">
                     <h3>Histórico mensal</h3>
 
@@ -198,8 +209,9 @@
                         acesse a dashboard depois de registrar novas leituras concluídas.
                     </p>
 
+
                     <div id="lista_historico_conquistas" class="lista-historico-conquistas">
-                        
+                        <p>Carregando histórico...</p>
                     </div>
                 </div>
 
@@ -215,6 +227,7 @@
         </div>
     </div>
 
+    <!-- Script que carrega dados do perfil, calcula o progresso atual e busca o histórico de conquistas. -->
     <script src="./js/perfil.js"></script>
 </body>
 

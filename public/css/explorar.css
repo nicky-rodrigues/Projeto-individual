@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 
+/* Variáveis globais da identidade visual */
 :root {
     --brown-dark: #3B2A24;
     --brown-medium: #5A4034;
@@ -17,6 +18,8 @@
     --body-font: "Inter", sans-serif;
 }
 
+
+/* configurações gerais */
 * {
     margin: 0;
     padding: 0;
@@ -49,8 +52,7 @@ a {
 }
 
 
-
-
+/* Header e navegação superior */
 .header {
     height: var(--tamanho-header);
     background-color: rgba(30, 26, 23, 0.96);
@@ -95,8 +97,7 @@ a {
 }
 
 
-
-
+/* Layout principal */
 .layout-social {
     display: grid;
     grid-template-columns: 250px minmax(0, 1fr) 280px;
@@ -107,8 +108,7 @@ a {
 }
 
 
-
-
+/* Menu lateral esquerdo */
 .menu-lateral {
     background-color: rgba(24, 21, 18, 0.96);
     border-right: 1px solid rgba(176, 138, 87, 0.18);
@@ -116,7 +116,6 @@ a {
     display: flex;
     flex-direction: column;
     gap: 24px;
-
 }
 
 .secao-menu {
@@ -146,7 +145,6 @@ a {
     color: var(--text-muted);
     transition: 0.3s;
     font-size: 0.98rem;
-
 }
 
 .navegacao-menu a:hover,
@@ -155,6 +153,8 @@ a {
     color: var(--parchment-light);
 }
 
+
+/* Caixas laterais de apoio */
 .caixa-lateral {
     background-color: rgba(243, 235, 221, 0.045);
     border: 1px solid rgba(176, 138, 87, 0.16);
@@ -168,19 +168,16 @@ a {
     color: var(--aged-gold);
     font-size: 1.4rem;
     margin-bottom: 8px;
-
 }
 
 .caixa-lateral p {
     color: var(--text-muted);
     line-height: 1.6;
     font-size: 0.92rem;
-
 }
 
 
-
-
+/* Área principal da página Explorar */
 .area-principal {
     padding: 24px;
     display: flex;
@@ -189,9 +186,14 @@ a {
     min-width: 0;
 }
 
+.explore-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
 
 
-
+/* Cards da página */
 .caixa-social {
     background-color: rgba(243, 235, 221, 0.055);
     border: 1px solid rgba(176, 138, 87, 0.18);
@@ -211,15 +213,8 @@ a {
     line-height: 1.6;
 }
 
-.explore-page {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
 
-
-
-
+/* Cabeçalho visual*/
 .explore-hero {
     background:
         linear-gradient(135deg, rgba(243, 235, 221, 0.96), rgba(232, 220, 200, 0.92)),
@@ -244,8 +239,7 @@ a {
 }
 
 
-
-
+/* Cards de gêneros literários */
 .genre-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(180px, 1fr));
@@ -298,8 +292,7 @@ a {
 }
 
 
-
-
+/* Imagens específicas de cada gênero */
 .fantasy-card {
     background-image: url("../assets/imgs/fantasia.jpg");
 }
@@ -325,8 +318,7 @@ a {
 }
 
 
-
-
+/* Área com os livros do gênero selecionado */
 .livros-genero-box {
     min-height: 250px;
 }
@@ -344,6 +336,8 @@ a {
     max-width: 850px;
 }
 
+
+/* Grade dos livros exibidos após o clique em um gênero */
 .lista-livros {
     display: grid;
     grid-template-columns: repeat(3, minmax(180px, 1fr));
@@ -377,8 +371,7 @@ a {
 }
 
 
-
-
+/* Informações exibidas dentro de cada card de livro */
 .info-livro-explorar {
     display: flex;
     flex-direction: column;
@@ -414,8 +407,7 @@ a {
 }
 
 
-
-
+/* Coluna lateral direita */
 .coluna-direita {
     padding: 24px 18px 24px 0;
     display: flex;
@@ -441,8 +433,7 @@ a {
 }
 
 
-
-
+/* Footer */
 .footer {
     background-color: #161311;
     padding: 22px 0;

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 
+/* Variáveis globais da identidade visual*/
 :root {
     --brown-dark: #3B2A24;
     --brown-medium: #5A4034;
@@ -17,6 +18,8 @@
     --body-font: "Inter", sans-serif;
 }
 
+
+/* configurações gerais */
 * {
     margin: 0;
     padding: 0;
@@ -49,6 +52,7 @@ a {
 }
 
 
+/* Header e navegação superior */
 .header {
     height: var(--tamanho-header);
     background-color: rgba(30, 26, 23, 0.96);
@@ -96,7 +100,7 @@ a {
 }
 
 
-
+/* Layout principal*/
 .layout-social {
     display: flex;
     width: 100%;
@@ -106,7 +110,7 @@ a {
 }
 
 
-
+/* Menu lateral esquerdo */
 .menu-lateral {
     width: 250px;
     background-color: #181512;
@@ -154,7 +158,7 @@ a {
 }
 
 
-
+/* Área principal */
 .area-principal {
     flex: 1;
     display: flex;
@@ -162,6 +166,8 @@ a {
     min-width: 0;
 }
 
+
+/* Campo de busca da área social*/
 .busca-social {
     padding: 22px 24px;
     border-bottom: 1px solid rgba(176, 138, 87, 0.18);
@@ -189,7 +195,7 @@ a {
 }
 
 
-
+/* Cards da página */
 .caixa-social {
     background-color: rgba(243, 235, 221, 0.05);
     border: 1px solid rgba(176, 138, 87, 0.18);
@@ -212,6 +218,8 @@ a {
     font-size: 1rem;
 }
 
+
+/* Avatares usados no feed e nos cards de perfil */
 .avatar-pequeno {
     width: 44px;
     height: 44px;
@@ -241,7 +249,7 @@ a {
 }
 
 
-
+/* Layout interno do feed*/
 .layout-feed {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 320px;
@@ -266,7 +274,7 @@ a {
 }
 
 
-
+/* Card de boas-vindas e resumo rápido da jornada*/
 .caixa-boas-vindas {
     background: linear-gradient(to right, #f3ebdd, #e8dcc8);
     border: 1px solid rgba(176, 138, 87, 0.20);
@@ -325,7 +333,7 @@ a {
 }
 
 
-
+/* Área de criação de publicação */
 .caixa-criar-publicacao {
     display: flex;
     flex-direction: column;
@@ -427,7 +435,7 @@ a {
 }
 
 
-
+/* Área onde as publicações são exibidas */
 .publicacoes-feed {
     display: flex;
     flex-direction: column;
@@ -518,7 +526,7 @@ a {
 }
 
 
-
+/* Área de comentários das publicações */
 .area-comentario {
     display: none;
     gap: 10px;
@@ -570,7 +578,7 @@ a {
 }
 
 
-
+/* Resultado da busca de livros dentro da página inicial */
 .resultado-busca-feed h3 {
     color: var(--aged-gold);
     font-size: 1.8rem;
@@ -632,7 +640,7 @@ a {
 }
 
 
-
+/* Cards laterais do perfil e dashboard resumido */
 .caixa-perfil {
     background: linear-gradient(to right, #3b2a24, #4b342a);
 }
@@ -658,7 +666,7 @@ a {
 }
 
 
-
+/* Card lateral de explicação das medalhas */
 .caixa-medalhas {
     background:
         radial-gradient(circle at top right, rgba(176, 138, 87, 0.22), transparent 42%),
@@ -726,6 +734,7 @@ a {
 }
 
 
+/* Footer */
 .footer {
     background-color: #161311;
     padding: 22px 0;

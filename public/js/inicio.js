@@ -1,10 +1,18 @@
+// Tipo de publicação escolhido pelo usuário: resenha, avaliação, citação, meta ou atualização.
 let tipoPublicacaoSelecionado = "";
+
+// Vetor que guarda os livros carregados do banco.
 let livrosInicio = [];
+
+// Guarda a meta mensal do usuário, vinda do perfil.
 let metaMensalInicio = 0;
+
+// Id do usuário logado, salvo no sessionStorage depois do login.
 let idUsuario = sessionStorage.ID_USUARIO;
 
-function verificarUsuarioLogado() {
 
+// Verifica se existe um usuário logado.
+function verificarUsuarioLogado() {
     if (idUsuario == undefined) {
         alert("Usuário não identificado. Faça login novamente.");
         window.location = "login.html";
@@ -14,12 +22,14 @@ function verificarUsuarioLogado() {
     return true;
 }
 
+
+// Carrega os dados principais do usuário para montar o resumo da página inicial
 function carregarDadosUsuario() {
     if (!verificarUsuarioLogado()) {
         return;
     }
 
-        let nomeUsuario = sessionStorage.NOME_USUARIO;
+    let nomeUsuario = sessionStorage.NOME_USUARIO;
 
     titulo_boas_vindas.innerHTML = "Olá, " + nomeUsuario;
     nome_usuario_lateral.innerHTML = nomeUsuario;
@@ -61,13 +71,15 @@ function carregarDadosUsuario() {
         })
         .catch(function (erro) {
             console.log(erro);
+
             bio_usuario_lateral.innerHTML = "Erro ao carregar perfil.";
             carregarResumoLeituras();
         });
 }
 
+
+// Busca as leituras do usuário e conta quantas estão com status Concluído
 function carregarResumoLeituras() {
-    
     fetch(`/leituras/usuario/${idUsuario}`, {
         method: "GET"
     })
@@ -79,25 +91,12 @@ function carregarResumoLeituras() {
             }
         })
         .then(function (leituras) {
-            let totalConcluidos = 0;
-
-            for (let i = 0; i < leituras.length; i++) {
-                if (leituras[i].statusLeitura == "Concluído") {
-                    totalConcluidos++;
-                }
-            }
+            let totalConcluidos = contarLeiturasConcluidas(leituras);
 
             span_livros_lidos.innerHTML = totalConcluidos;
             resumo_livros_lidos.innerHTML = totalConcluidos;
 
-            let metaAtual = span_meta_mes.innerHTML;
-            let partesMeta = metaAtual.split("/");
-
-            if (partesMeta.length == 2) {
-                span_meta_mes.innerHTML = totalConcluidos + "/" + partesMeta[1];
-                resumo_meta_mes.innerHTML = totalConcluidos + "/" + partesMeta[1];
-            }
-
+            atualizarTextoMeta(totalConcluidos);
             atualizarMedalhaBoasVindas(totalConcluidos);
         })
         .catch(function (erro) {
@@ -110,6 +109,34 @@ function carregarResumoLeituras() {
         });
 }
 
+
+// Percorre o vetor de leituras e retorna quantas foram concluídas
+function contarLeiturasConcluidas(leituras) {
+    let totalConcluidos = 0;
+
+    for (let i = 0; i < leituras.length; i++) {
+        if (leituras[i].statusLeitura == "Concluído") {
+            totalConcluidos++;
+        }
+    }
+
+    return totalConcluidos;
+}
+
+
+// Atualiza os textos de meta na tela inicial
+function atualizarTextoMeta(totalConcluidos) {
+    let metaAtual = span_meta_mes.innerHTML;
+    let partesMeta = metaAtual.split("/");
+
+    if (partesMeta.length == 2) {
+        span_meta_mes.innerHTML = totalConcluidos + "/" + partesMeta[1];
+        resumo_meta_mes.innerHTML = totalConcluidos + "/" + partesMeta[1];
+    }
+}
+
+
+// Calcula a medalha exibida no card de boas-vindas da página inicial.
 function atualizarMedalhaBoasVindas(totalConcluidos) {
     let porcentagemMeta = 0;
 
@@ -135,152 +162,174 @@ function atualizarMedalhaBoasVindas(totalConcluidos) {
     }
 }
 
-function carregarLivrosInicio() {
-    fetch("/livros", {
-        method: "GET"
-    })
-        .then(function (resposta) {
-            if (resposta.ok) {
-                return resposta.json();
-            } else {
-                throw "Erro ao buscar livros.";
-            }
-        })
-        .then(function (livros) {
-            livrosInicio = livros;
-        })
-        .catch(function (erro) {
-            console.log("Erro ao carregar livros para busca:", erro);
-        });
+
+// // Carrega todos os livros do banco para permitir busca na página inicial
+// function carregarLivrosInicio() {
+//     fetch("/livros", {
+//         method: "GET"
+//     })
+//         .then(function (resposta) {
+//             if (resposta.ok) {
+//                 return resposta.json();
+//             } else {
+//                 throw "Erro ao buscar livros.";
+//             }
+//         })
+//         .then(function (livros) {
+//             livrosInicio = livros;
+//         })
+//         .catch(function (erro) {
+//             console.log("Erro ao carregar livros para busca:", erro);
+//         });
+// }
+
+
+// // Verifica se um livro combina com a busca digitada
+// function livroCombinaComBuscaInicio(livro, busca) {
+//     let titulo = livro.titulo.toLowerCase();
+//     let autor = livro.autor.toLowerCase();
+//     let genero = livro.genero.toLowerCase();
+
+//     if (
+//         titulo.indexOf(busca) >= 0 ||
+//         autor.indexOf(busca) >= 0 ||
+//         genero.indexOf(busca) >= 0
+//     ) {
+//         return true;
+//     } else {
+//         return false;
+//     }
+// }
+
+
+// // Busca livros na tela inicial.
+// // Quando o campo está vazio, volta para o feed de publicações.
+// function buscarLivrosInicio() {
+//     let busca = input_busca_inicio.value.toLowerCase().trim();
+
+//     if (busca == "") {
+//         carregarPublicacoes();
+//         return;
+//     }
+
+//     let livrosEncontrados = [];
+
+//     for (let i = 0; i < livrosInicio.length; i++) {
+//         if (livroCombinaComBuscaInicio(livrosInicio[i], busca)) {
+//             livrosEncontrados.push(livrosInicio[i]);
+//         }
+//     }
+
+//     if (livrosEncontrados.length == 0) {
+//         feed_posts.innerHTML = `
+//             <div class="caixa-social cartao-publicacao resultado-busca-feed">
+//                 <h3>Resultado da busca</h3>
+//                 <p>Nenhum livro registrado foi encontrado para "${input_busca_inicio.value}".</p>
+//             </div>
+//         `;
+//         return;
+//     }
+
+//     let cardsLivros = montarCardsLivrosBusca(livrosEncontrados);
+
+//     feed_posts.innerHTML = `
+//         <div class="caixa-social resultado-busca-feed">
+//             <h3>Resultado da busca</h3>
+//             <p>
+//                 Encontramos ${livrosEncontrados.length} livro(s) registrado(s) para "${input_busca_inicio.value}".
+//             </p>
+
+//             <div class="lista-livros-busca">
+//                 ${cardsLivros}
+//             </div>
+//         </div>
+//     `;
+// }
+
+
+// // Monta os cards de livros encontrados na busca da página inicial.
+// function montarCardsLivrosBusca(livrosEncontrados) {
+//     let cardsLivros = "";
+
+//     for (let i = 0; i < livrosEncontrados.length; i++) {
+//         let livro = livrosEncontrados[i];
+
+//         let notaMedia = livro.notaMedia;
+
+//         if (notaMedia == null) {
+//             notaMedia = "Sem nota";
+//         }
+
+//         let totalLeitores = Number(livro.totalLeitores) || 0;
+//         let totalConcluidos = Number(livro.totalConcluidos) || 0;
+
+//         cardsLivros += `
+//             <div class="cartao-livro-busca">
+//                 <h4>${livro.titulo}</h4>
+//                 <p><strong>Autor:</strong> ${livro.autor}</p>
+
+//                 <div class="info-livro-busca">
+//                     <span class="etiqueta-livro-busca">${livro.genero}</span>
+//                     <span>⭐ Nota média: ${notaMedia}</span>
+//                     <span>👥 ${totalLeitores} leitor(es)</span>
+//                     <span>📚 ${totalConcluidos} concluído(s)</span>
+//                 </div>
+//             </div>
+//         `;
+//     }
+
+//     return cardsLivros;
+// }
+
+
+// Limpa o estilo visual dos botões de tipo de publicação.
+function limparBotoesTipoPublicacao() {
+    let botoes = [
+        botao_resenha,
+        botao_avaliacao,
+        botao_citacao,
+        botao_meta
+    ];
+
+    for (let i = 0; i < botoes.length; i++) {
+        botoes[i].style.backgroundColor = "rgba(243, 235, 221, 0.04)";
+        botoes[i].style.color = "#E8DCC8";
+    }
 }
 
-function buscarLivrosInicio() {
-    let busca = input_busca_inicio.value.toLowerCase().trim();
 
-    if (busca == "") {
-        carregarPublicacoes();
-        return;
-    }
-
-    let livrosEncontrados = [];
-
-    for (let i = 0; i < livrosInicio.length; i++) {
-        let titulo = livrosInicio[i].titulo.toLowerCase();
-        let autor = livrosInicio[i].autor.toLowerCase();
-        let genero = livrosInicio[i].genero.toLowerCase();
-
-        if (
-            titulo.indexOf(busca) >= 0 ||
-            autor.indexOf(busca) >= 0 ||
-            genero.indexOf(busca) >= 0
-        ) {
-            livrosEncontrados.push(livrosInicio[i]);
-        }
-    }
-
-    if (livrosEncontrados.length == 0) {
-        feed_posts.innerHTML = `
-            <div class="caixa-social cartao-publicacao resultado-busca-feed">
-                <h3>Resultado da busca</h3>
-                <p>Nenhum livro registrado foi encontrado para "${input_busca_inicio.value}".</p>
-            </div>
-        `;
-        return;
-    }
-
-    let cardsLivros = "";
-
-    for (let i = 0; i < livrosEncontrados.length; i++) {
-        let livro = livrosEncontrados[i];
-
-        let notaMedia = livro.notaMedia;
-
-        if (notaMedia == null) {
-            notaMedia = "Sem nota";
-        }
-
-        let totalLeitores = Number(livro.totalLeitores) || 0;
-        let totalConcluidos = Number(livro.totalConcluidos) || 0;
-
-        cardsLivros += `
-            <div class="cartao-livro-busca">
-                <h4>${livro.titulo}</h4>
-                <p><strong>Autor:</strong> ${livro.autor}</p>
-
-                <div class="info-livro-busca">
-                    <span class="etiqueta-livro-busca">${livro.genero}</span>
-                    <span>⭐ Nota média: ${notaMedia}</span>
-                    <span>👥 ${totalLeitores} leitor(es)</span>
-                    <span>📚 ${totalConcluidos} concluído(s)</span>
-                </div>
-            </div>
-        `;
-    }
-
-    feed_posts.innerHTML = `
-        <div class="caixa-social resultado-busca-feed">
-            <h3>Resultado da busca</h3>
-            <p>
-                Encontramos ${livrosEncontrados.length} livro(s) registrado(s) para "${input_busca_inicio.value}".
-            </p>
-
-            <div class="lista-livros-busca">
-                ${cardsLivros}
-            </div>
-        </div>
-    `;
-}
-
+// Marca visualmente o botão do tipo de publicação selecionado.
 function selecionarTipoPublicacao(tipo) {
     tipoPublicacaoSelecionado = tipo;
 
-    botao_resenha.style.backgroundColor = "rgba(243, 235, 221, 0.04)";
-    botao_resenha.style.color = "#E8DCC8";
-
-    botao_avaliacao.style.backgroundColor = "rgba(243, 235, 221, 0.04)";
-    botao_avaliacao.style.color = "#E8DCC8";
-
-    botao_citacao.style.backgroundColor = "rgba(243, 235, 221, 0.04)";
-    botao_citacao.style.color = "#E8DCC8";
-
-    botao_meta.style.backgroundColor = "rgba(243, 235, 221, 0.04)";
-    botao_meta.style.color = "#E8DCC8";
+    limparBotoesTipoPublicacao();
 
     if (tipo == "resenha") {
-        botao_resenha.style.backgroundColor = "#B08A57";
-        botao_resenha.style.color = "#1E1A17";
+        destacarBotaoTipo(botao_resenha);
     } else if (tipo == "avaliacao") {
-        botao_avaliacao.style.backgroundColor = "#B08A57";
-        botao_avaliacao.style.color = "#1E1A17";
+        destacarBotaoTipo(botao_avaliacao);
     } else if (tipo == "citacao") {
-        botao_citacao.style.backgroundColor = "#B08A57";
-        botao_citacao.style.color = "#1E1A17";
+        destacarBotaoTipo(botao_citacao);
     } else if (tipo == "meta") {
-        botao_meta.style.backgroundColor = "#B08A57";
-        botao_meta.style.color = "#1E1A17";
+        destacarBotaoTipo(botao_meta);
     }
 }
 
-function limparBotoesTipoPublicacao() {
-    botao_resenha.style.backgroundColor = "rgba(243, 235, 221, 0.04)";
-    botao_resenha.style.color = "#E8DCC8";
 
-    botao_avaliacao.style.backgroundColor = "rgba(243, 235, 221, 0.04)";
-    botao_avaliacao.style.color = "#E8DCC8";
-
-    botao_citacao.style.backgroundColor = "rgba(243, 235, 221, 0.04)";
-    botao_citacao.style.color = "#E8DCC8";
-
-    botao_meta.style.backgroundColor = "rgba(243, 235, 221, 0.04)";
-    botao_meta.style.color = "#E8DCC8";
+// Aplica o estilo de botão selecionado.
+function destacarBotaoTipo(botao) {
+    botao.style.backgroundColor = "#B08A57";
+    botao.style.color = "#1E1A17";
 }
 
+
+// Cria uma publicação no feed.
 function publicar() {
     if (!verificarUsuarioLogado()) {
         return;
     }
 
-        let textoPublicacao = input_post.value;
+    let textoPublicacao = input_post.value;
     let livroRelacionado = input_livro.value;
 
     if (textoPublicacao == "") {
@@ -292,11 +341,7 @@ function publicar() {
         tipoPublicacaoSelecionado = "atualizacao";
     }
 
-    let textoFinal = textoPublicacao;
-
-    if (livroRelacionado != "") {
-        textoFinal = textoPublicacao + " | " + livroRelacionado;
-    }
+    let textoFinal = montarTextoPublicacao(textoPublicacao, livroRelacionado);
 
     fetch("/publicacoes/cadastrar", {
         method: "POST",
@@ -330,6 +375,44 @@ function publicar() {
         });
 }
 
+
+// Junta o texto da publicação com o livro relacionado, se o usuário preencher esse campo.
+function montarTextoPublicacao(textoPublicacao, livroRelacionado) {
+    if (livroRelacionado != "") {
+        return textoPublicacao + " | " + livroRelacionado;
+    } else {
+        return textoPublicacao;
+    }
+}
+
+
+// Retorna o texto que aparece abaixo do nome do usuário na publicação.
+function obterTextoTipoPublicacao(tipoPublicacao) {
+    let tipos = [
+        "resenha",
+        "avaliacao",
+        "citacao",
+        "meta"
+    ];
+
+    let textos = [
+        "publicou uma resenha",
+        "publicou uma avaliação",
+        "compartilhou uma citação",
+        "atualizou uma meta de leitura"
+    ];
+
+    for (let i = 0; i < tipos.length; i++) {
+        if (tipoPublicacao == tipos[i]) {
+            return textos[i];
+        }
+    }
+
+    return "publicou uma atualização";
+}
+
+
+// Carrega todas as publicações do banco e monta o feed.
 function carregarPublicacoes() {
     fetch("/publicacoes", {
         method: "GET"
@@ -356,80 +439,7 @@ function carregarPublicacoes() {
             for (let i = 0; i < publicacoes.length; i++) {
                 let publicacao = publicacoes[i];
 
-                let tipoTexto = "publicou uma atualização";
-
-                if (publicacao.tipoPublicacao == "resenha") {
-                    tipoTexto = "publicou uma resenha";
-                } else if (publicacao.tipoPublicacao == "avaliacao") {
-                    tipoTexto = "publicou uma avaliação";
-                } else if (publicacao.tipoPublicacao == "citacao") {
-                    tipoTexto = "compartilhou uma citação";
-                } else if (publicacao.tipoPublicacao == "meta") {
-                    tipoTexto = "atualizou uma meta de leitura";
-                }
-
-                let inicialUsuario = publicacao.nome[0];
-
-                let blocoLivro = "";
-
-                if (publicacao.titulo != null) {
-                    blocoLivro = `
-                        <div class="livro-publicacao">
-                            <div>
-                                <strong>${publicacao.titulo}</strong>
-                                <span>${publicacao.autor}</span>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                feed_posts.innerHTML += `
-                    <article class="caixa-social cartao-publicacao">
-                        <div class="cabecalho-publicacao">
-                            <div class="avatar-pequeno">${inicialUsuario}</div>
-
-                            <div class="info-usuario-publicacao">
-                                <h4>${publicacao.nome}</h4>
-                                <span>${tipoTexto}</span>
-                            </div>
-                        </div>
-
-                        <p class="texto-publicacao">${publicacao.texto}</p>
-
-                        ${blocoLivro}
-
-                        <div class="contadores-publicacao">
-                            <span id="curtidas_post_${publicacao.idPublicacao}">0 curtidas</span>
-                            <span id="comentarios_total_${publicacao.idPublicacao}">0 comentários</span>
-                        </div>
-
-                        <div class="rodape-publicacao">
-                            <button 
-                                id="botao_curtir_${publicacao.idPublicacao}"
-                                type="button" 
-                                onclick="curtirOuDescurtirPublicacao(${publicacao.idPublicacao}, this)">
-                                ♡ Curtir
-                            </button>
-
-                            <button type="button" onclick="mostrarComentario(${publicacao.idPublicacao})">
-                                💬 Comentar
-                            </button>
-                        </div>
-
-                        <div id="comentario_area_${publicacao.idPublicacao}" class="area-comentario">
-                            <input 
-                                id="comentario_input_${publicacao.idPublicacao}" 
-                                type="text" 
-                                placeholder="Escreva um comentário...">
-
-                            <button type="button" onclick="comentarPublicacao(${publicacao.idPublicacao})">
-                                Enviar
-                            </button>
-                        </div>
-
-                        <div id="comentarios_post_${publicacao.idPublicacao}" class="lista-comentarios"></div>
-                    </article>
-                `;
+                feed_posts.innerHTML += montarCardPublicacao(publicacao);
 
                 carregarCurtidasPublicacao(publicacao.idPublicacao);
                 carregarComentariosPublicacao(publicacao.idPublicacao);
@@ -447,6 +457,78 @@ function carregarPublicacoes() {
         });
 }
 
+
+// Monta o HTML de uma publicação do feed.
+function montarCardPublicacao(publicacao) {
+    let tipoTexto = obterTextoTipoPublicacao(publicacao.tipoPublicacao);
+    let inicialUsuario = publicacao.nome[0];
+
+    let blocoLivro = "";
+
+    if (publicacao.titulo != null) {
+        blocoLivro = `
+            <div class="livro-publicacao">
+                <div>
+                    <strong>${publicacao.titulo}</strong>
+                    <span>${publicacao.autor}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    let cardPublicacao = `
+        <article class="caixa-social cartao-publicacao">
+            <div class="cabecalho-publicacao">
+                <div class="avatar-pequeno">${inicialUsuario}</div>
+
+                <div class="info-usuario-publicacao">
+                    <h4>${publicacao.nome}</h4>
+                    <span>${tipoTexto}</span>
+                </div>
+            </div>
+
+            <p class="texto-publicacao">${publicacao.texto}</p>
+
+            ${blocoLivro}
+
+            <div class="contadores-publicacao">
+                <span id="curtidas_post_${publicacao.idPublicacao}">0 curtidas</span>
+                <span id="comentarios_total_${publicacao.idPublicacao}">0 comentários</span>
+            </div>
+
+            <div class="rodape-publicacao">
+                <button 
+                    id="botao_curtir_${publicacao.idPublicacao}"
+                    type="button" 
+                    onclick="curtirOuDescurtirPublicacao(${publicacao.idPublicacao}, this)">
+                    ♡ Curtir
+                </button>
+
+                <button type="button" onclick="mostrarComentario(${publicacao.idPublicacao})">
+                    💬 Comentar
+                </button>
+            </div>
+
+            <div id="comentario_area_${publicacao.idPublicacao}" class="area-comentario">
+                <input 
+                    id="comentario_input_${publicacao.idPublicacao}" 
+                    type="text" 
+                    placeholder="Escreva um comentário...">
+
+                <button type="button" onclick="comentarPublicacao(${publicacao.idPublicacao})">
+                    Enviar
+                </button>
+            </div>
+
+            <div id="comentarios_post_${publicacao.idPublicacao}" class="lista-comentarios"></div>
+        </article>
+    `;
+
+    return cardPublicacao;
+}
+
+
+// Carrega a quantidade de curtidas de uma publicação.
 function carregarCurtidasPublicacao(idPublicacao) {
     fetch(`/curtidas/publicacao/${idPublicacao}`, {
         method: "GET"
@@ -467,12 +549,8 @@ function carregarCurtidasPublicacao(idPublicacao) {
 
             let totalCurtidas = 0;
 
-            if (Array.isArray(dados)) {
-                if (dados.length > 0) {
-                    totalCurtidas = dados[0].totalCurtidas || dados[0].total || dados[0].quantidade || 0;
-                }
-            } else {
-                totalCurtidas = dados.totalCurtidas || dados.total || dados.quantidade || 0;
+            if (dados.length > 0) {
+                totalCurtidas = dados[0].totalCurtidas;
             }
 
             if (totalCurtidas == 1) {
@@ -486,8 +564,9 @@ function carregarCurtidasPublicacao(idPublicacao) {
         });
 }
 
+
+// Verifica se o usuário já curtiu uma publicação.
 function verificarCurtidaUsuario(idPublicacao) {
-    
     if (idUsuario == undefined) {
         return;
     }
@@ -520,6 +599,8 @@ function verificarCurtidaUsuario(idPublicacao) {
         });
 }
 
+
+// Decide se a ação será curtir ou descurtir, dependendo do texto atual do botão.
 function curtirOuDescurtirPublicacao(idPublicacao, botao) {
     if (!verificarUsuarioLogado()) {
         return;
@@ -534,8 +615,9 @@ function curtirOuDescurtirPublicacao(idPublicacao, botao) {
     }
 }
 
+
+// Envia uma curtida para o banco.
 function curtirPublicacao(idPublicacao, botao) {
-    
     fetch("/curtidas/curtir", {
         method: "POST",
         headers: {
@@ -560,8 +642,9 @@ function curtirPublicacao(idPublicacao, botao) {
         });
 }
 
+
+// Remove a curtida do usuário
 function descurtirPublicacao(idPublicacao, botao) {
-    
     fetch("/curtidas/descurtir", {
         method: "DELETE",
         headers: {
@@ -586,6 +669,8 @@ function descurtirPublicacao(idPublicacao, botao) {
         });
 }
 
+
+// Mostra ou esconde a área de comentário de uma publicação.
 function mostrarComentario(idPublicacao) {
     let areaComentario = document.getElementById("comentario_area_" + idPublicacao);
 
@@ -596,6 +681,8 @@ function mostrarComentario(idPublicacao) {
     }
 }
 
+
+// Envia um comentário para o banco.
 function comentarPublicacao(idPublicacao) {
     if (!verificarUsuarioLogado()) {
         return;
@@ -634,6 +721,8 @@ function comentarPublicacao(idPublicacao) {
         });
 }
 
+
+// Carrega os comentários de uma publicação.
 function carregarComentariosPublicacao(idPublicacao) {
     fetch(`/comentarios/publicacao/${idPublicacao}`, {
         method: "GET"
@@ -664,12 +753,9 @@ function carregarComentariosPublicacao(idPublicacao) {
             for (let i = 0; i < comentarios.length; i++) {
                 let comentario = comentarios[i];
 
-                let nomeComentario = comentario.nome || comentario.nomeUsuario || "Usuário";
-                let textoComentario = comentario.texto || comentario.comentario || comentario.textoComentario || "";
-
                 listaComentarios.innerHTML += `
                     <div class="item-comentario">
-                        <strong>${nomeComentario}:</strong> ${textoComentario}
+                        <strong>${comentario.nome}:</strong> ${comentario.texto}
                     </div>
                 `;
             }
@@ -680,6 +766,7 @@ function carregarComentariosPublicacao(idPublicacao) {
 }
 
 
+// Chamada quando o JS carrega, ele já monta o resumo do usuário, o feed e a busca de livros.
 carregarDadosUsuario();
 carregarPublicacoes();
-carregarLivrosInicio();
+// carregarLivrosInicio();

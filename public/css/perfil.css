@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
+
+/* Variáveis globais da identidade visual*/
 :root {
     --brown-dark: #3B2A24;
     --brown-medium: #5A4034;
@@ -16,6 +18,8 @@
     --body-font: "Inter", sans-serif;
 }
 
+
+/*configurações gerais */
 * {
     margin: 0;
     padding: 0;
@@ -48,7 +52,7 @@ a {
 }
 
 
-
+/* Header e navegação superior */
 .header {
     height: var(--tamanho-header);
     background-color: rgba(30, 26, 23, 0.96);
@@ -93,7 +97,7 @@ a {
 }
 
 
-
+/* Layout principal*/
 .layout-social {
     display: flex;
     min-height: calc(100vh - var(--tamanho-header));
@@ -103,7 +107,7 @@ a {
 }
 
 
-
+/* Menu lateral esquerdo */
 .menu-lateral {
     width: 250px;
     background-color: #181512;
@@ -170,7 +174,7 @@ a {
 }
 
 
-
+/* Área principal*/
 .area-principal {
     flex: 1;
     padding: 24px;
@@ -180,6 +184,8 @@ a {
     min-width: 0;
 }
 
+
+/* Cards da página */
 .caixa-social {
     background-color: rgba(243, 235, 221, 0.05);
     border: 1px solid rgba(176, 138, 87, 0.18);
@@ -199,6 +205,8 @@ a {
     line-height: 1.6;
 }
 
+
+/* Cabeçalho da página */
 .cabecalho-pagina {
     background:
         linear-gradient(135deg, rgba(243, 235, 221, 0.96), rgba(232, 220, 200, 0.92)),
@@ -216,7 +224,7 @@ a {
 }
 
 
-
+/* Card principal com dados do perfil */
 .perfil-destaque {
     display: grid;
     grid-template-columns: 1fr;
@@ -287,7 +295,7 @@ a {
 }
 
 
-
+/* progresso atual e formulário de perfil */
 .perfil-grid-principal {
     display: grid;
     grid-template-columns: 0.8fr 1.2fr;
@@ -301,7 +309,7 @@ a {
 }
 
 
-
+/* Card de progresso atual da meta */
 .cartao-conquista {
     background:
         radial-gradient(circle at top right, rgba(176, 138, 87, 0.25), transparent 42%),
@@ -366,7 +374,7 @@ a {
 }
 
 
-
+/* Formulário de edição do perfil */
 .formulario-perfil {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -470,7 +478,7 @@ a {
 }
 
 
-
+/* Área de conquistas e histórico mensal */
 .conteudo-conquistas {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -529,9 +537,16 @@ a {
 }
 
 
-
+/* Histórico de medalhas salvas no banco */
 .historico-conquistas {
     background-color: rgba(243, 235, 221, 0.05);
+}
+
+.texto-explicativo-historico {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-bottom: 18px;
 }
 
 .lista-historico-conquistas {
@@ -571,7 +586,7 @@ a {
 }
 
 
-
+/* Footer */
 .footer {
     background-color: #161311;
     padding: 22px 0;

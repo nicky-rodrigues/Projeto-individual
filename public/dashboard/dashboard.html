@@ -9,16 +9,20 @@
 
     <title>Hiraeth | Dashboard</title>
 
+    <!-- Script de sessão usado para controlar dados do usuário logado -->
     <script src="../js/sessao.js"></script>
 
+    <!-- Arquivos de estilo e ícone da página Dashboard -->
     <link rel="stylesheet" href="./dashboard.css">
     <link rel="icon" href="../assets/icon/favicon(Hiraeth).png">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
 <body>
+
     <div class="header">
         <div class="container">
+
             <a href="../index.html" class="logo_link">
                 <h1 class="titulo">Hiraeth</h1>
             </a>
@@ -31,8 +35,10 @@
         </div>
     </div>
 
+    <!-- Layout geral da área logada -->
     <div class="layout-social">
 
+        <!-- Menu lateral com as principais páginas da plataforma -->
         <aside class="menu-lateral">
             <div class="secao-menu">
                 <div class="titulo-menu">Menu</div>
@@ -46,7 +52,6 @@
                     <a href="../index.html">Sair</a>
                 </nav>
             </div>
-
         </aside>
 
         <main class="area-principal">
@@ -59,27 +64,34 @@
                 </p>
             </section>
 
+            <!-- Cards de indicadores principais.(Os valores vãp começar zerados até serem atualizados pelo dashboard.js)-->
             <section class="cards-resumo">
+
+                <!-- Total de leituras concluídas pelo usuário -->
                 <div class="caixa-social card-indicador">
                     <span>Livros lidos</span>
                     <strong id="total_lidos_mes">0</strong>
                 </div>
 
+                <!-- Meta mensal cadastrada no perfil -->
                 <div class="caixa-social card-indicador">
                     <span>Meta do mês</span>
                     <strong id="meta_mes_card">0</strong>
                 </div>
 
+                <!-- Porcentagem da meta mensal concluída -->
                 <div class="caixa-social card-indicador">
                     <span>Progresso</span>
                     <strong id="progresso_card">0%</strong>
                 </div>
 
+                <!-- Total de livros registrados pelo usuário(independentemente do status)-->
                 <div class="caixa-social card-indicador">
                     <span>Total na estante</span>
                     <strong id="total_estante">0</strong>
                 </div>
 
+                <!-- Medalha calculada a partir do progresso da meta mensal -->
                 <div class="caixa-social card-indicador card-medalha">
                     <span>Medalha do mês</span>
                     <strong id="medalha_mes">🔒</strong>
@@ -88,7 +100,7 @@
             </section>
 
             <section class="conteudo-dashboard">
-
+                <!-- Resumo dos dados usados na análise-->
                 <div class="caixa-social resumo-dashboard">
                     <h3>Dados analisados</h3>
 
@@ -115,6 +127,7 @@
 
                 <div class="graficos-dashboard">
 
+                    <!-- Gráfico de barras com livros concluídos por gênero -->
                     <div class="caixa-social grafico">
                         <h3>Livros finalizados por gênero</h3>
 
@@ -123,6 +136,7 @@
                         </div>
                     </div>
 
+                    <!-- Gráfico comparando meta mensal e livros lidos -->
                     <div class="caixa-social grafico">
                         <h3>Meta do mês x livros lidos</h3>
 
@@ -137,11 +151,13 @@
 
                         <h4 id="porcentagem_meta">0% da meta concluída</h4>
 
+                        <!-- Texto indicando quanto falta para a próxima medalha -->
                         <p id="texto_proxima_medalha" class="texto-proxima-medalha">
                             Continue lendo para desbloquear sua próxima medalha.
                         </p>
                     </div>
 
+                    <!-- Gráfico de rosquinha com quantidade de livros por status -->
                     <div class="caixa-social grafico">
                         <h3>Quantidade por status</h3>
 
@@ -163,7 +179,10 @@
         </div>
     </div>
 
+    <!-- Biblioteca Chart.js usada para criar os gráficos da dashboard -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Script específico da dashboard-->
     <script src="./dashboard.js"></script>
 </body>
 

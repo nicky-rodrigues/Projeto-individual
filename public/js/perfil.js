@@ -1,5 +1,9 @@
+// Controla se o usuário já possui um perfil cadastrado
 let perfilExiste = false;
 
+
+// Função que carrega os dados do usuário logado, busca o perfil no banco
+// e depois chama as funções de conquista e histórico.
 function carregarPerfil() {
     let idUsuario = sessionStorage.ID_USUARIO;
     let nomeUsuario = sessionStorage.NOME_USUARIO;
@@ -27,30 +31,10 @@ function carregarPerfil() {
         .then(function (dados) {
             if (dados.length > 0) {
                 perfilExiste = true;
-
-                let perfil = dados[0];
-
-                bio_exibida.innerHTML = perfil.bio;
-                genero_exibido.innerHTML = perfil.generoFavorito;
-                livro_exibido.innerHTML = perfil.livroFavorito;
-                meta_exibida.innerHTML = perfil.metaMensal + " livros";
-
-                select_genero.value = perfil.generoFavorito;
-                input_livro.value = perfil.livroFavorito;
-                input_meta.value = perfil.metaMensal;
-                input_bio.value = perfil.bio;
+                preencherPerfilExistente(dados[0]);
             } else {
                 perfilExiste = false;
-
-                bio_exibida.innerHTML = "Você ainda não cadastrou uma bio literária.";
-                genero_exibido.innerHTML = "-";
-                livro_exibido.innerHTML = "-";
-                meta_exibida.innerHTML = "-";
-
-                select_genero.value = "";
-                input_livro.value = "";
-                input_meta.value = "";
-                input_bio.value = "";
+                preencherPerfilVazio();
             }
 
             carregarConquistaPerfil();
@@ -63,6 +47,36 @@ function carregarPerfil() {
         });
 }
 
+
+// Preenche a tela com os dados do perfil que veio do banco.
+function preencherPerfilExistente(perfil) {
+    bio_exibida.innerHTML = perfil.bio;
+    genero_exibido.innerHTML = perfil.generoFavorito;
+    livro_exibido.innerHTML = perfil.livroFavorito;
+    meta_exibida.innerHTML = perfil.metaMensal + " livros";
+
+    select_genero.value = perfil.generoFavorito;
+    input_livro.value = perfil.livroFavorito;
+    input_meta.value = perfil.metaMensal;
+    input_bio.value = perfil.bio;
+}
+
+
+// Preenche a tela quando o usuário ainda não cadastrou um perfil.
+function preencherPerfilVazio() {
+    bio_exibida.innerHTML = "Você ainda não cadastrou uma bio literária.";
+    genero_exibido.innerHTML = "-";
+    livro_exibido.innerHTML = "-";
+    meta_exibida.innerHTML = "-";
+
+    select_genero.value = "";
+    input_livro.value = "";
+    input_meta.value = "";
+    input_bio.value = "";
+}
+
+
+// Valida os campos do formulário e analisa se vai cadastrar ou atualizar o perfil.
 function salvarPerfil() {
     let idUsuario = sessionStorage.ID_USUARIO;
     let genero = select_genero.value;
@@ -76,28 +90,7 @@ function salvarPerfil() {
         return;
     }
 
-    if (genero == "") {
-        alert("Selecione seu gênero favorito.");
-        return;
-    }
-
-    if (livro == "") {
-        alert("Digite seu livro favorito.");
-        return;
-    }
-
-    if (meta == "") {
-        alert("Digite sua meta do mês.");
-        return;
-    }
-
-    if (meta <= 0) {
-        alert("A meta do mês precisa ser maior que zero.");
-        return;
-    }
-
-    if (bio == "") {
-        alert("Escreva uma bio literária.");
+    if (!validarFormularioPerfil(genero, livro, meta, bio)) {
         return;
     }
 
@@ -108,6 +101,39 @@ function salvarPerfil() {
     }
 }
 
+
+// Separa as validações do formulário para deixar a função salvarPerfil menor
+function validarFormularioPerfil(genero, livro, meta, bio) {
+    if (genero == "") {
+        alert("Selecione seu gênero favorito.");
+        return false;
+    }
+
+    if (livro == "") {
+        alert("Digite seu livro favorito.");
+        return false;
+    }
+
+    if (meta == "") {
+        alert("Digite sua meta do mês.");
+        return false;
+    }
+
+    if (meta <= 0) {
+        alert("A meta do mês precisa ser maior que zero.");
+        return false;
+    }
+
+    if (bio == "") {
+        alert("Escreva uma bio literária.");
+        return false;
+    }
+
+    return true;
+}
+
+
+// Cadastra um novo perfil no banco.
 function cadastrarPerfil(idUsuario, bio, genero, livro, meta) {
     fetch("/perfis/cadastrar", {
         method: "POST",
@@ -137,6 +163,8 @@ function cadastrarPerfil(idUsuario, bio, genero, livro, meta) {
         });
 }
 
+
+// Atualiza um perfil que já existe no banco.
 function atualizarPerfil(idUsuario, bio, genero, livro, meta) {
     fetch("/perfis/atualizar", {
         method: "PUT",
@@ -165,6 +193,8 @@ function atualizarPerfil(idUsuario, bio, genero, livro, meta) {
         });
 }
 
+
+// Calcula o progresso atual da meta
 function carregarConquistaPerfil() {
     let idUsuario = sessionStorage.ID_USUARIO;
     let meta = Number(input_meta.value);
@@ -189,19 +219,8 @@ function carregarConquistaPerfil() {
             }
         })
         .then(function (leituras) {
-            let totalConcluidos = 0;
-
-            for (let i = 0; i < leituras.length; i++) {
-                if (leituras[i].statusLeitura == "Concluído") {
-                    totalConcluidos++;
-                }
-            }
-
-            let porcentagemMeta = 0;
-
-            if (meta > 0) {
-                porcentagemMeta = (totalConcluidos * 100) / meta;
-            }
+            let totalConcluidos = contarLeiturasConcluidas(leituras);
+            let porcentagemMeta = calcularPorcentagemMeta(totalConcluidos, meta);
 
             atualizarConquistaPerfil(porcentagemMeta, meta, totalConcluidos);
         })
@@ -210,35 +229,75 @@ function carregarConquistaPerfil() {
         });
 }
 
-function atualizarConquistaPerfil(porcentagemMeta, meta, totalConcluidos) {
-    if (meta == 0) {
-        medalha_perfil.innerHTML = "🔒";
-        titulo_medalha_perfil.innerHTML = "Sem meta cadastrada";
-        descricao_medalha_perfil.innerHTML = "Cadastre uma meta mensal para acompanhar suas conquistas.";
-        progresso_medalha_perfil.innerHTML = "0%";
-    } else if (porcentagemMeta >= 150) {
-        medalha_perfil.innerHTML = "🥇";
-        titulo_medalha_perfil.innerHTML = "Guardiã das Histórias";
-        descricao_medalha_perfil.innerHTML = "Você concluiu " + totalConcluidos + " de " + meta + " leituras e ultrapassou sua meta mensal.";
-        progresso_medalha_perfil.innerHTML = porcentagemMeta.toFixed(0) + "%";
-    } else if (porcentagemMeta >= 100) {
-        medalha_perfil.innerHTML = "🥈";
-        titulo_medalha_perfil.innerHTML = "Meta Concluída";
-        descricao_medalha_perfil.innerHTML = "Você concluiu " + totalConcluidos + " de " + meta + " leituras e alcançou sua meta mensal.";
-        progresso_medalha_perfil.innerHTML = porcentagemMeta.toFixed(0) + "%";
-    } else if (porcentagemMeta >= 50) {
-        medalha_perfil.innerHTML = "🥉";
-        titulo_medalha_perfil.innerHTML = "Leitora em Jornada";
-        descricao_medalha_perfil.innerHTML = "Você concluiu " + totalConcluidos + " de " + meta + " leituras e já passou da metade da sua meta.";
-        progresso_medalha_perfil.innerHTML = porcentagemMeta.toFixed(0) + "%";
-    } else {
-        medalha_perfil.innerHTML = "🔒";
-        titulo_medalha_perfil.innerHTML = "Medalha bloqueada";
-        descricao_medalha_perfil.innerHTML = "Você concluiu " + totalConcluidos + " de " + meta + " leituras. Continue lendo para desbloquear sua conquista.";
-        progresso_medalha_perfil.innerHTML = porcentagemMeta.toFixed(0) + "%";
+
+// Percorre o vetor de leituras e conta quantas estão concluídas.
+function contarLeiturasConcluidas(leituras) {
+    let totalConcluidos = 0;
+
+    for (let i = 0; i < leituras.length; i++) {
+        if (leituras[i].statusLeitura == "Concluído") {
+            totalConcluidos++;
+        }
     }
+
+    return totalConcluidos;
 }
 
+
+// Calcula o percentual da meta
+function calcularPorcentagemMeta(totalConcluidos, meta) {
+    let porcentagemMeta = 0;
+
+    if (meta > 0) {
+        porcentagemMeta = (totalConcluidos * 100) / meta;
+    }
+
+    return porcentagemMeta;
+}
+
+
+// Retorna os dados da medalha de acordo com o percentual da meta
+function obterDadosMedalha(porcentagemMeta, meta, totalConcluidos) {
+    let medalha = {
+        emoji: "🔒",
+        titulo: "Medalha bloqueada",
+        descricao: "Você concluiu " + totalConcluidos + " de " + meta + " leituras. Continue lendo para desbloquear sua conquista."
+    };
+
+    if (meta == 0) {
+        medalha.emoji = "🔒";
+        medalha.titulo = "Sem meta cadastrada";
+        medalha.descricao = "Cadastre uma meta mensal para acompanhar suas conquistas.";
+    } else if (porcentagemMeta >= 150) {
+        medalha.emoji = "🥇";
+        medalha.titulo = "Guardiã das Histórias";
+        medalha.descricao = "Você concluiu " + totalConcluidos + " de " + meta + " leituras e ultrapassou sua meta mensal.";
+    } else if (porcentagemMeta >= 100) {
+        medalha.emoji = "🥈";
+        medalha.titulo = "Meta Concluída";
+        medalha.descricao = "Você concluiu " + totalConcluidos + " de " + meta + " leituras e alcançou sua meta mensal.";
+    } else if (porcentagemMeta >= 50) {
+        medalha.emoji = "🥉";
+        medalha.titulo = "Leitora em Jornada";
+        medalha.descricao = "Você concluiu " + totalConcluidos + " de " + meta + " leituras e já passou da metade da sua meta.";
+    }
+
+    return medalha;
+}
+
+
+// Atualiza o card de progresso atual da meta no HTML.
+function atualizarConquistaPerfil(porcentagemMeta, meta, totalConcluidos) {
+    let medalha = obterDadosMedalha(porcentagemMeta, meta, totalConcluidos);
+
+    medalha_perfil.innerHTML = medalha.emoji;
+    titulo_medalha_perfil.innerHTML = medalha.titulo;
+    descricao_medalha_perfil.innerHTML = medalha.descricao;
+    progresso_medalha_perfil.innerHTML = porcentagemMeta.toFixed(0) + "%";
+}
+
+
+// Busca no banco o total de medalhas salvas por tipo.
 function carregarResumoConquistas() {
     let idUsuario = sessionStorage.ID_USUARIO;
 
@@ -253,32 +312,41 @@ function carregarResumoConquistas() {
             }
         })
         .then(function (resumo) {
-            let ouro = 0;
-            let prata = 0;
-            let bronze = 0;
-
-            for (let i = 0; i < resumo.length; i++) {
-                if (resumo[i].tipoMedalha == "ouro") {
-                    ouro = Number(resumo[i].quantidade);
-                } else if (resumo[i].tipoMedalha == "prata") {
-                    prata = Number(resumo[i].quantidade);
-                } else if (resumo[i].tipoMedalha == "bronze") {
-                    bronze = Number(resumo[i].quantidade);
-                }
-            }
-
-            let pontuacao = (ouro * 3) + (prata * 2) + bronze;
-
-            total_ouro.innerHTML = ouro;
-            total_prata.innerHTML = prata;
-            total_bronze.innerHTML = bronze;
-            pontuacao_pessoal.innerHTML = pontuacao;
+            atualizarResumoConquistas(resumo);
         })
         .catch(function (erro) {
             console.log("Erro ao carregar resumo de conquistas:", erro);
         });
 }
 
+
+// Atualiza os cards de ouro, prata, bronze e pontuação.
+function atualizarResumoConquistas(resumo) {
+    let tiposMedalha = ["ouro", "prata", "bronze"];
+    let quantidades = [0, 0, 0];
+
+    for (let i = 0; i < resumo.length; i++) {
+        for (let j = 0; j < tiposMedalha.length; j++) {
+            if (resumo[i].tipoMedalha == tiposMedalha[j]) {
+                quantidades[j] = Number(resumo[i].quantidade);
+            }
+        }
+    }
+
+    let ouro = quantidades[0];
+    let prata = quantidades[1];
+    let bronze = quantidades[2];
+
+    let pontuacao = (ouro * 3) + (prata * 2) + bronze;
+
+    total_ouro.innerHTML = ouro;
+    total_prata.innerHTML = prata;
+    total_bronze.innerHTML = bronze;
+    pontuacao_pessoal.innerHTML = pontuacao;
+}
+
+
+// Busca no banco o histórico mensal de conquistas salvas.
 function carregarHistoricoConquistas() {
     let idUsuario = sessionStorage.ID_USUARIO;
 
@@ -293,79 +361,93 @@ function carregarHistoricoConquistas() {
             }
         })
         .then(function (historico) {
-            lista_historico_conquistas.innerHTML = "";
-
-            if (historico.length == 0) {
-                lista_historico_conquistas.innerHTML = `
-                    <p>Você ainda não possui conquistas salvas no histórico.</p>
-                `;
-                return;
-            }
-
-            for (let i = 0; i < historico.length; i++) {
-                let conquista = historico[i];
-
-                let medalhaEmoji = "";
-                let nomeMedalha = "";
-
-                if (conquista.tipoMedalha == "ouro") {
-                    medalhaEmoji = "🥇";
-                    nomeMedalha = "Guardiã das Histórias";
-                } else if (conquista.tipoMedalha == "prata") {
-                    medalhaEmoji = "🥈";
-                    nomeMedalha = "Meta Concluída";
-                } else if (conquista.tipoMedalha == "bronze") {
-                    medalhaEmoji = "🥉";
-                    nomeMedalha = "Leitora em Jornada";
-                }
-
-                let nomeMes = obterNomeMes(conquista.mesReferencia);
-
-                lista_historico_conquistas.innerHTML += `
-                    <div class="item-historico-conquista">
-                        <div>
-                            <strong>${medalhaEmoji} ${nomeMedalha}</strong>
-                            <p>${nomeMes}/${conquista.anoReferencia}</p>
-                        </div>
-
-                        <span>${Number(conquista.percentualMeta).toFixed(0)}%</span>
-                    </div>
-                `;
-            }
+            montarHistoricoConquistas(historico);
         })
         .catch(function (erro) {
             console.log("Erro ao carregar histórico de conquistas:", erro);
         });
 }
 
-function obterNomeMes(numeroMes) {
-    if (numeroMes == 1) {
-        return "Janeiro";
-    } else if (numeroMes == 2) {
-        return "Fevereiro";
-    } else if (numeroMes == 3) {
-        return "Março";
-    } else if (numeroMes == 4) {
-        return "Abril";
-    } else if (numeroMes == 5) {
-        return "Maio";
-    } else if (numeroMes == 6) {
-        return "Junho";
-    } else if (numeroMes == 7) {
-        return "Julho";
-    } else if (numeroMes == 8) {
-        return "Agosto";
-    } else if (numeroMes == 9) {
-        return "Setembro";
-    } else if (numeroMes == 10) {
-        return "Outubro";
-    } else if (numeroMes == 11) {
-        return "Novembro";
-    } else if (numeroMes == 12) {
-        return "Dezembro";
-    } else {
-        return "Mês";
+
+// Monta a lista de conquistas salvas no histórico.
+function montarHistoricoConquistas(historico) {
+    lista_historico_conquistas.innerHTML = "";
+
+    if (historico.length == 0) {
+        lista_historico_conquistas.innerHTML = `
+            <p>Você ainda não possui conquistas salvas no histórico.</p>
+        `;
+        return;
+    }
+
+    for (let i = 0; i < historico.length; i++) {
+        let conquista = historico[i];
+        let dadosMedalha = obterDadosMedalhaPorTipo(conquista.tipoMedalha);
+        let nomeMes = obterNomeMes(conquista.mesReferencia);
+
+        lista_historico_conquistas.innerHTML += `
+            <div class="item-historico-conquista">
+                <div>
+                    <strong>${dadosMedalha.emoji} ${dadosMedalha.nome}</strong>
+                    <p>${nomeMes}/${conquista.anoReferencia}</p>
+                </div>
+
+                <span>${Number(conquista.percentualMeta).toFixed(0)}%</span>
+            </div>
+        `;
     }
 }
 
+
+// Retorna o emoji e o nome da medalha com base no tipo salvo no banco.
+function obterDadosMedalhaPorTipo(tipoMedalha) {
+    let tipos = ["ouro", "prata", "bronze"];
+    let emojis = ["🥇", "🥈", "🥉"];
+    let nomes = ["Guardiã das Histórias", "Meta Concluída", "Leitora em Jornada"];
+
+    for (let i = 0; i < tipos.length; i++) {
+        if (tipoMedalha == tipos[i]) {
+            return {
+                emoji: emojis[i],
+                nome: nomes[i]
+            };
+        }
+    }
+
+    return {
+        emoji: "🔒",
+        nome: "Medalha"
+    };
+}
+
+
+// Retorna o nome do mês com base no número
+function obterNomeMes(numeroMes) {
+    let meses = [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+    ];
+
+    for (let i = 0; i < meses.length; i++) {
+        if (numeroMes == i + 1) {
+            return meses[i];
+        }
+    }
+
+    return "Mês";
+}
+
+
+
+// Quando o arquivo JS carrega, ele já busca os dados do perfil.
 carregarPerfil();

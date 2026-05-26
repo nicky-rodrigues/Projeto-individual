@@ -1,5 +1,8 @@
+// Vetor que guarda todos os livros retornados pelo banco.
+// é usado tanto para filtrar por gênero quanto para fazer a busca.
 let livrosCadastrados = [];
 
+// Verifica se existe um usuário logado na sessão.
 function verificarUsuarioLogado() {
     let idUsuario = sessionStorage.ID_USUARIO;
 
@@ -12,6 +15,7 @@ function verificarUsuarioLogado() {
     return true;
 }
 
+// Busca todos os livros cadastrados no banco pela rota /livros
 function carregarLivros() {
     if (!verificarUsuarioLogado()) {
         return;
@@ -29,15 +33,7 @@ function carregarLivros() {
         })
         .then(function (livros) {
             livrosCadastrados = livros;
-
-            area_resultado.innerHTML = `
-                <h3>Selecione um gênero</h3>
-                <p>
-                    Encontramos ${livrosCadastrados.length} livro(s) cadastrado(s) no Hiraeth.
-                    Escolha um dos cards acima para ver os livros desse gênero ou use a busca para encontrar
-                    títulos, autores e gêneros.
-                </p>
-            `;
+            mostrarMensagemInicial();
         })
         .catch(function (erro) {
             console.log(erro);
@@ -52,7 +48,49 @@ function carregarLivros() {
         });
 }
 
-function mostrarGenero(genero) {
+// Mostra a mensagem inicial da página (aparece antes do usuário escolher um gênero ou fazer uma busca)
+function mostrarMensagemInicial() {
+    area_resultado.innerHTML = `
+        <h3>Selecione um gênero</h3>
+        <p>
+            Encontramos ${livrosCadastrados.length} livro(s) cadastrado(s) no Hiraeth.
+            Escolha um dos cards acima para ver os livros desse gênero ou use a busca para encontrar
+            títulos, autores e gêneros.
+        </p>
+    `;
+}
+
+// Retorna a descrição de cada gênero
+function obterDescricaoGenero(genero) {
+    let nomesGeneros = [
+        "Fantasia",
+        "Romance",
+        "Mistério",
+        "Ficção científica",
+        "Poesia",
+        "Terror"
+    ];
+
+    let descricoesGeneros = [
+        "Histórias de fantasia exploram mundos mágicos, reinos distantes, criaturas lendárias e jornadas épicas.",
+        "O romance explora relações, sentimentos, encontros, escolhas e transformações emocionais.",
+        "Histórias de mistério envolvem segredos, investigações, pistas e perguntas que prendem o leitor até o fim.",
+        "A ficção científica explora tecnologia, futuro, sociedades alternativas e perguntas sobre a humanidade.",
+        "A poesia trabalha sentimentos, imagens, memórias e ideias por meio de linguagem expressiva.",
+        "O terror cria atmosferas de medo, tensão, mistério e estranhamento."
+    ];
+
+    for (let i = 0; i < nomesGeneros.length; i++) {
+        if (genero == nomesGeneros[i]) {
+            return descricoesGeneros[i];
+        }
+    }
+
+    return "Gênero literário cadastrado na plataforma.";
+}
+
+// Filtra o vetor de livros cadastrados e retorna apenas os livros do gênero escolhido.
+function filtrarLivrosPorGenero(genero) {
     let livrosFiltrados = [];
 
     for (let i = 0; i < livrosCadastrados.length; i++) {
@@ -61,21 +99,13 @@ function mostrarGenero(genero) {
         }
     }
 
-    let descricaoGenero = "";
+    return livrosFiltrados;
+}
 
-    if (genero == "Fantasia") {
-        descricaoGenero = "Histórias de fantasia exploram mundos mágicos, reinos distantes, criaturas lendárias e jornadas épicas.";
-    } else if (genero == "Romance") {
-        descricaoGenero = "O romance explora relações, sentimentos, encontros, escolhas e transformações emocionais.";
-    } else if (genero == "Mistério") {
-        descricaoGenero = "Histórias de mistério envolvem segredos, investigações, pistas e perguntas que prendem o leitor até o fim.";
-    } else if (genero == "Ficção científica") {
-        descricaoGenero = "A ficção científica explora tecnologia, futuro, sociedades alternativas e perguntas sobre a humanidade.";
-    } else if (genero == "Poesia") {
-        descricaoGenero = "A poesia trabalha sentimentos, imagens, memórias e ideias por meio de linguagem expressiva.";
-    } else if (genero == "Terror") {
-        descricaoGenero = "O terror cria atmosferas de medo, tensão, mistério e estranhamento.";
-    }
+// Mostra na tela os livros de um gênero específico
+function mostrarGenero(genero) {
+    let livrosFiltrados = filtrarLivrosPorGenero(genero);
+    let descricaoGenero = obterDescricaoGenero(genero);
 
     if (livrosFiltrados.length == 0) {
         area_resultado.innerHTML = `
@@ -105,56 +135,7 @@ function mostrarGenero(genero) {
     }
 }
 
-function buscarLivro() {
-    let busca = input_busca.value.toLowerCase();
-
-    if (busca == "") {
-        area_resultado.innerHTML = `
-            <h3>Selecione um gênero</h3>
-            <p>
-                Escolha um dos cards acima ou busque por título, autor ou gênero.
-            </p>
-        `;
-        return;
-    }
-
-    let livrosEncontrados = [];
-
-    for (let i = 0; i < livrosCadastrados.length; i++) {
-        let titulo = livrosCadastrados[i].titulo.toLowerCase();
-        let autor = livrosCadastrados[i].autor.toLowerCase();
-        let genero = livrosCadastrados[i].genero.toLowerCase();
-
-        if (titulo.indexOf(busca) >= 0 || autor.indexOf(busca) >= 0 || genero.indexOf(busca) >= 0) {
-            livrosEncontrados.push(livrosCadastrados[i]);
-        }
-    }
-
-    if (livrosEncontrados.length == 0) {
-        area_resultado.innerHTML = `
-            <div class="genero-detalhe">
-                <h3>Resultado da busca</h3>
-                <p class="mensagem-sem-livros">
-                    Nenhum livro encontrado para "${input_busca.value}".
-                </p>
-            </div>
-        `;
-    } else {
-        let cardsLivros = montarCardsLivros(livrosEncontrados);
-
-        area_resultado.innerHTML = `
-            <div class="genero-detalhe">
-                <h3>Resultado da busca</h3>
-                <p>Livros encontrados para "${input_busca.value}".</p>
-
-                <div class="lista-livros">
-                    ${cardsLivros}
-                </div>
-            </div>
-        `;
-    }
-}
-
+// Monta os cards HTML dos livros recebidos como parâmetro.
 function montarCardsLivros(listaLivros) {
     let cardsLivros = "";
 
@@ -188,4 +169,5 @@ function montarCardsLivros(listaLivros) {
     return cardsLivros;
 }
 
+// Chamada quando o arquivo JS é carregado, ele já busca os livros no banco.
 carregarLivros();

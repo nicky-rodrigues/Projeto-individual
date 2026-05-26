@@ -17,12 +17,15 @@
 </head>
 
 <body>
+
     <div class="header">
         <div class="container">
+
             <a href="index.html" class="logo_link">
                 <h1 class="titulo">Hiraeth</h1>
             </a>
 
+            <!-- Navegação superior com atalhos principais -->
             <ul class="navbar">
                 <li><a href="inicio.html">Feed</a></li>
                 <li><a href="perfil.html">Perfil</a></li>
@@ -33,6 +36,7 @@
 
     <div class="layout-social">
 
+        <!-- Menu lateral com as principais páginas da plataforma -->
         <aside class="menu-lateral">
             <div class="secao-menu">
                 <div class="titulo-menu">Menu</div>
@@ -46,7 +50,6 @@
                     <a href="index.html">Sair</a>
                 </nav>
             </div>
-
         </aside>
 
         <main class="area-principal">
@@ -60,19 +63,26 @@
 
             <section class="conteudo-registro">
 
+                <!-- Formulário usado tanto para cadastrar uma nova leitura quanto para editar uma leitura existente.
+                    (O JavaScript controla o modo do formulário:
+                    - "Nova leitura", quando idLeituraEdicao for null;
+                    - "Editar leitura", quando o usuário clicar no botão Editar)-->
                 <div class="caixa-social formulario-registro">
                     <h3 id="titulo_formulario">Nova leitura</h3>
 
+                    <!-- Campo do título do livro.-->
                     <div class="campo-formulario campo-completo">
                         <label>Nome do livro</label>
                         <input id="input_livro" type="text" placeholder="Ex: Trono de Vidro">
                     </div>
 
+                    <!-- Campo do autor-->
                     <div class="campo-formulario">
                         <label>Autor</label>
                         <input id="input_autor" type="text" placeholder="Ex: Sarah J. Maas">
                     </div>
 
+                    <!-- Campo de gênero literário (O valor selecionado ajuda na página Explorar e nos gráficos da dashboard) -->
                     <div class="campo-formulario">
                         <label>Gênero</label>
                         <select id="select_genero">
@@ -86,6 +96,7 @@
                         </select>
                     </div>
 
+                    <!-- Status da leitura -->
                     <div class="campo-formulario">
                         <label>Status</label>
                         <select id="select_status">
@@ -96,33 +107,40 @@
                         </select>
                     </div>
 
+                    <!-- Nota opcional da leitura-->
                     <div class="campo-formulario">
                         <label>Nota</label>
                         <input id="input_nota" type="number" min="1" max="5" placeholder="1 a 5">
                     </div>
 
+                    <!-- Comentário opcional sobre a leitura -->
                     <div class="campo-formulario campo-completo">
                         <label>Comentário</label>
                         <textarea id="input_comentario"
                             placeholder="Escreva sua opinião sobre essa leitura."></textarea>
                     </div>
 
+                    <!-- Botões do formulário (O botão principal chama salvarOuAtualizarLeitura())-->
                     <div class="botoes-formulario">
                         <button id="botao_salvar_leitura" class="botao-salvar" onclick="salvarOuAtualizarLeitura()">
                             Salvar leitura
                         </button>
 
+                        <!-- Esse botão aparece apenas quando o usuário está editando uma leitura. -->
                         <button id="botao_cancelar_edicao" class="botao-cancelar" onclick="cancelarEdicao()">
                             Cancelar edição
                         </button>
                     </div>
 
+                    <!-- Mensagem de sucesso após salvar ou atualizar uma leitura -->
                     <p id="mensagem_sucesso" class="mensagem-sucesso"></p>
                 </div>
 
+                <!-- Lista de leituras cadastradas-->
                 <div class="caixa-social leituras-registradas">
                     <h3>Leituras registradas</h3>
 
+                    <!-- Mensagem usada quando ainda não existem leituras ou quando está carregando -->
                     <div id="mensagem_vazia" class="mensagem-vazia">
                         Carregando leituras.
                     </div>
@@ -142,6 +160,7 @@
         </div>
     </div>
 
+    <!--Ele controla cadastro, edição, listagem e validação das leituras. -->
     <script src="./js/registrar.js"></script>
 </body>
 

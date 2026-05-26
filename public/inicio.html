@@ -17,12 +17,15 @@
 </head>
 
 <body>
+
     <div class="header">
         <div class="container">
+
             <a href="index.html" class="logo_link">
                 <h1 class="titulo">Hiraeth</h1>
             </a>
 
+            <!-- Navegação superior com atalhos principais -->
             <ul class="navbar">
                 <li><a href="inicio.html">Feed</a></li>
                 <li><a href="perfil.html">Perfil</a></li>
@@ -31,10 +34,9 @@
         </div>
     </div>
 
-
     <div class="layout-social">
 
-
+        <!-- Menu lateral com as páginas principais da plataforma -->
         <aside class="menu-lateral">
             <div class="secao-menu">
                 <div class="titulo-menu">Menu</div>
@@ -48,21 +50,16 @@
                     <a href="index.html">Sair</a>
                 </nav>
             </div>
-
         </aside>
-
 
         <main class="area-principal">
 
-
-
-
+            <!-- Layout interno do feed:-->
             <div class="layout-feed">
-
 
                 <section class="feed-principal">
 
-
+                    <!-- Card de boas-vindas e resumo rápido da jornada literária (preenchidos com dados do usuário) -->
                     <div class="caixa-social caixa-boas-vindas">
                         <h2 id="titulo_boas_vindas">Olá</h2>
 
@@ -72,21 +69,26 @@
                         </p>
 
                         <div class="estatisticas-boas-vindas">
+
+                            <!-- Total de livros concluídos pelo usuário -->
                             <div class="mini-estatistica">
                                 <span id="span_livros_lidos">0</span>
                                 <small>livros lidos</small>
                             </div>
 
+                            <!-- Progresso da meta mensal -->
                             <div class="mini-estatistica">
                                 <span id="span_meta_mes">0/0</span>
                                 <small>meta do mês</small>
                             </div>
 
+                            <!-- Gênero favorito cadastrado no perfil -->
                             <div class="mini-estatistica">
                                 <span id="span_genero_favorito">-</span>
                                 <small>gênero favorito</small>
                             </div>
 
+                            <!-- Medalha calculada com base no progresso da meta -->
                             <div class="mini-estatistica mini-medalha">
                                 <span id="span_medalha_mes">🔒</span>
                                 <small id="span_titulo_medalha_mes">medalha bloqueada</small>
@@ -94,8 +96,10 @@
                         </div>
                     </div>
 
-
+                    <!-- Área de criação de publicação -->
                     <div class="caixa-social caixa-criar-publicacao">
+
+                        <!-- Campo principal do texto da publicação -->
                         <div class="topo-criar-publicacao">
                             <div id="avatar_criar_publicacao" class="avatar-pequeno">U</div>
 
@@ -103,6 +107,7 @@
                                 placeholder="O que você está lendo hoje?"></textarea>
                         </div>
 
+                        <!-- Botões que definem o tipo da publicação-->
                         <div class="acoes-criar-publicacao">
                             <button id="botao_resenha" type="button" onclick="selecionarTipoPublicacao('resenha')">
                                 📖 Resenha
@@ -121,6 +126,7 @@
                             </button>
                         </div>
 
+                        <!-- Campo para mencionar um livro relacionado à publicação -->
                         <div class="extra-criar-publicacao">
                             <input id="input_livro" type="text" placeholder="...">
 
@@ -129,10 +135,11 @@
                             </button>
                         </div>
 
+                        <!-- Mensagem de sucesso ou retorno após criar publicação -->
                         <p id="mensagem_publicacao" class="mensagem-publicacao"></p>
                     </div>
 
-
+                    <!-- Área dinâmica do feed-->
                     <div id="feed_posts" class="publicacoes-feed">
                         <div class="caixa-social cartao-publicacao">
                             <p>Carregando publicações...</p>
@@ -141,9 +148,10 @@
 
                 </section>
 
-
+                <!-- Coluna lateral direita do feed -->
                 <aside class="lateral-feed">
 
+                    <!-- Resumo do perfil do usuário logado -->
                     <div class="caixa-social caixa-perfil">
                         <div class="topo-perfil-resumido">
                             <div class="avatar-grande" id="avatar_usuario">U</div>
@@ -155,6 +163,7 @@
                         </div>
                     </div>
 
+                    <!-- Resumo dos principais dados da jornada de leitura -->
                     <div class="caixa-social caixa-dashboard">
                         <h3>Resumo da jornada</h3>
                         <p>Livros lidos: <strong id="resumo_livros_lidos">0</strong></p>
@@ -162,6 +171,7 @@
                         <p>Gênero favorito: <strong id="resumo_genero_favorito">-</strong></p>
                     </div>
 
+                    <!-- Explicação das regras de gamificação -->
                     <div class="caixa-social caixa-medalhas">
                         <h3>Conquistas literárias</h3>
 
@@ -173,6 +183,7 @@
                             Progresso da meta
                         </div>
 
+                        <!-- Lista fixa explicando os níveis de medalha -->
                         <div class="lista-medalhas">
 
                             <div class="item-medalha">
@@ -194,7 +205,7 @@
                             <div class="item-medalha">
                                 <span>🥉</span>
                                 <div>
-                                    <strong>Leitor em Jornada</strong>
+                                    <strong>Leitora em Jornada</strong>
                                     <p>50% da meta</p>
                                 </div>
                             </div>
@@ -215,7 +226,6 @@
         </main>
     </div>
 
-
     <div class="footer">
         <div class="container">
             <p class="footer-brand">Hiraeth</p>
@@ -223,6 +233,7 @@
         </div>
     </div>
 
+    <!-- Script que carrega dados do usuário, publicações, curtidas, comentários e busca de livros. -->
     <script src="./js/inicio.js"></script>
 </body>
 

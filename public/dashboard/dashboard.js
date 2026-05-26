@@ -1,10 +1,14 @@
+// Variáveis globais dos gráficos.
 let graficoGeneros;
 let graficoMeta;
 let graficoStatus;
 
+// Dados do perfil do usuário usados nos cálculos da dashboard.
 let metaMensal = 0;
 let generoFavoritoUsuario = "-";
 
+
+// Verifica se existe um usuário logado.
 function verificarUsuarioLogado() {
     let idUsuario = sessionStorage.ID_USUARIO;
 
@@ -17,6 +21,8 @@ function verificarUsuarioLogado() {
     return true;
 }
 
+
+// Retorna o tipo de medalha de acordo com a porcentagem da meta.
 function obterTipoMedalha(porcentagemMeta) {
     if (porcentagemMeta >= 150) {
         return "ouro";
@@ -29,6 +35,8 @@ function obterTipoMedalha(porcentagemMeta) {
     }
 }
 
+
+// Salva ou atualiza a conquista mensal no banco.
 function salvarConquistaDoMes(porcentagemMeta, livrosConcluidos) {
     let idUsuario = sessionStorage.ID_USUARIO;
 
@@ -64,18 +72,29 @@ function salvarConquistaDoMes(porcentagemMeta, livrosConcluidos) {
             livrosConcluidosServer: livrosConcluidos,
             metaMensalServer: metaMensal
         })
-    });
+    })
+        .catch(function (erro) {
+            console.log("Erro ao salvar conquista do mês:", erro);
+        });
 }
 
+
+// Primeiro valida o usuário, depois carrega perfil e leituras(Função principal da dashboard)
 function carregarDashboard() {
     if (!verificarUsuarioLogado()) {
         return;
     }
 
-    let idUsuario = sessionStorage.ID_USUARIO;
     let nomeUsuario = sessionStorage.NOME_USUARIO;
-
     nome_usuario.innerHTML = nomeUsuario;
+
+    carregarPerfilDashboard();
+}
+
+
+// Busca o perfil do usuário para recuperar a meta mensal e o gênero favorito.
+function carregarPerfilDashboard() {
+    let idUsuario = sessionStorage.ID_USUARIO;
 
     fetch(`/perfis/listar/${idUsuario}`, {
         method: "GET"
@@ -89,31 +108,47 @@ function carregarDashboard() {
         })
         .then(function (perfil) {
             if (perfil.length > 0) {
-                metaMensal = Number(perfil[0].metaMensal);
-                generoFavoritoUsuario = perfil[0].generoFavorito;
-
-                genero_favorito.innerHTML = generoFavoritoUsuario;
-                meta_resumo.innerHTML = metaMensal + " livros";
-                meta_mes_card.innerHTML = metaMensal;
-                texto_meta.innerHTML = metaMensal;
+                preencherDadosPerfilDashboard(perfil[0]);
             } else {
-                metaMensal = 0;
-                generoFavoritoUsuario = "-";
-
-                genero_favorito.innerHTML = "-";
-                meta_resumo.innerHTML = "0 livros";
-                meta_mes_card.innerHTML = "0";
-                texto_meta.innerHTML = "0";
+                preencherPerfilDashboardVazio();
             }
 
             carregarLeituras();
         })
         .catch(function (erro) {
             console.log("Erro ao carregar perfil:", erro);
+
+            preencherPerfilDashboardVazio();
             carregarLeituras();
         });
 }
 
+
+// Preenche no HTML os dados de perfil encontrados no banco.
+function preencherDadosPerfilDashboard(perfil) {
+    metaMensal = Number(perfil.metaMensal);
+    generoFavoritoUsuario = perfil.generoFavorito;
+
+    genero_favorito.innerHTML = generoFavoritoUsuario;
+    meta_resumo.innerHTML = metaMensal + " livros";
+    meta_mes_card.innerHTML = metaMensal;
+    texto_meta.innerHTML = metaMensal;
+}
+
+
+// Define valores padrão quando o usuário ainda não cadastrou perfil.
+function preencherPerfilDashboardVazio() {
+    metaMensal = 0;
+    generoFavoritoUsuario = "-";
+
+    genero_favorito.innerHTML = "-";
+    meta_resumo.innerHTML = "0 livros";
+    meta_mes_card.innerHTML = "0";
+    texto_meta.innerHTML = "0";
+}
+
+
+// Busca as leituras do usuário no banco.
 function carregarLeituras() {
     let idUsuario = sessionStorage.ID_USUARIO;
 
@@ -136,92 +171,128 @@ function carregarLeituras() {
         });
 }
 
+
+// Função central que transforma as leituras do banco em indicadores, porcentagens e dados para os gráficos
 function calcularIndicadores(leituras) {
     let totalEstante = leituras.length;
 
-    let totalConcluidos = 0;
-    let totalLendo = 0;
-    let totalQueroLer = 0;
+    let contagemStatus = contarStatusLeituras(leituras);
+    let contagemGeneros = contarGenerosConcluidos(leituras);
 
-    let fantasia = 0;
-    let romance = 0;
-    let misterio = 0;
-    let ficcao = 0;
-    let poesia = 0;
-    let terror = 0;
-    let outros = 0;
+    let totalConcluidos = contagemStatus.concluidos;
+    let totalLendo = contagemStatus.lendo;
+    let totalQueroLer = contagemStatus.queroLer;
 
-    for (let i = 0; i < leituras.length; i++) {
-        let leitura = leituras[i];
-
-        if (leitura.statusLeitura == "Concluído") {
-            totalConcluidos++;
-
-            if (leitura.genero == "Fantasia") {
-                fantasia++;
-            } else if (leitura.genero == "Romance") {
-                romance++;
-            } else if (leitura.genero == "Mistério") {
-                misterio++;
-            } else if (leitura.genero == "Ficção científica") {
-                ficcao++;
-            } else if (leitura.genero == "Poesia") {
-                poesia++;
-            } else if (leitura.genero == "Terror") {
-                terror++;
-            } else {
-                outros++;
-            }
-
-        } else if (leitura.statusLeitura == "Lendo") {
-            totalLendo++;
-
-        } else if (leitura.statusLeitura == "Quero ler") {
-            totalQueroLer++;
-        }
-    }
-
-    let porcentagemMetaReal = 0;
-
-    if (metaMensal > 0) {
-        porcentagemMetaReal = (totalConcluidos * 100) / metaMensal;
-    }
-
-    let porcentagemMetaExibida = porcentagemMetaReal;
-
-    if (porcentagemMetaExibida > 100) {
-        porcentagemMetaExibida = 100;
-    }
+    let porcentagemMetaReal = calcularPorcentagemMeta(totalConcluidos);
+    let porcentagemMetaExibida = limitarPorcentagemParaCard(porcentagemMetaReal);
 
     let statusMaisComum = calcularStatusMaisComum(totalConcluidos, totalLendo, totalQueroLer);
 
-    total_lidos_mes.innerHTML = totalConcluidos;
-    total_estante.innerHTML = totalEstante;
-    progresso_card.innerHTML = porcentagemMetaExibida.toFixed(0) + "%";
-
-    texto_lidos.innerHTML = totalConcluidos;
-    porcentagem_meta.innerHTML = porcentagemMetaReal.toFixed(0) + "% da meta concluída";
-
-    status_mais_comum.innerHTML = statusMaisComum;
+    atualizarIndicadoresHTML(
+        totalConcluidos,
+        totalEstante,
+        porcentagemMetaReal,
+        porcentagemMetaExibida,
+        statusMaisComum
+    );
 
     atualizarMedalha(porcentagemMetaReal);
     atualizarProximaMedalha(porcentagemMetaReal);
+
     salvarConquistaDoMes(porcentagemMetaReal, totalConcluidos);
 
     criarGraficos(
-        fantasia,
-        romance,
-        misterio,
-        ficcao,
-        poesia,
-        terror,
-        outros,
+        contagemGeneros,
         totalConcluidos,
         totalLendo,
         totalQueroLer
     );
 }
 
+
+// Conta quantas leituras existem em cada status.
+function contarStatusLeituras(leituras) {
+    let contagemStatus = {
+        concluidos: 0,
+        lendo: 0,
+        queroLer: 0
+    };
+
+    for (let i = 0; i < leituras.length; i++) {
+        if (leituras[i].statusLeitura == "Concluído") {
+            contagemStatus.concluidos++;
+        } else if (leituras[i].statusLeitura == "Lendo") {
+            contagemStatus.lendo++;
+        } else if (leituras[i].statusLeitura == "Quero ler") {
+            contagemStatus.queroLer++;
+        }
+    }
+
+    return contagemStatus;
+}
+
+
+// Conta os gêneros apenas dos livros concluídos.
+function contarGenerosConcluidos(leituras) {
+    let contagemGeneros = {
+        fantasia: 0,
+        romance: 0,
+        misterio: 0,
+        ficcao: 0,
+        poesia: 0,
+        terror: 0,
+        outros: 0
+    };
+
+    for (let i = 0; i < leituras.length; i++) {
+        let leitura = leituras[i];
+
+        if (leitura.statusLeitura == "Concluído") {
+            if (leitura.genero == "Fantasia") {
+                contagemGeneros.fantasia++;
+            } else if (leitura.genero == "Romance") {
+                contagemGeneros.romance++;
+            } else if (leitura.genero == "Mistério") {
+                contagemGeneros.misterio++;
+            } else if (leitura.genero == "Ficção científica") {
+                contagemGeneros.ficcao++;
+            } else if (leitura.genero == "Poesia") {
+                contagemGeneros.poesia++;
+            } else if (leitura.genero == "Terror") {
+                contagemGeneros.terror++;
+            } else {
+                contagemGeneros.outros++;
+            }
+        }
+    }
+
+    return contagemGeneros;
+}
+
+
+// Calcula a porcentagem da meta mensal.
+function calcularPorcentagemMeta(totalConcluidos) {
+    let porcentagemMeta = 0;
+
+    if (metaMensal > 0) {
+        porcentagemMeta = (totalConcluidos * 100) / metaMensal;
+    }
+
+    return porcentagemMeta;
+}
+
+
+// Limita a porcentagem exibida no card de resumo para no máximo 100%.
+function limitarPorcentagemParaCard(porcentagemMeta) {
+    if (porcentagemMeta > 100) {
+        return 100;
+    } else {
+        return porcentagemMeta;
+    }
+}
+
+
+// Descobre qual status aparece mais entre as leituras do usuário.
 function calcularStatusMaisComum(concluidos, lendo, queroLer) {
     if (concluidos == 0 && lendo == 0 && queroLer == 0) {
         return "-";
@@ -236,6 +307,27 @@ function calcularStatusMaisComum(concluidos, lendo, queroLer) {
     }
 }
 
+
+// Atualiza os textos e indicadores principais no HTML.
+function atualizarIndicadoresHTML(
+    totalConcluidos,
+    totalEstante,
+    porcentagemMetaReal,
+    porcentagemMetaExibida,
+    statusMaisComum
+) {
+    total_lidos_mes.innerHTML = totalConcluidos;
+    total_estante.innerHTML = totalEstante;
+    progresso_card.innerHTML = porcentagemMetaExibida.toFixed(0) + "%";
+
+    texto_lidos.innerHTML = totalConcluidos;
+    porcentagem_meta.innerHTML = porcentagemMetaReal.toFixed(0) + "% da meta concluída";
+
+    status_mais_comum.innerHTML = statusMaisComum;
+}
+
+
+// Atualiza o card de medalha do mês.
 function atualizarMedalha(porcentagemMeta) {
     if (metaMensal == 0) {
         medalha_mes.innerHTML = "🔒 Sem meta";
@@ -255,6 +347,8 @@ function atualizarMedalha(porcentagemMeta) {
     }
 }
 
+
+// Atualiza o texto indicando quanto falta para a próxima medalha.
 function atualizarProximaMedalha(porcentagemMeta) {
     if (metaMensal == 0) {
         texto_proxima_medalha.innerHTML = "Cadastre uma meta mensal no perfil para acompanhar suas conquistas.";
@@ -262,32 +356,19 @@ function atualizarProximaMedalha(porcentagemMeta) {
         texto_proxima_medalha.innerHTML = "Você desbloqueou a maior conquista do mês: 🥇 Guardiã das Histórias.";
     } else if (porcentagemMeta >= 100) {
         let falta = 150 - porcentagemMeta;
-        texto_proxima_medalha.innerHTML = `Faltam ${falta.toFixed(0)}% para desbloquear 🥇 Guardiã das Histórias.`;
+        texto_proxima_medalha.innerHTML = "Faltam " + falta.toFixed(0) + "% para desbloquear 🥇 Guardiã das Histórias.";
     } else if (porcentagemMeta >= 50) {
         let falta = 100 - porcentagemMeta;
-        texto_proxima_medalha.innerHTML = `Faltam ${falta.toFixed(0)}% para desbloquear 🥈 Meta Concluída.`;
+        texto_proxima_medalha.innerHTML = "Faltam " + falta.toFixed(0) + "% para desbloquear 🥈 Meta Concluída.";
     } else {
         let falta = 50 - porcentagemMeta;
-        texto_proxima_medalha.innerHTML = `Faltam ${falta.toFixed(0)}% para desbloquear 🥉 Leitora em Jornada.`;
+        texto_proxima_medalha.innerHTML = "Faltam " + falta.toFixed(0) + "% para desbloquear 🥉 Leitora em Jornada.";
     }
 }
 
-function criarGraficos(
-    fantasia,
-    romance,
-    misterio,
-    ficcao,
-    poesia,
-    terror,
-    outros,
-    concluidos,
-    lendo,
-    queroLer
-) {
-    let ctxGeneros = document.getElementById("grafico_generos");
-    let ctxMeta = document.getElementById("grafico_meta");
-    let ctxStatus = document.getElementById("grafico_status");
 
+// Destrói gráficos antigos antes de criar novos.
+function destruirGraficosAntigos() {
     if (graficoGeneros != undefined) {
         graficoGeneros.destroy();
     }
@@ -299,44 +380,71 @@ function criarGraficos(
     if (graficoStatus != undefined) {
         graficoStatus.destroy();
     }
+}
 
-    let generosLabels = [];
-    let generosDados = [];
-    let generosCores = [];
 
+// Cria todos os gráficos da dashboard.
+function criarGraficos(contagemGeneros, concluidos, lendo, queroLer) {
+    destruirGraficosAntigos();
+
+    criarGraficoGeneros(contagemGeneros);
+    criarGraficoMeta(concluidos);
+    criarGraficoStatus(concluidos, lendo, queroLer);
+}
+
+
+// Prepara os dados do gráfico de gêneros
+function prepararDadosGraficoGeneros(contagemGeneros) {
     let generosBase = [
-        { nome: "Fantasia", valor: fantasia, cor: "#B08A57" },
-        { nome: "Romance", valor: romance, cor: "#6B2D3A" },
-        { nome: "Mistério", valor: misterio, cor: "#2F4A3C" },
-        { nome: "Ficção científica", valor: ficcao, cor: "#8C6A3E" },
-        { nome: "Poesia", valor: poesia, cor: "#A89A8A" },
-        { nome: "Terror", valor: terror, cor: "#4A1F2A" },
-        { nome: "Outros", valor: outros, cor: "#5A4034" }
+        { nome: "Fantasia", valor: contagemGeneros.fantasia, cor: "#B08A57" },
+        { nome: "Romance", valor: contagemGeneros.romance, cor: "#6B2D3A" },
+        { nome: "Mistério", valor: contagemGeneros.misterio, cor: "#2F4A3C" },
+        { nome: "Ficção científica", valor: contagemGeneros.ficcao, cor: "#8C6A3E" },
+        { nome: "Poesia", valor: contagemGeneros.poesia, cor: "#A89A8A" },
+        { nome: "Terror", valor: contagemGeneros.terror, cor: "#4A1F2A" },
+        { nome: "Outros", valor: contagemGeneros.outros, cor: "#5A4034" }
     ];
+
+    let labels = [];
+    let dados = [];
+    let cores = [];
 
     for (let i = 0; i < generosBase.length; i++) {
         if (generosBase[i].valor > 0) {
-            generosLabels.push(generosBase[i].nome);
-            generosDados.push(generosBase[i].valor);
-            generosCores.push(generosBase[i].cor);
+            labels.push(generosBase[i].nome);
+            dados.push(generosBase[i].valor);
+            cores.push(generosBase[i].cor);
         }
     }
 
-    if (generosLabels.length == 0) {
-        generosLabels = ["Nenhum livro concluído"];
-        generosDados = [0];
-        generosCores = ["#5A4034"];
+    if (labels.length == 0) {
+        labels = ["Nenhum livro concluído"];
+        dados = [0];
+        cores = ["#5A4034"];
     }
+
+    return {
+        labels: labels,
+        dados: dados,
+        cores: cores
+    };
+}
+
+
+// Cria o gráfico de barras horizontais com livros concluídos por gênero.
+function criarGraficoGeneros(contagemGeneros) {
+    let ctxGeneros = document.getElementById("grafico_generos");
+    let dadosGeneros = prepararDadosGraficoGeneros(contagemGeneros);
 
     graficoGeneros = new Chart(ctxGeneros, {
         type: "bar",
         data: {
-            labels: generosLabels,
+            labels: dadosGeneros.labels,
             datasets: [
                 {
                     label: "Livros concluídos",
-                    data: generosDados,
-                    backgroundColor: generosCores,
+                    data: dadosGeneros.dados,
+                    backgroundColor: dadosGeneros.cores,
                     borderWidth: 1
                 }
             ]
@@ -374,6 +482,12 @@ function criarGraficos(
             }
         }
     });
+}
+
+
+// Cria o gráfico comparando livros concluídos com a meta mensal.
+function criarGraficoMeta(concluidos) {
+    let ctxMeta = document.getElementById("grafico_meta");
 
     graficoMeta = new Chart(ctxMeta, {
         type: "bar",
@@ -422,6 +536,12 @@ function criarGraficos(
             }
         }
     });
+}
+
+
+// Cria o gráfico de rosca com a quantidade de livros por status.
+function criarGraficoStatus(concluidos, lendo, queroLer) {
+    let ctxStatus = document.getElementById("grafico_status");
 
     graficoStatus = new Chart(ctxStatus, {
         type: "doughnut",
@@ -452,4 +572,6 @@ function criarGraficos(
     });
 }
 
+
+// Quando o JavaScript carrega, a dashboard já busca perfil, leituras e monta os gráficos.
 carregarDashboard();

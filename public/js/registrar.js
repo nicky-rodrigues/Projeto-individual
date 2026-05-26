@@ -1,6 +1,11 @@
+// Guarda o id da leitura que está sendo editada ( null == cadastro)
 let idLeituraEdicao = null;
+
+// Vetor global que guarda as leituras carregadas do banco
 let leiturasUsuario = [];
 
+
+// Verifica se existe um usuário logado
 function verificarUsuarioLogado() {
     let idUsuario = sessionStorage.ID_USUARIO;
 
@@ -13,6 +18,8 @@ function verificarUsuarioLogado() {
     return true;
 }
 
+
+// Essa função tenta encontrar o id do livro retornado pelo back-end
 function obterIdLivro(retornoLivro) {
     if (retornoLivro == undefined || retornoLivro == null) {
         return undefined;
@@ -37,6 +44,8 @@ function obterIdLivro(retornoLivro) {
     return undefined;
 }
 
+
+// Decide se o formulário vai salvar uma nova leitura ou atualizar uma existente.
 function salvarOuAtualizarLeitura() {
     if (!verificarUsuarioLogado()) {
         return;
@@ -49,6 +58,52 @@ function salvarOuAtualizarLeitura() {
     }
 }
 
+
+// Valida os campos principais do formulário.
+// Retorna true se estiver tudo certo e false se tiver algum erro.
+function validarFormularioLeitura(tituloLivro, autor, genero, statusLeitura, nota) {
+    if (tituloLivro == "") {
+        alert("Digite o nome do livro.");
+        return false;
+    }
+
+    if (autor == "") {
+        alert("Digite o autor do livro.");
+        return false;
+    }
+
+    if (genero == "") {
+        alert("Selecione o gênero do livro.");
+        return false;
+    }
+
+    if (statusLeitura == "") {
+        alert("Selecione o status da leitura.");
+        return false;
+    }
+
+    if (nota != "" && (nota < 1 || nota > 5)) {
+        alert("A nota precisa ser entre 1 e 5.");
+        return false;
+    }
+
+    return true;
+}
+
+
+// Prepara a nota para ser enviada ao banco.
+// Se a nota estiver vazia, envia NULL para não quebrar o insert ou uptdate
+function prepararNotaParaBanco(nota) {
+    if (nota == "") {
+        return "NULL";
+    } else {
+        return nota;
+    }
+}
+
+
+// Salva uma nova leitura.
+// Primeiro cadastra ou busca o livro, depois registra a leitura vinculada ao usuário
 function salvarLeitura() {
     let idUsuario = sessionStorage.ID_USUARIO;
 
@@ -59,30 +114,11 @@ function salvarLeitura() {
     let nota = input_nota.value;
     let comentario = input_comentario.value;
 
-    if (tituloLivro == "") {
-        alert("Digite o nome do livro.");
+    if (!validarFormularioLeitura(tituloLivro, autor, genero, statusLeitura, nota)) {
         return;
     }
 
-    if (autor == "") {
-        alert("Digite o autor do livro.");
-        return;
-    }
-
-    if (genero == "") {
-        alert("Selecione o gênero do livro.");
-        return;
-    }
-
-    if (statusLeitura == "") {
-        alert("Selecione o status da leitura.");
-        return;
-    }
-
-    if (nota != "" && (nota < 1 || nota > 5)) {
-        alert("A nota precisa ser entre 1 e 5.");
-        return;
-    }
+    let notaBanco = prepararNotaParaBanco(nota);
 
     fetch("/livros/cadastrar", {
         method: "POST",
@@ -119,7 +155,7 @@ function salvarLeitura() {
                     fkUsuarioServer: idUsuario,
                     fkLivroServer: idLivro,
                     statusLeituraServer: statusLeitura,
-                    notaServer: nota,
+                    notaServer: notaBanco,
                     comentarioServer: comentario
                 })
             });
@@ -143,6 +179,8 @@ function salvarLeitura() {
         });
 }
 
+
+// Busca todas as leituras do usuário e monta os cards na tela
 function listarLeituras() {
     if (!verificarUsuarioLogado()) {
         return;
@@ -174,53 +212,7 @@ function listarLeituras() {
             mensagem_vazia.style.display = "none";
 
             for (let i = 0; i < leituras.length; i++) {
-                let leitura = leituras[i];
-
-                let notaTexto = "Sem nota";
-
-                if (leitura.nota != null && leitura.nota != "") {
-                    notaTexto = leitura.nota + "/5";
-                }
-
-                let comentarioTexto = "Sem comentário.";
-
-                if (leitura.comentario != null && leitura.comentario != "") {
-                    comentarioTexto = leitura.comentario;
-                }
-
-                lista_leituras.innerHTML += `
-                    <div class="cartao-leitura">
-                        <div class="topo-leitura">
-                            <div>
-                                <h4>${leitura.titulo}</h4>
-                                <p>${leitura.autor}</p>
-                            </div>
-
-                            <span class="status-leitura">${leitura.statusLeitura}</span>
-                        </div>
-
-                        <div class="detalhes-leitura">
-                            <span>Gênero: <strong>${leitura.genero}</strong></span>
-                            <span>Nota: <strong>${notaTexto}</strong></span>
-                        </div>
-
-                        <p class="comentario-leitura">${comentarioTexto}</p>
-
-<div class="acoes-leitura">
-    <button class="botao-editar" onclick="prepararEdicaoLeitura(
-        ${leitura.idLeitura},
-        '${leitura.titulo}',
-        '${leitura.autor}',
-        '${leitura.genero}',
-        '${leitura.statusLeitura}',
-        '${leitura.nota == null ? "" : leitura.nota}',
-        '${leitura.comentario == null ? "" : leitura.comentario}'
-    )">
-        Editar
-    </button>
-</div>
-                    </div>
-                `;
+                lista_leituras.innerHTML += montarCardLeitura(leituras[i]);
             }
         })
         .catch(function (erro) {
@@ -230,7 +222,67 @@ function listarLeituras() {
         });
 }
 
-function prepararEdicaoLeitura(idLeitura) {
+
+// Retorna o texto da nota
+// Se não tiver nota, mostra "Sem nota"
+function obterTextoNota(nota) {
+    if (nota != null && nota != "") {
+        return nota + "/5";
+    } else {
+        return "Sem nota";
+    }
+}
+
+
+// Retorna o texto do comentário.
+// Se não tiver comentário, mostra uma mensagem padrão.
+function obterTextoComentario(comentario) {
+    if (comentario != null && comentario != "") {
+        return comentario;
+    } else {
+        return "Sem comentário.";
+    }
+}
+
+
+// Monta o HTML de um card de leitura.
+// O botão editar passa o id da leitura
+function montarCardLeitura(leitura) {
+    let notaTexto = obterTextoNota(leitura.nota);
+    let comentarioTexto = obterTextoComentario(leitura.comentario);
+
+    let card = `
+        <div class="cartao-leitura">
+            <div class="topo-leitura">
+                <div>
+                    <h4>${leitura.titulo}</h4>
+                    <p>${leitura.autor}</p>
+                </div>
+
+                <span class="status-leitura">${leitura.statusLeitura}</span>
+            </div>
+
+            <div class="detalhes-leitura">
+                <span>Gênero: <strong>${leitura.genero}</strong></span>
+                <span>Nota: <strong>${notaTexto}</strong></span>
+            </div>
+
+            <p class="comentario-leitura">${comentarioTexto}</p>
+
+            <div class="acoes-leitura">
+                <button class="botao-editar" onclick="prepararEdicaoLeitura(${leitura.idLeitura})">
+                    Editar
+                </button>
+            </div>
+        </div>
+    `;
+
+    return card;
+}
+
+
+// Procura uma leitura dentro do vetor leiturasUsuario pelo id
+function buscarLeituraPorId(idLeitura) {
     let leituraEncontrada = null;
 
     for (let i = 0; i < leiturasUsuario.length; i++) {
@@ -239,6 +291,14 @@ function prepararEdicaoLeitura(idLeitura) {
         }
     }
 
+    return leituraEncontrada;
+}
+
+
+// Prepara o formulário para editar uma leitura existente.
+function prepararEdicaoLeitura(idLeitura) {
+    let leituraEncontrada = buscarLeituraPorId(idLeitura);
+
     if (leituraEncontrada == null) {
         alert("Leitura não encontrada.");
         return;
@@ -246,35 +306,55 @@ function prepararEdicaoLeitura(idLeitura) {
 
     idLeituraEdicao = leituraEncontrada.idLeitura;
 
+    preencherFormularioEdicao(leituraEncontrada);
+    bloquearCamposLivro();
+
     titulo_formulario.innerHTML = "Editar leitura";
-
-    input_livro.value = leituraEncontrada.titulo;
-    input_autor.value = leituraEncontrada.autor;
-    select_genero.value = leituraEncontrada.genero;
-    select_status.value = leituraEncontrada.statusLeitura;
-
-    if (leituraEncontrada.nota == null) {
-        input_nota.value = "";
-    } else {
-        input_nota.value = leituraEncontrada.nota;
-    }
-
-    if (leituraEncontrada.comentario == null) {
-        input_comentario.value = "";
-    } else {
-        input_comentario.value = leituraEncontrada.comentario;
-    }
-
-    input_livro.disabled = true;
-    input_autor.disabled = true;
-    select_genero.disabled = true;
-
     botao_salvar_leitura.innerHTML = "Atualizar leitura";
     botao_cancelar_edicao.style.display = "inline-block";
 
     mensagem_sucesso.innerHTML = "";
 }
 
+
+// Preenche o formulário com os dados da leitura escolhida.
+function preencherFormularioEdicao(leitura) {
+    input_livro.value = leitura.titulo;
+    input_autor.value = leitura.autor;
+    select_genero.value = leitura.genero;
+    select_status.value = leitura.statusLeitura;
+
+    if (leitura.nota == null) {
+        input_nota.value = "";
+    } else {
+        input_nota.value = leitura.nota;
+    }
+
+    if (leitura.comentario == null) {
+        input_comentario.value = "";
+    } else {
+        input_comentario.value = leitura.comentario;
+    }
+}
+
+
+// Bloqueia os campos do livro na edição para que o usuário edite apenas status, nota e comentário da leitura
+function bloquearCamposLivro() {
+    input_livro.disabled = true;
+    input_autor.disabled = true;
+    select_genero.disabled = true;
+}
+
+
+// Libera os campos do livro quando sai do modo de edição.
+function desbloquearCamposLivro() {
+    input_livro.disabled = false;
+    input_autor.disabled = false;
+    select_genero.disabled = false;
+}
+
+
+// Atualiza uma leitura já existente (apenas status, nota e comentário)
 function atualizarLeitura() {
     let idUsuario = sessionStorage.ID_USUARIO;
 
@@ -298,6 +378,8 @@ function atualizarLeitura() {
         return;
     }
 
+    let notaBanco = prepararNotaParaBanco(nota);
+
     fetch("/leituras/atualizar", {
         method: "PUT",
         headers: {
@@ -305,9 +387,9 @@ function atualizarLeitura() {
         },
         body: JSON.stringify({
             idLeituraServer: idLeituraEdicao,
-            fkUsuarioServer: sessionStorage.ID_USUARIO,
+            fkUsuarioServer: idUsuario,
             statusLeituraServer: statusLeitura,
-            notaServer: nota,
+            notaServer: notaBanco,
             comentarioServer: comentario
         })
     })
@@ -326,21 +408,22 @@ function atualizarLeitura() {
         });
 }
 
+
+// Cancela o modo de edição e volta o formulário para nova leitura.
 function cancelarEdicao() {
     idLeituraEdicao = null;
 
     titulo_formulario.innerHTML = "Nova leitura";
 
     limparFormularioLeitura();
-
-    input_livro.disabled = false;
-    input_autor.disabled = false;
-    select_genero.disabled = false;
+    desbloquearCamposLivro();
 
     botao_salvar_leitura.innerHTML = "Salvar leitura";
     botao_cancelar_edicao.style.display = "none";
 }
 
+
+// Limpa todos os campos do formulário.
 function limparFormularioLeitura() {
     input_livro.value = "";
     input_autor.value = "";
@@ -350,6 +433,9 @@ function limparFormularioLeitura() {
     input_comentario.value = "";
 }
 
+
+// Configuração inicial da tela.
 botao_cancelar_edicao.style.display = "none";
 
+// Quando a página carrega, já lista as leituras do usuário.
 listarLeituras();

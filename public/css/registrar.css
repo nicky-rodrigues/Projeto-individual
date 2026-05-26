@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
+
+/* Variáveis globais da identidade visual*/
 :root {
     --brown-dark: #3B2A24;
     --brown-medium: #5A4034;
@@ -16,6 +18,8 @@
     --body-font: "Inter", sans-serif;
 }
 
+
+/* configurações gerais */
 * {
     margin: 0;
     padding: 0;
@@ -48,8 +52,7 @@ a {
 }
 
 
-
-
+/* Header e navegação superior */
 .header {
     height: var(--tamanho-header);
     background-color: rgba(30, 26, 23, 0.96);
@@ -94,8 +97,7 @@ a {
 }
 
 
-
-
+/* Layout principal */
 .layout-social {
     display: flex;
     min-height: calc(100vh - var(--tamanho-header));
@@ -105,8 +107,7 @@ a {
 }
 
 
-
-
+/* Menu lateral esquerdo */
 .menu-lateral {
     width: 250px;
     background-color: rgba(24, 21, 18, 0.96);
@@ -154,6 +155,8 @@ a {
     color: var(--parchment-light);
 }
 
+
+/* Caixa lateral de apoio*/
 .caixa-lateral {
     background-color: rgba(243, 235, 221, 0.045);
     border: 1px solid rgba(176, 138, 87, 0.16);
@@ -174,8 +177,7 @@ a {
 }
 
 
-
-
+/* Área principal */
 .area-principal {
     flex: 1;
     padding: 24px;
@@ -185,6 +187,8 @@ a {
     min-width: 0;
 }
 
+
+/* Cards da página */
 .caixa-social {
     background-color: rgba(243, 235, 221, 0.055);
     border: 1px solid rgba(176, 138, 87, 0.18);
@@ -204,6 +208,8 @@ a {
     line-height: 1.6;
 }
 
+
+/* Cabeçalho da página */
 .cabecalho-pagina {
     background:
         linear-gradient(135deg, rgba(243, 235, 221, 0.96), rgba(232, 220, 200, 0.92)),
@@ -221,8 +227,7 @@ a {
 }
 
 
-
-
+/* Layout da área de registro*/
 .conteudo-registro {
     display: grid;
     grid-template-columns: 1.15fr 1fr;
@@ -231,8 +236,7 @@ a {
 }
 
 
-
-
+/* Formulário de cadastro e edição de leitura */
 .formulario-registro {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -303,6 +307,8 @@ a {
     color: var(--parchment-light);
 }
 
+
+/* Botões do formulário */
 .botoes-formulario {
     grid-column: 1 / -1;
     display: flex;
@@ -349,8 +355,7 @@ a {
 }
 
 
-
-
+/* Área onde as leituras registradas*/
 .leituras-registradas {
     display: flex;
     flex-direction: column;
@@ -369,6 +374,8 @@ a {
     gap: 16px;
 }
 
+
+/* Card de cada leitura cadastrada */
 .cartao-leitura {
     background-color: rgba(243, 235, 221, 0.045);
     border: 1px solid rgba(176, 138, 87, 0.14);
@@ -388,6 +395,47 @@ a {
     margin-top: 6px;
 }
 
+
+/* Parte superior do card da leitura: título, autor e status */
+.topo-leitura {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.status-leitura {
+    background-color: rgba(176, 138, 87, 0.16);
+    color: var(--parchment-light);
+    border: 1px solid rgba(176, 138, 87, 0.18);
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+
+/* Detalhes do card: gênero e nota */
+.detalhes-leitura {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.detalhes-leitura span {
+    background-color: rgba(243, 235, 221, 0.045);
+    border: 1px solid rgba(176, 138, 87, 0.14);
+    border-radius: 999px;
+    padding: 7px 10px;
+    color: var(--parchment);
+    font-size: 0.85rem;
+}
+
+.comentario-leitura {
+    margin-top: 12px;
+}
+
 .etiquetas-leitura {
     display: flex;
     flex-wrap: wrap;
@@ -404,6 +452,8 @@ a {
     font-size: 0.85rem;
 }
 
+
+/* Botão de edição dentro do card da leitura */
 .botao-editar {
     margin-top: 14px;
     background-color: var(--aged-gold);
@@ -420,8 +470,7 @@ a {
 }
 
 
-
-
+/* Footer */
 .footer {
     background-color: #161311;
     padding: 22px 0;
@@ -445,11 +494,4 @@ a {
 .footer-phrase {
     font-size: 0.95rem;
     color: var(--text-muted);
-}
-
-.texto-explicativo-historico {
-    color: var(--text-muted);
-    line-height: 1.6;
-    font-size: 0.95rem;
-    margin-bottom: 18px;
 }
