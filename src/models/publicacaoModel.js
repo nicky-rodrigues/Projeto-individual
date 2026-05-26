@@ -1,5 +1,9 @@
+// Importa a configuração do banco de dados
 var database = require("../database/config");
 
+
+// Cadastra uma nova publicação no banco
+// fkLivro pode receber um id de livro ou NULL, caso a publicação não esteja ligada a um livro
 function cadastrar(fkUsuario, fkLivro, tipoPublicacao, texto) {
     var instrucaoSql = `
         INSERT INTO Publicacao (fkUsuario, fkLivro, tipoPublicacao, texto)
@@ -10,6 +14,10 @@ function cadastrar(fkUsuario, fkLivro, tipoPublicacao, texto) {
     return database.executar(instrucaoSql);
 }
 
+
+// Lista todas as publicações do feed
+// O JOIN com Usuario busca o nome de quem publicou
+// O LEFT JOIN com Livro permite que a publicação apareça mesmo se não tiver livro relacionado
 function listar() {
     var instrucaoSql = `
         SELECT 
@@ -30,6 +38,8 @@ function listar() {
     return database.executar(instrucaoSql);
 }
 
+
+// Lista apenas as publicações de um usuário específico
 function listarPorUsuario(fkUsuario) {
     var instrucaoSql = `
         SELECT 
@@ -50,6 +60,7 @@ function listarPorUsuario(fkUsuario) {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
 
 module.exports = {
     cadastrar,

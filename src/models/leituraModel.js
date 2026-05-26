@@ -1,5 +1,8 @@
+// Importa a configuração do banco de dados.
 var database = require("../database/config");
 
+
+// Cadastra uma nova leitura no banco (cada leitura pertence a um usuário e está ligada a um livro)
 function cadastrar(fkUsuario, fkLivro, statusLeitura, nota, comentario) {
     var instrucaoSql = `
         INSERT INTO Leitura (fkUsuario, fkLivro, statusLeitura, nota, comentario)
@@ -10,6 +13,9 @@ function cadastrar(fkUsuario, fkLivro, statusLeitura, nota, comentario) {
     return database.executar(instrucaoSql);
 }
 
+
+// Atualiza uma leitura já cadastrada
+// O where usa idLeitura e fkUsuario para garantir que o usuário só altere a própria leitura
 function atualizar(idLeitura, fkUsuario, statusLeitura, nota, comentario) {
     var instrucaoSql = `
         UPDATE Leitura
@@ -25,6 +31,9 @@ function atualizar(idLeitura, fkUsuario, statusLeitura, nota, comentario) {
     return database.executar(instrucaoSql);
 }
 
+
+// Lista todas as leituras de um usuário
+// O JOIN com Livro exibe título, autor e gênero junto com os dados da leitura
 function listarPorUsuario(fkUsuario) {
     var instrucaoSql = `
         SELECT 
@@ -47,6 +56,8 @@ function listarPorUsuario(fkUsuario) {
     return database.executar(instrucaoSql);
 }
 
+
+// Busca dados agrupados para a dashboard (agrupa as leituras por gênero e status)
 function buscarDadosDashboard(fkUsuario) {
     var instrucaoSql = `
         SELECT 
@@ -62,6 +73,7 @@ function buscarDadosDashboard(fkUsuario) {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
 
 module.exports = {
     cadastrar,

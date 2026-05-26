@@ -1,5 +1,8 @@
+// Importa a configuração do banco de dados.
 var database = require("../database/config");
 
+
+// Busca se o usuário já possui uma conquista salva para determinado mês e ano (evita cadastrar duas conquistas no mesmo mês)
 function buscarConquistaMes(fkUsuario, mesReferencia, anoReferencia) {
     var instrucaoSql = `
         SELECT *
@@ -12,6 +15,8 @@ function buscarConquistaMes(fkUsuario, mesReferencia, anoReferencia) {
     return database.executar(instrucaoSql);
 }
 
+
+// Cadastra uma nova conquista mensal (só vai ser usada quando o usuário ainda não possui conquista naquele mês)
 function cadastrar(fkUsuario, mesReferencia, anoReferencia, tipoMedalha, percentualMeta, livrosConcluidos, metaMensal) {
     var instrucaoSql = `
         INSERT INTO Conquista (
@@ -37,6 +42,8 @@ function cadastrar(fkUsuario, mesReferencia, anoReferencia, tipoMedalha, percent
     return database.executar(instrucaoSql);
 }
 
+
+// Atualiza uma conquista já existente (acontece quando o usuário melhora a medalha no mesmo mês)
 function atualizar(idConquista, tipoMedalha, percentualMeta, livrosConcluidos, metaMensal) {
     var instrucaoSql = `
         UPDATE Conquista
@@ -52,6 +59,8 @@ function atualizar(idConquista, tipoMedalha, percentualMeta, livrosConcluidos, m
     return database.executar(instrucaoSql);
 }
 
+
+// Lista o resumo de medalhas do usuário (quantidade de bronze, prata e ouro salvas no histórico)
 function listarResumo(fkUsuario) {
     var instrucaoSql = `
         SELECT
@@ -65,6 +74,8 @@ function listarResumo(fkUsuario) {
     return database.executar(instrucaoSql);
 }
 
+
+// Lista o histórico mensal de conquistas do usuário ( das mais recentes para as mais antigas)
 function listarHistorico(fkUsuario) {
     var instrucaoSql = `
         SELECT
@@ -83,6 +94,7 @@ function listarHistorico(fkUsuario) {
 
     return database.executar(instrucaoSql);
 }
+
 
 module.exports = {
     buscarConquistaMes,

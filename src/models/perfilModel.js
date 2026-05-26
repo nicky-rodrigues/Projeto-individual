@@ -1,5 +1,8 @@
+// Importa a configuração do banco de dados.
 var database = require("../database/config");
 
+
+// Cadastra as informações complementares do usuário (tabela Perfil guarda dados usados na página de perfil e na dashboard)
 function cadastrar(fkUsuario, bio, generoFavorito, livroFavorito, metaMensal) {
     var instrucaoSql = `
         INSERT INTO Perfil (fkUsuario, bio, generoFavorito, livroFavorito, metaMensal)
@@ -10,6 +13,8 @@ function cadastrar(fkUsuario, bio, generoFavorito, livroFavorito, metaMensal) {
     return database.executar(instrucaoSql);
 }
 
+
+// Atualiza o perfil de um usuário já cadastrado (O where usa fkUsuario para garantir que apenas o perfil do usuário logado seja alterado)
 function atualizar(fkUsuario, bio, generoFavorito, livroFavorito, metaMensal) {
     var instrucaoSql = `
         UPDATE Perfil
@@ -25,6 +30,8 @@ function atualizar(fkUsuario, bio, generoFavorito, livroFavorito, metaMensal) {
     return database.executar(instrucaoSql);
 }
 
+
+// Busca o perfil de um usuário específico (O JOIN com Usuario permite trazer também nome e e-mail junto com os dados do perfil)
 function listarPorUsuario(fkUsuario) {
     var instrucaoSql = `
         SELECT 
@@ -44,6 +51,7 @@ function listarPorUsuario(fkUsuario) {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
 
 module.exports = {
     cadastrar,
