@@ -22,31 +22,49 @@ let descricoes = [
     "Em um mundo de magia, segredos e batalhas contra a escuridão, Harry Potter descobre que o verdadeiro poder não está apenas nos feitiços, mas nas escolhas que faz ao longo do caminho."
 ];
 
+// Controla qual livro está sendo exibido no momento
 let posicao_atual = 0;
 
+
+// Atualiza o conteúdo do card de recomendação na tela
+// A posição atual define qual título, imagem e descrição serão mostrados
 function mostrar_livro() {
     book_image.src = imagens[posicao_atual];
     book_title.innerHTML = titulos[posicao_atual];
-    book_description.innerHTML = descricoes[posicao_atual]
+    book_description.innerHTML = descricoes[posicao_atual];
 }
 
+
+// Avança para o próximo livro do carrossel
 function avancar() {
     posicao_atual++;
 
+    // Se passar do último livro, volta para o primeiro
+    // Isso faz o carrossel ficar em ciclo
     if (posicao_atual > titulos.length - 1) {
         posicao_atual = 0;
     }
-    mostrar_livro()
+
+    // Depois de mudar a posição, atualiza o livro exibido na tela
+    mostrar_livro();
 }
 
+
+// Volta para o livro anterior do carrossel
 function voltar() {
     posicao_atual--;
 
+    // Se estiver no primeiro livro e voltar, vai para o último
+    // Isso mantém o carrossel funcionando em ciclo.
     if (posicao_atual < 0) {
-        posicao_atual = titulos.length - 1
+        posicao_atual = titulos.length - 1;
     }
-    mostrar_livro()
+
+    // Depois de mudar a posição, atualiza o livro exibido na tela
+    mostrar_livro();
 }
 
-// Inicialização
+
+// Chamada inicial
+// Quando a página carrega, já mostra o primeiro livro do carrossel
 mostrar_livro();
